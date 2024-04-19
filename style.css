@@ -1,0 +1,58 @@
+h2 {
+    text-align: center;
+}
+
+.stage {
+    display: grid;
+    justify-content: space-evenly;
+    justify-items: center;
+    align-content: space-evenly;
+    align-items: center;
+    padding: 10vw;
+    row-gap: 1vw;
+    column-gap: 0.5vw;  /* TODO not sure why the columns are still further apart? */
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 25% 25% 25% 25%;
+}
+
+.word {
+    display: flex;
+    background: #d4d4d4;
+    color: #5e5e5e;
+    border-radius: 4vw;
+    font-size: 3vw;
+    padding: 0.5vw;
+    width: 12vw;
+    height: 12vw;
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.word:hover {
+    background: #b5b4b4;
+}
+
+.easy {
+    background: #65cd68;
+}
+
+.normal {
+    background: #ffeb50;
+}
+
+.hard {
+    background: #6dc5e4;
+}
+
+.advanced {
+    background: #c662df;
+}
+
+.selected {
+    background: #5e5e5e;
+    color: #d4d4d4;
+}
