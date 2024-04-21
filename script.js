@@ -162,61 +162,49 @@ function swapWords() {
         let target = document.getElementById(targetID);
         let dest = document.getElementById(destID);
 
+        // TODO transition to make each one actually move...
+        // const targetRect = target.getBoundingClientRect();
+        // const destRect = dest.getBoundingClientRect();
+
+        // target.animate(
+        //     [
+        //         {  // from
+        //             left: targetRect.left + "px",
+        //             top: targetRect.top + "px",
+        //         },
+        //         {  // to
+        //             left: destRect.left + "px",
+        //             top: destRect.top + "px",
+        //         },
+        //     ],
+        //     options,
+        // );
+
+        // dest.animate(
+        //     [
+        //         {  // from
+        //             left: destRect.left + "px",
+        //             top: destRect.top + "px",
+        //         },
+        //         {  // to
+        //             left: targetRect.left + "px",
+        //             top: targetRect.top + "px",
+        //         },
+        //     ],
+        //     options,
+        // );
+
         target.animate(fadeOut, options);
         dest.animate(fadeOut, options);
         
         // Update the DOM
-
-        let targetContent = getStrCpy(target.textContent);
-        let destContent = getStrCpy(dest.textContent);
         [target.textContent, dest.textContent] = [dest.textContent, target.textContent];
 
-        [text[targetIndex].textContent, text[destIndex].textContent] = [destContent, targetContent];
+        // Update text array
+        [text[targetIndex].textContent, text[destIndex].textContent] = [target.textContent, dest.textContent];
 
         target.animate(fadeIn, options);
         dest.animate(fadeIn, options);
-
-        // const target = document.getElementById(targetID).getBoundingClientRect();
-        // const dest = getDest(destID).getBoundingClientRect();
-
-        // selected[i].animate(
-        //     [
-        //         {  // from
-        //             left: target.left + "px",
-        //             top: target.top + "px",
-        //         },
-        //         {  // to
-        //             left: dest.left + "px",
-        //             top: dest.top + "px",
-        //         },
-        //     ],
-        //     {   // options 
-        //         easing: "ease-in-out",
-        //         duration: 1000,
-        //         delay: 10,
-        //         fill: "forwards",  // Animation should apply the final property values after it ends
-        //     },
-        // );
-
-        
-        // getDest(destID).animate(
-        //     [
-        //         {  // from
-        //             left: target.left + "px",
-        //             top: target.top + "px",
-        //         },
-        //         {  // to
-        //             left: dest.left + "px",
-        //             top: dest.top + "px",
-        //         },
-        //     ],
-        //     {   // options 
-        //         easing: "ease-in-out",
-        //         duration: 1000,
-        //         delay: 10,
-        //         fill: "forwards",  // Animation should apply the final property values after it ends
-        //     },
-        // );
     }
 }
 
