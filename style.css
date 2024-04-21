@@ -17,6 +17,7 @@ h2 {
 
 .word {
     display: flex;
+    position: relative;
     background: #d4d4d4;
     color: #5e5e5e;
     border-radius: 4vw;
@@ -28,10 +29,12 @@ h2 {
     text-align: center;
     justify-content: center;
     align-items: center;
-    justify-items: center;
     align-content: center;
     white-space: nowrap;
 }
+
+
+
 
 .word:hover {
     background: #b5b4b4;

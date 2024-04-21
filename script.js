@@ -1,49 +1,7 @@
-"use strict";
-
-// class Word {
-//     constructor() {
-//         this.selected = false;  // User selected this word
-//         this.done = false;      // Word has been put into a group
-//         // TODO tbh might not end up using done?
-//     }
-
-//     // TODO could just toggle based on if it elem.classList.contains("selected")...
-//     toggleSelection(elem) {
-//         console.log("hi")
-
-//         if (this.done) {
-//             return;
-//         }
-
-//         // The word has already been selected, so unselect it
-//         if (this.selected) {
-//             elem.classList.remove('selected');
-//         } else if (selectedWords.length < 4) {
-//             // Word was not already selected, so select it
-//             selectedWords.push(this);
-//             elem.classList.add('selected');
-//         } else {
-//             // Already have 4 selected, so can't select this word
-//             return;
-//         }
-        
-//         // Update selection state
-//         this.selected = !this.selected;   
-//     }
-
-//     /**
-//      * Make connection between @elem and this Word object
-//      * @param {Element} elem - HTML element to be associated with this Word object
-//      * @return nothing
-//      */
-//     attach(elem) {
-//         /*
-//          * Use anonymous function that takes no arguments and calls toggleSelection() 
-//          * on this instance of Word when @elem is clicked on
-//          */
-//         elem.addEventListener('click', () => this.toggleSelection(elem));
-//     }
-// }
+function deactivateDeselect() {
+    deselect.removeEventListener('click', deselectAll);
+    deselect.classList.add('unavailable');
+}
 
 function getNumSelected() {
     return document.getElementsByClassName("selected").length;
@@ -54,8 +12,7 @@ function toggleSelection(event) {
         event.currentTarget.classList.remove('selected');
 
         if (getNumSelected() == 0) {
-            deselect.removeEventListener('click', deselectAll);
-            deselect.classList.add('unavailable');
+            deactivateDeselect();
         }
     } else {
         if (getNumSelected() == 4) {
@@ -83,16 +40,14 @@ function toggleSelection(event) {
 const easy = new Set(["easy1", "easy2", "easy3", "easy4"]);
 const normal = new Set(["normal1", "normal2", "normal3", "normal4"]);
 const hard = new Set(["hard1", "hard2", "hard3", "hard4"]);
-const adv = new Set(["advanced1", "advanced2", "advanced3", "advanced4"]);
-
-const words = [];
-let text = document.getElementsByClassName("word");
+const adv = new Set(["adv1", "adv2", "adv3", "adv4"]);
+const text = document.getElementsByClassName("word");
 
 let numCategoriesDone = 0;
 const categories = {"easy": [easy, false], 
-                        "normal": [normal, false],
-                        "hard": [hard, false], 
-                        "adv": [adv, false]
+                    "normal": [normal, false],
+                    "hard": [hard, false], 
+                    "adv": [adv, false]
                     };
 
 initWords();
@@ -128,6 +83,7 @@ function shuffleUnused() {
 
     // While there are still unfinished categories
     while (count < 4 - numCategoriesDone) {
+        // TODO need to actually ensure you didn't pick the completed category by checking your global var
         const cat = pickRandCategory(copies);
 
         if (cat.size > 0) {
@@ -165,6 +121,106 @@ function deselectAll(event) {
     }
 }
 
+function getStrCpy(orig) {
+    let arr = [...orig];
+    let copy = "";
+
+    for (let i = 0; i < orig.length; i++) {
+        copy += arr[i];
+    }
+
+    return copy;
+}
+
+function swapWords() {
+    const selected = document.getElementsByClassName("selected");
+    // let stage = document.getElementsByClassName("stage");
+    // stage = stage[0].getBoundingClientRect();
+
+    const fadeOut = [{opacity: 1}, {opacity: 0},]; 
+    const fadeIn = [{opacity: 0}, {opacity: 1},];
+    const options = {   // options 
+        easing: "ease-in-out",
+        duration: 1000,
+        delay: 10,
+        fill: "forwards",  // Animation should apply the final property values after it ends
+    };
+    
+    // Swap the selected words with the words in the first unfinished row
+    for (let i = 0; i < selected.length; i++) {
+        console.log("iterating...")
+        const targetID = selected[i].id;  // Selected word's ID, something like "word-05"
+        const targetIndex = parseInt(targetID.slice(-2));  // Index in text array -- if "word-05", then index is 5
+
+        const destIndex = numCategoriesDone * 4 + i;  // Index in text array for dest word
+        const destID = "word-" + ((destIndex < 10) ? "0" + destIndex : destIndex);  // Dest word's ID
+
+        if (targetID == destID) {
+            continue;
+        }
+
+        let target = document.getElementById(targetID);
+        let dest = document.getElementById(destID);
+
+        target.animate(fadeOut, options);
+        dest.animate(fadeOut, options);
+        
+        // Update the DOM
+
+        let targetContent = getStrCpy(target.textContent);
+        let destContent = getStrCpy(dest.textContent);
+        [target.textContent, dest.textContent] = [dest.textContent, target.textContent];
+
+        [text[targetIndex].textContent, text[destIndex].textContent] = [destContent, targetContent];
+
+        target.animate(fadeIn, options);
+        dest.animate(fadeIn, options);
+
+        // const target = document.getElementById(targetID).getBoundingClientRect();
+        // const dest = getDest(destID).getBoundingClientRect();
+
+        // selected[i].animate(
+        //     [
+        //         {  // from
+        //             left: target.left + "px",
+        //             top: target.top + "px",
+        //         },
+        //         {  // to
+        //             left: dest.left + "px",
+        //             top: dest.top + "px",
+        //         },
+        //     ],
+        //     {   // options 
+        //         easing: "ease-in-out",
+        //         duration: 1000,
+        //         delay: 10,
+        //         fill: "forwards",  // Animation should apply the final property values after it ends
+        //     },
+        // );
+
+        
+        // getDest(destID).animate(
+        //     [
+        //         {  // from
+        //             left: target.left + "px",
+        //             top: target.top + "px",
+        //         },
+        //         {  // to
+        //             left: dest.left + "px",
+        //             top: dest.top + "px",
+        //         },
+        //     ],
+        //     {   // options 
+        //         easing: "ease-in-out",
+        //         duration: 1000,
+        //         delay: 10,
+        //         fill: "forwards",  // Animation should apply the final property values after it ends
+        //     },
+        // );
+    }
+}
+
+
 function checkAnswer() {
     console.log("check!")
     // TODO check if this combination has already been tried
@@ -193,6 +249,15 @@ function checkAnswer() {
 
     console.log("correct!")
     categories[cat][1] = true;
+    
+    
+    swapWords();
+    deactivateDeselect();
+
+    while (selected.length > 0) {
+        selected[0].classList.remove("selected");
+    }
+
     numCategoriesDone++;
 
     // TODO call a function to swap the selected items with the first incomplete row
