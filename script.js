@@ -73,17 +73,27 @@ function shuffleHelper(unusedWords, set) {
 }
 
 function pickRandCategory(copies) {
-    return copies[getRandomInt(4)];
+    return copies[getRandomInt(copies.length)];
 }
 
 function shuffleUnused() {
     const unusedWords = [];
-    const copies = [new Set(easy), new Set(normal), new Set(hard), new Set(adv)];
+
+    const copies = [];
+
+    // Only insert incomplete sets/categories -- those words are unused and should be shuffled
+    for (let cat in categories) {
+        // Category hasn't been completed, so push a copy of the corresponding set
+        if (!categories[cat][1]) {
+            copies.push(new Set(categories[cat][0]));
+        }
+    }
+
+    // const copies = [new Set(easy), new Set(normal), new Set(hard), new Set(adv)];
     let count = 0;
 
     // While there are still unfinished categories
     while (count < 4 - numCategoriesDone) {
-        // TODO need to actually ensure you didn't pick the completed category by checking your global var
         const cat = pickRandCategory(copies);
 
         if (cat.size > 0) {
@@ -209,8 +219,6 @@ function checkAnswer() {
     } else if (categories["adv"][0].has(selected[0].textContent)) {
         cat = "adv";
     }
-
-    console.log(cat);
 
     for (let i = 1; i < selected.length; i++) {
         // TODO write a function to make this if statement clearer
