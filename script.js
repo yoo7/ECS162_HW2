@@ -113,7 +113,6 @@ function initWords() {
 }
 
 function deselectAll(event) {
-    console.log("deselecting...")
     const selected = document.getElementsByClassName("selected");
 
     while (selected.length > 0) {
@@ -121,23 +120,7 @@ function deselectAll(event) {
     }
 }
 
-function getStrCpy(orig) {
-    let arr = [...orig];
-    let copy = "";
-
-    for (let i = 0; i < orig.length; i++) {
-        copy += arr[i];
-    }
-
-    return copy;
-}
-
-function swapWords() {
-    const selected = document.getElementsByClassName("selected");
-    // let stage = document.getElementsByClassName("stage");
-    // stage = stage[0].getBoundingClientRect();
-
-    const fadeOut = [{opacity: 1}, {opacity: 0},]; 
+const fadeOut = [{opacity: 1}, {opacity: 0},]; 
     const fadeIn = [{opacity: 0}, {opacity: 1},];
     const options = {   // options 
         easing: "ease-in-out",
@@ -145,10 +128,14 @@ function swapWords() {
         delay: 10,
         fill: "forwards",  // Animation should apply the final property values after it ends
     };
+
+function swapWords() {
+    const selected = document.getElementsByClassName("selected");
+
+    
     
     // Swap the selected words with the words in the first unfinished row
     for (let i = 0; i < selected.length; i++) {
-        console.log("iterating...")
         const targetID = selected[i].id;  // Selected word's ID, something like "word-05"
         const targetIndex = parseInt(targetID.slice(-2));  // Index in text array -- if "word-05", then index is 5
 
@@ -210,7 +197,6 @@ function swapWords() {
 
 
 function checkAnswer() {
-    console.log("check!")
     // TODO check if this combination has already been tried
     const selected = document.getElementsByClassName("selected");
 
@@ -235,9 +221,9 @@ function checkAnswer() {
         }
     }
 
+    // TODO, properly show the message
     console.log("correct!")
     categories[cat][1] = true;
-    
     
     swapWords();
     deactivateDeselect();
