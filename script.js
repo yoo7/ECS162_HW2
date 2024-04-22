@@ -3,6 +3,11 @@ function deactivateDeselect() {
     deselect.classList.add('unavailable');
 }
 
+function deactivateSubmit() {
+    submit.removeEventListener('click', checkAnswer);
+    submit.classList.add('unavailable');
+}
+
 function getNumSelected() {
     return document.getElementsByClassName("selected").length;
 }
@@ -33,7 +38,7 @@ function toggleSelection(event) {
         }
     }
 
-    submit.removeEventListener('click', checkAnswer);
+    deactivateSubmit();
 }
 
 // TODO update with the actual words
@@ -89,7 +94,7 @@ function shuffleUnused() {
         }
     }
 
-    // const copies = [new Set(easy), new Set(normal), new Set(hard), new Set(adv)];
+    // TODO const copies = [new Set(easy), new Set(normal), new Set(hard), new Set(adv)];
     let count = 0;
 
     // While there are still unfinished categories
@@ -135,15 +140,18 @@ const fadeOut = [{opacity: 1}, {opacity: 0},];
     const options = {   // options 
         easing: "ease-in-out",
         duration: 1000,
-        delay: 10,
+        delay: 150,
         fill: "forwards",  // Animation should apply the final property values after it ends
     };
 
-function swapWords() {
+function swapWords(cat) {
     const selected = document.getElementsByClassName("selected");
 
+    const destArr = [];
     
-    
+    console.log(numCategoriesDone);
+    console.log(cat);
+
     // Swap the selected words with the words in the first unfinished row
     for (let i = 0; i < selected.length; i++) {
         const targetID = selected[i].id;  // Selected word's ID, something like "word-05"
@@ -152,12 +160,15 @@ function swapWords() {
         const destIndex = numCategoriesDone * 4 + i;  // Index in text array for dest word
         const destID = "word-" + ((destIndex < 10) ? "0" + destIndex : destIndex);  // Dest word's ID
 
-        if (targetID == destID) {
-            continue;
-        }
 
         let target = document.getElementById(targetID);
         let dest = document.getElementById(destID);
+
+        destArr.push(dest);
+
+        if (targetID == destID) {
+            continue;
+        }
 
         // TODO transition to make each one actually move...
         // const targetRect = target.getBoundingClientRect();
@@ -194,15 +205,40 @@ function swapWords() {
         target.animate(fadeOut, options);
         dest.animate(fadeOut, options);
         
+        const offset = numCategoriesDone * 4;
+
         // Update the DOM
         [target.textContent, dest.textContent] = [dest.textContent, target.textContent];
 
         // Update text array
-        [text[targetIndex].textContent, text[destIndex].textContent] = [target.textContent, dest.textContent];
+        [text[targetIndex - offset].textContent, text[destIndex - offset].textContent] = [target.textContent, dest.textContent];
 
         target.animate(fadeIn, options);
         dest.animate(fadeIn, options);
     }
+
+    console.log("selected.length " + selected.length);
+    // Deselect everything
+    while (selected.length > 0) {
+        selected[0].classList.remove("selected");
+    }
+
+    deactivateDeselect();
+    deactivateSubmit();
+
+    // Remove from DOM
+    for (let i = destArr.length - 1; i > 0; i--) {
+        destArr[i].remove();
+    }
+
+    // One word left -- expand it out
+    let block = destArr[0];
+    block.classList.add("category");
+    block.classList.remove("word");
+
+    block.classList.add(cat);
+
+    // TODO modify the text for block
 }
 
 
@@ -220,6 +256,8 @@ function checkAnswer() {
         cat = "adv";
     }
 
+    console.log(cat);
+
     for (let i = 1; i < selected.length; i++) {
         // TODO write a function to make this if statement clearer
         if (!categories[cat][0].has(selected[i].textContent)) {
@@ -233,12 +271,15 @@ function checkAnswer() {
     console.log("correct!")
     categories[cat][1] = true;
     
-    swapWords();
-    deactivateDeselect();
+    swapWords(cat);
+    // TODO remove three of the selected
+    // TODO grab the remaining one, access its attributes like stretch or whatever
+    
+    // TODO let stage = document.getElementsByClassName("stage");
 
-    while (selected.length > 0) {
-        selected[0].classList.remove("selected");
-    }
+    
+
+    
 
     numCategoriesDone++;
 

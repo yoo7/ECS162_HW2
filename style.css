@@ -8,8 +8,9 @@ h2 {
     justify-items: center;
     align-content: center;
     align-items: center;
-    padding: 5vw;
+    padding: 1vw 0vw 0vw 0vw;
     row-gap: 1vw;
+    margin: auto;
     column-gap: 1vw;  /* TODO not sure why the columns are still further apart? */
     grid-template-columns: auto auto auto auto;
     grid-template-rows: auto auto auto auto;
@@ -19,13 +20,13 @@ h2 {
     display: flex;
     position: relative;
     background: #d4d4d4;
-    color: #5e5e5e;
-    border-radius: 4vw;
-    font-size: 3vw;
+    color: #3c3c3c;
+    border-radius: 1.5vw;
+    font-size: 1vw;
     padding: 0.5vw;
     margin: auto;
-    width: 12vw;
-    height: 12vw;
+    width: 5.5vw;
+    height: 5.5vw;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -33,27 +34,42 @@ h2 {
     white-space: nowrap;
 }
 
-
-
-
 .word:hover {
     background: #b5b4b4;
 }
 
+.category {
+    grid-column: 1 / span 4;  /* Make the square take up whole row */
+    display: flex;
+    position: relative;
+    color: #3c3c3c;
+    border-radius: 1.5vw;
+    font-size: 1vw;
+    padding: 0.5vw;
+    margin: auto;
+    width: 28vw;
+    height: 5.5vw;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    white-space: nowrap;
+}
+
 .easy {
-    background: #65cd68;
+    background: #f6db6e;
 }
 
 .normal {
-    background: #ffeb50;
+    background: #65cd68;
 }
 
 .hard {
-    background: #6dc5e4;
+    background: #86b2e3;
 }
 
-.advanced {
-    background: #c662df;
+.adv {
+    background: #b773d7;
 }
 
 .selected {
@@ -72,11 +88,12 @@ h2 {
 
 .btn {
     background: #c1e0c3ee;
-    border-radius: 4vw;
+    border-radius: 3vw;
     border: 0.1vw solid black;
     color: black;
+    font-size: 1vw;
     text-align: center;
-    padding: 3vw;
+    padding: 1.5vw;
     margin: 1.5vw;
 }
 
