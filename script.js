@@ -1,16 +1,17 @@
 function deactivateDeselect() {
-    deselect.removeEventListener('click', deselectAll);
-    deselect.classList.add('unavailable');
+    deselectBtn.removeEventListener('click', deselectAll);
+    deselectBtn.classList.add('unavailable');
 }
 
 function deactivateSubmit() {
-    submit.removeEventListener('click', checkAnswer);
-    submit.classList.add('unavailable');
+    submitBtn.removeEventListener('click', checkAnswer);
+    submitBtn.classList.add('unavailable');
 }
 
 function getNumSelected() {
     return document.getElementsByClassName("selected").length;
 }
+
 function toggleSelection(event) {
     // The word has already been selected, so unselect it
     if (event.currentTarget.classList.contains('selected')) {
@@ -28,12 +29,12 @@ function toggleSelection(event) {
         event.currentTarget.classList.add('selected');
 
         // TODO repeated code...maybe condense later
-        deselect.addEventListener('click', deselectAll);
-        deselect.classList.remove('unavailable');
+        deselectBtn.addEventListener('click', deselectAll);
+        deselectBtn.classList.remove('unavailable');
 
         if (getNumSelected() == 4) {
-            submit.addEventListener('click', checkAnswer);
-            submit.classList.remove('unavailable');
+            submitBtn.addEventListener('click', checkAnswer);
+            submitBtn.classList.remove('unavailable');
             return;
         }
     }
@@ -41,25 +42,36 @@ function toggleSelection(event) {
     deactivateSubmit();
 }
 
-// TODO update with the actual words
-const easy = new Set(["easy1", "easy2", "easy3", "easy4"]);
-const normal = new Set(["normal1", "normal2", "normal3", "normal4"]);
-const hard = new Set(["hard1", "hard2", "hard3", "hard4"]);
-const adv = new Set(["adv1", "adv2", "adv3", "adv4"]);
-const text = document.getElementsByClassName("word");
+const puzzle0 = {
+                    "easy": ["MOSHI", new Set(["easy1", "easy2", "easy3", "easy4"])],
+                    "normal": ["MOSHI!!!", new Set(["normal1", "normal2", "normal3", "normal4"])],
+                    "hard": ["JESUS", new Set(["hard1", "hard2", "hard3", "hard4"])],
+                    "adv": ["DESU", new Set(["adv1", "adv2", "adv3", "adv4"])]
+                };
 
-let numCategoriesDone = 0;
+const puzzles = [puzzle0];
+
+// TODO update with the actual words
+const easy = puzzles[0]["easy"][1];
+const normal = puzzles[0]["normal"][1];
+const hard = puzzles[0]["hard"][1];
+const adv = puzzles[0]["adv"][1];
+
 const categories = {"easy": [easy, false], 
                     "normal": [normal, false],
                     "hard": [hard, false], 
-                    "adv": [adv, false]
+                    "adv": [adv, false],
                     };
+
+const text = document.getElementsByClassName("word");
+
+let numCategoriesDone = 0;
 
 initWords();
 
-let shuffle = document.getElementById("shuffle");
-let deselect = document.getElementById("deselect");
-let submit = document.getElementById("submit");
+let shuffleBtn = document.getElementById("shuffle");
+let deselectBtn = document.getElementById("deselect");
+let submitBtn = document.getElementById("submit");
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
@@ -81,28 +93,33 @@ function pickRandCategory(copies) {
     return copies[getRandomInt(copies.length)];
 }
 
-function shuffleUnused() {
+function getUnusedWords() {
     const unusedWords = [];
-
-    const copies = [];
 
     // Only insert incomplete sets/categories -- those words are unused and should be shuffled
     for (let cat in categories) {
         // Category hasn't been completed, so push a copy of the corresponding set
         if (!categories[cat][1]) {
-            copies.push(new Set(categories[cat][0]));
+            unusedWords.push(new Set(categories[cat][0]));
         }
     }
+
+    return unusedWords;
+}
+
+function shuffleUnused() {
+    const shuffledWords = [];
+    const unusedWords = getUnusedWords();
 
     // TODO const copies = [new Set(easy), new Set(normal), new Set(hard), new Set(adv)];
     let count = 0;
 
     // While there are still unfinished categories
     while (count < 4 - numCategoriesDone) {
-        const cat = pickRandCategory(copies);
+        const cat = pickRandCategory(unusedWords);
 
         if (cat.size > 0) {
-            shuffleHelper(unusedWords, cat);
+            shuffleHelper(shuffledWords, cat);
 
             // Finished taking words from this unfinished category
             if (cat.size == 0) {
@@ -111,23 +128,24 @@ function shuffleUnused() {
         }   
     }
 
-    return unusedWords;
+    return shuffledWords;
 }
 
+function shuffle() {
+    initWords();
+    deselectAll();
+}
 
 function initWords() {
     const unusedWords = shuffleUnused();
 
     for (let i = 0, j = numCategoriesDone * 4; i < unusedWords.length; i++, j++) {
-        //let word = new Word();
         text[j].textContent = unusedWords[i];  // Overwrite the default text for the word
         text[j].addEventListener('click', toggleSelection);
-        //word.attach(text[i]);
-        //words.push(word);
-     }
+    }
 }
 
-function deselectAll(event) {
+function deselectAll() {
     const selected = document.getElementsByClassName("selected");
 
     while (selected.length > 0) {
@@ -135,31 +153,56 @@ function deselectAll(event) {
     }
 }
 
-const fadeOut = [{opacity: 1}, {opacity: 0},]; 
-    const fadeIn = [{opacity: 0}, {opacity: 1},];
-    const options = {   // options 
-        easing: "ease-in-out",
-        duration: 1000,
-        delay: 150,
-        fill: "forwards",  // Animation should apply the final property values after it ends
-    };
+const fadeIn = [{opacity: 0}, {opacity: 1, offset: 0.7}, {opacity: 1, offset: 1}];
+const fadeOut = [{opacity: 1}, {opacity: 0.7, offset: 0.3}, {opacity: 0, offset: 1},]; 
+const fadeInAndOut = [{opacity: 0}, {opacity: 1, offset: 0.05}, {opacity: 1, offset: 0.9}, {opacity: 0, offset: 1}];
+
+const options = {
+    easing: "ease-in-out",
+    duration: 1000,
+    delay: 0,
+    endDelay: 300,
+    fill: "forwards",  // Animation should apply the final property values after it ends
+};
+
+// Options specifically for the words/categories
+const wordCatOptions = {
+    easing: "ease-in-out",
+    duration: 2000,
+    delay: 0,
+    endDelay: 0,
+    fill: "forwards",
+}
+
+function displayMsg(str) {
+    let msg = document.getElementById("msg");
+
+    msg.textContent = str;
+    msg.animate(fadeInAndOut,
+                {
+                    easing: "ease-in-out",
+                    duration: 2500,
+                });
+}
+
 
 function swapWords(cat) {
     const selected = document.getElementsByClassName("selected");
 
     const destArr = [];
-    
-    console.log(numCategoriesDone);
-    console.log(cat);
+
+    let temp = document.getElementsByClassName("word");
+
 
     // Swap the selected words with the words in the first unfinished row
     for (let i = 0; i < selected.length; i++) {
+        const offset = numCategoriesDone * 4;
+
         const targetID = selected[i].id;  // Selected word's ID, something like "word-05"
         const targetIndex = parseInt(targetID.slice(-2));  // Index in text array -- if "word-05", then index is 5
 
         const destIndex = numCategoriesDone * 4 + i;  // Index in text array for dest word
         const destID = "word-" + ((destIndex < 10) ? "0" + destIndex : destIndex);  // Dest word's ID
-
 
         let target = document.getElementById(targetID);
         let dest = document.getElementById(destID);
@@ -170,125 +213,206 @@ function swapWords(cat) {
             continue;
         }
 
-        // TODO transition to make each one actually move...
-        // const targetRect = target.getBoundingClientRect();
-        // const destRect = dest.getBoundingClientRect();
+        target.animate(fadeOut, wordCatOptions);
+        dest.animate(fadeOut, wordCatOptions);
 
-        // target.animate(
-        //     [
-        //         {  // from
-        //             left: targetRect.left + "px",
-        //             top: targetRect.top + "px",
-        //         },
-        //         {  // to
-        //             left: destRect.left + "px",
-        //             top: destRect.top + "px",
-        //         },
-        //     ],
-        //     options,
-        // );
-
-        // dest.animate(
-        //     [
-        //         {  // from
-        //             left: destRect.left + "px",
-        //             top: destRect.top + "px",
-        //         },
-        //         {  // to
-        //             left: targetRect.left + "px",
-        //             top: targetRect.top + "px",
-        //         },
-        //     ],
-        //     options,
-        // );
-
-        target.animate(fadeOut, options);
-        dest.animate(fadeOut, options);
-        
-        const offset = numCategoriesDone * 4;
-
-        // Update the DOM
+        // Update the DOM (swap the content)
         [target.textContent, dest.textContent] = [dest.textContent, target.textContent];
 
-        // Update text array
+        // Update text array (swap the content)
         [text[targetIndex - offset].textContent, text[destIndex - offset].textContent] = [target.textContent, dest.textContent];
 
-        target.animate(fadeIn, options);
-        dest.animate(fadeIn, options);
+        target.animate(fadeIn, wordCatOptions);
+        dest.animate(fadeIn, wordCatOptions);
     }
 
-    console.log("selected.length " + selected.length);
-    // Deselect everything
-    while (selected.length > 0) {
-        selected[0].classList.remove("selected");
-    }
-
+    deselectAll();
     deactivateDeselect();
     deactivateSubmit();
 
-    // Remove from DOM
+    // Remove the other elements in this category from DOM
     for (let i = destArr.length - 1; i > 0; i--) {
         destArr[i].remove();
     }
 
-    // One word left -- expand it out
+    // One word left -- expand it out into one wide rectangle to turn it into a category block
     let block = destArr[0];
     block.classList.add("category");
     block.classList.remove("word");
+    block.classList.add(cat);  // Show the category color
 
-    block.classList.add(cat);
+    // TODO change to currPuzzle or whatever
+    let catText = puzzles[0][cat][0] + "\r\n";
 
-    // TODO modify the text for block
+    for (const word of puzzles[0][cat][1]) {
+        catText += word;
+    }
+
+    block.textContent = catText;
+    
+    block.style.visibility = "none";
+    block.animate(fadeIn, wordCatOptions);
+}
+
+function cleanup() {
+    shuffleBtn.removeEventListener('click', () => {initWords(); deselectAll();});
+    shuffleBtn.classList.add("unavailable");
+    // Disabling the other buttons and deselecting everything is implicitly done when revealAnswers calls swapWords
 }
 
 
-function checkAnswer() {
-    // TODO check if this combination has already been tried
-    const selected = document.getElementsByClassName("selected");
+function revealAnswers() {
+    // Clear whatever words are already selected by the user
+    deselectAll();
 
-    let cat = "easy";
+    let numSelected = 0;
 
-    if (categories["normal"][0].has(selected[0].textContent)) {
-        cat = "normal";
-    } else if (categories["hard"][0].has(selected[0].textContent)) {
-        cat = "hard";
-    } else if (categories["adv"][0].has(selected[0].textContent)) {
-        cat = "adv";
+    for (let cat in categories) {
+        // Reveal answers for the categories in order of increasing difficulty
+        if (categories[cat][1]) {
+            continue;
+        }
+
+        // Search for the words in this category
+        let words = document.getElementsByClassName("word");
+
+        for (const word of words) {
+            // If the current word is in the category
+            if (categories[cat][0].has(word.textContent)) {
+                word.classList.add("selected");
+                numSelected++;
+            }
+
+            // Stop early, found the four words we needed
+            if (numSelected == 4) {
+                break;
+            }
+        }
+
+        // Reveal this category
+        swapWords(cat);
+        categories[cat][1] = true;
+        numCategoriesDone++;
+        numSelected = 0;  // Reset
     }
+}
 
-    console.log(cat);
+let numTriesRemaining = 4;
+const guesses = [];
 
-    for (let i = 1; i < selected.length; i++) {
-        // TODO write a function to make this if statement clearer
-        if (!categories[cat][0].has(selected[i].textContent)) {
-            // TODO properly display message on screen that it's wrong, probably animation frame for fade in and out
-            console.log("wrong...")
-            return;
+function isDupGuess(guess) {
+    let numWordsMatched = 0;
+
+    for (prevGuess of guesses) {
+        for (const word of prevGuess) {
+            if (!guess.has(word)) {
+                numWordsMatched = 0;  // Reset
+                break;
+            }
+
+            numWordsMatched++;
+        }
+
+        if (numWordsMatched == 4) {
+            return true;
         }
     }
 
-    // TODO, properly show the message
-    console.log("correct!")
+    return false;
+}
+
+function catContainsWord(cat, word) {
+    return categories[cat][0].has(word);
+}
+
+function countWordsPerCat(selected) {
+    const wordCount = {};
+
+    for (let i = 0; i < selected.length; i++) {
+        for (const cat of Object.keys(categories)) {
+            if (catContainsWord(cat, selected[i].textContent)) {
+                if (!(cat in Object.keys(wordCount))) {
+                    wordCount[cat] = 0;
+                }
+
+                wordCount[cat]++;
+
+                /* 
+                 * Figured out which category this word belongs to
+                 * so move on to the next word!
+                 */
+                break;
+            }
+        }
+    }
+
+    return wordCount;
+}
+
+function initGuess(selected) {
+    let guess = new Set();
+
+    for (let i = 0; i < selected.length; i++) {
+        guess.add(selected[i].textContent);
+    }
+
+    return guess;
+}
+
+function checkAnswer() {
+    const selected = document.getElementsByClassName("selected");
+    
+    const guess = initGuess(selected);
+
+    if (isDupGuess(guess)) {
+        displayMsg("Already guessed that!");
+        return;
+    }
+
+    const wordCount = countWordsPerCat(selected);
+
+    // TODO can make this a function
+    // Guess is wrong
+    const keys = Object.keys(wordCount);
+
+    if (keys.length != 1) {
+        guesses.push(guess);  // Add this new guess to the history
+
+        if (keys.length == 2 && wordCount[keys[0]] != 2) {
+            displayMsg("One away...");
+        } else {
+            displayMsg("Incorrect");
+        }
+        
+        document.getElementById("circle" + numTriesRemaining).animate(fadeOut, options);
+        numTriesRemaining--;
+        
+        if (numTriesRemaining == 0) {
+            displayMsg("No more tries...");
+            revealAnswers();
+            cleanup();
+        }
+
+        return;
+    }
+
+    // TODO can make this a function
+    const cat = keys[0];
+    displayMsg("Nice!");
     categories[cat][1] = true;
     
     swapWords(cat);
-    // TODO remove three of the selected
-    // TODO grab the remaining one, access its attributes like stretch or whatever
-    
-    // TODO let stage = document.getElementsByClassName("stage");
-
-    
-
-    
 
     numCategoriesDone++;
 
-    // TODO call a function to swap the selected items with the first incomplete row
-    // then merge (delete all 4 and replace with a new box? css style class) into a big box, then reformat its text?
+    if (numCategoriesDone == 4) {
+        displayMsg("Congratulations!");
+        cleanup();
+    }
 }
 
-// TODO gray out and deactivate when game is over or won
-// TODO display how many tries you have left...also like "one away" (need to adjust check function)
-shuffle.addEventListener('click', () => {initWords(); deselectAll();});
-deselect.classList.add('unavailable');
-submit.classList.add('unavailable');
+// TODO: Another function we can add is allowing user to restart the same puzzle or try a diff puzzle (tho might get unlikely and get the same one?)
+
+shuffleBtn.addEventListener('click', shuffle);
+deselectBtn.classList.add('unavailable');
+submitBtn.classList.add('unavailable');
