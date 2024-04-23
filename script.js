@@ -83,7 +83,6 @@ let shuffleBtn = document.getElementById("shuffle");
 let deselectBtn = document.getElementById("deselect");
 let submitBtn = document.getElementById("submit");
 
-// TODO: Another function we can add is allowing user to restart the same puzzle or try a diff puzzle (tho might get unlikely and get the same one?)
 shuffleBtn.addEventListener('click', shuffle);
 deselectBtn.classList.add('unavailable');
 submitBtn.classList.add('unavailable');
@@ -101,13 +100,19 @@ function deactivateDeselect() {
     deselectBtn.classList.add('unavailable');
 }
 
+function activateDeselect() {
+    deselectBtn.addEventListener('click', deselectAll);
+    deselectBtn.classList.remove('unavailable');
+}
+
 function deactivateSubmit() {
     submitBtn.removeEventListener('click', checkAnswer);
     submitBtn.classList.add('unavailable');
 }
 
-function getNumSelected() {
-    return document.getElementsByClassName("selected").length;
+function activateSubmit() {
+    submitBtn.addEventListener('click', checkAnswer);
+    submitBtn.classList.remove('unavailable');
 }
 
 function toggleSelection(event) {
@@ -115,28 +120,30 @@ function toggleSelection(event) {
         return;
     }
 
-    // The word has already been selected, so unselect it
+    const selected = document.getElementsByClassName("selected");
+
+    // The word is already selected, so unselect it
     if (event.currentTarget.classList.contains('selected')) {
         event.currentTarget.classList.remove('selected');
 
-        if (getNumSelected() == 0) {
+        if (selected.length === 0) {
             deactivateDeselect();
         }
     } else {
-        if (getNumSelected() == 4) {
+        // Some unselected word, but we've already selected maxSelected number of words
+        if (selected.length === maxSelected) {
+            // Can't select more, so immediately return
             return;
         }
 
         // Word was not already selected, so select it
         event.currentTarget.classList.add('selected');
 
-        // TODO repeated code...maybe condense later
-        deselectBtn.addEventListener('click', deselectAll);
-        deselectBtn.classList.remove('unavailable');
+        activateDeselect();
 
-        if (getNumSelected() == 4) {
-            submitBtn.addEventListener('click', checkAnswer);
-            submitBtn.classList.remove('unavailable');
+        // Selected the correct amount to be able to submit the guess, so active the Submit button
+        if (selected.length === maxSelected) {
+            activateSubmit();
             return;
         }
     }
@@ -244,6 +251,42 @@ function initGuess(selected) {
     return guess;
 }
 
+function wrongGuess(guess, keys) {
+    guesses.push(guess);  // Add this new guess to the history
+
+    if (keys.length == 2 && wordCount[keys[0]] != 2) {
+        displayMsg("One away...");
+    } else {
+        displayMsg("Incorrect");
+    }
+    
+    document.getElementById("circle" + numTriesRemaining).animate(fadeOut, options);
+    numTriesRemaining--;
+    
+    if (numTriesRemaining == 0) {
+        displayMsg("No more tries...");
+        revealAnswers();
+        cleanup();
+    }
+
+    return;
+}
+
+function correctGuess(cat, keys) {
+    const cat = keys[0];
+    categories[cat][1] = true;
+    
+    displayMsg("Nice!");
+    revealCategory(cat);
+
+    numCategoriesDone++;
+
+    if (numCategoriesDone == maxCategories) {
+        displayMsg("Congratulations!");
+        cleanup();
+    }
+}
+
 function checkAnswer() {
     const selected = document.getElementsByClassName("selected");
     
@@ -256,44 +299,13 @@ function checkAnswer() {
 
     const wordCount = countWordsPerCat(selected);
 
-    // TODO can make this a function
-
     // Guess is wrong
     const keys = Object.keys(wordCount);
 
     if (keys.length != 1) {
-        guesses.push(guess);  // Add this new guess to the history
-
-        if (keys.length == 2 && wordCount[keys[0]] != 2) {
-            displayMsg("One away...");
-        } else {
-            displayMsg("Incorrect");
-        }
-        
-        document.getElementById("circle" + numTriesRemaining).animate(fadeOut, options);
-        numTriesRemaining--;
-        
-        if (numTriesRemaining == 0) {
-            displayMsg("No more tries...");
-            revealAnswers();
-            cleanup();
-        }
-
-        return;
-    }
-
-    // TODO can make this a function
-    const cat = keys[0];
-    displayMsg("Nice!");
-    categories[cat][1] = true;
-    
-    revealCategory(cat);
-
-    numCategoriesDone++;
-
-    if (numCategoriesDone == maxCategories) {
-        displayMsg("Congratulations!");
-        cleanup();
+        wrongGuess(guess, keys);
+    } else {
+        correctGuess(cat, keys);
     }
 }
 
@@ -337,7 +349,7 @@ function revealCategory(cat) {
         dest.animate(fadeIn, wordCatOptions);
     }
 
-    // Actually set up category
+    // Actually set up and display category
     setupCategory(destArr, cat);
 }
 
