@@ -2,22 +2,44 @@ const maxSelected = 4;
 const maxCategories = 4;
 let numCategoriesDone = 0;
 
-const puzzle0 = {
+const puzzles = [
+                {   // Puzzle 0
                     "easy": ["K-POP GROUPS", new Set(["SEVENTEEN", "TWICE", "RED VELVET", "BTS"])],
                     "normal": ["SHADES OF RED", new Set(["RUBY", "ROSE", "BLOOD", "STRAWBERRY"])],
                     "hard": ["MAJOR ARCANA", new Set(["EMPRESS", "JUSTICE", "SUN", "MAGICIAN"])],
-                    "adv": ["PRINCESS __________", new Set(["PEACH", "BUBBLEGUM", "AURORA", "JASMINE"])]
-                };
+                    "adv": ["PRINCESS __________", new Set(["PEACH", "BUBBLEGUM", "POPPY", "JASMINE"])]
+                },
 
-const puzzle1 = {
-                    "easy": ["easy", new Set(["easy1", "easy2", "easy3", "easy4"])],
-                    "normal": ["normal", new Set(["normal1", "normal2", "normal3", "normal4"])],
-                    "hard": ["hard", new Set(["hard1", "hard2", "hard3", "hard4"])],
-                    "adv": ["adv", new Set(["adv1", "adv2", "adv3", "adv4"])]
-                };
+                {   // Puzzle 1
+                    "easy": ["SLANG", new Set(["DISS", "SLAY", "CAP", "DIP"])],
+                    "normal": ["CAMPING TRIP", new Set(["HIKE", "FIRE", "FLASHLIGHT", "ROAST"])],
+                    "hard": ["STAR __________", new Set(["STRUCK", "TREK", "DUST", "CROSSED"])],
+                    "adv": ["COMPUTER PROGRAM TERMS", new Set(["RUN", "COMMENT", "INTERRUPT", "REAPER"])]
+                },
 
-const puzzles = [puzzle0, puzzle1];
+                {   // Puzzle 2
+                    "easy": ["DRIVING GEARS", new Set(["PARK", "REVERSE", "DRIVE", "NEUTRAL"])],
+                    "normal": ["WENT WRONG", new Set(["SOUTH", "DECLINE", "UGLY", "AWRY"])],
+                    "hard": ["NOT STANDING OUT", new Set(["PASSIVE", "SAFE", "COMMON", "EVEN"])],
+                    "adv": ["WILD __________", new Set(["WEST", "FLOWER", "FIRE", "CARD"])]
+                },
 
+                {   // Puzzle 3
+                    "easy": ["AFFECTIONATE NICKNAMES", new Set(["BUTTERCUP", "PUMPKIN", "HONEY BUN", "MUFFIN"])],
+                    "normal": ["GROW", new Set(["EXPAND", "SNOWBALL", "BLOSSOM", "BALLOON"])],
+                    "hard": ["THINGS IN A SPA", new Set(["CUCUMBER", "STEAM", "MUD", "BUBBLES"])],
+                    "adv": ["FOOD PUNS", new Set(["ORANGE", "LETTUCE", "JAM", "LATTE"])]
+                },
+
+                {   // Puzzle 4
+                    "easy": ["DATE IDEAS", new Set(["SUNSET", "BEACH", "DINNER", "MOVIE"])],
+                    "normal": ["HISTORICAL ARTIFACTS", new Set(["VASE", "TOOL", "RECORD", "CLOTHES"])],
+                    "hard": ["CASH CROPS", new Set(["RUBBER", "COTTON", "TEA", "CACAO"])],
+                    "adv": ["RHYMING WITH BIBLICAL NAMES", new Set(["MAUL", "FABLE", "CANE", "FAIRY"])]
+                },
+            ];
+
+// Pick a random puzzle
 const puzzleIdx = getRandomInt(puzzles.length);
 
 const easy = puzzles[puzzleIdx]["easy"][1];
