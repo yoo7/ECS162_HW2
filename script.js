@@ -4,7 +4,7 @@ let numCategoriesDone = 0;
 
 const puzzle0 = {
                     "easy": ["K-POP GROUPS", new Set(["SEVENTEEN", "TWICE", "RED VELVET", "BTS"])],
-                    "normal": ["THINGS THAT ARE RED", new Set(["RUBY", "ROSE", "BLOOD", "STRAWBERRY"])],
+                    "normal": ["SHADES OF RED", new Set(["RUBY", "ROSE", "BLOOD", "STRAWBERRY"])],
                     "hard": ["MAJOR ARCANA", new Set(["EMPRESS", "JUSTICE", "SUN", "MAGICIAN"])],
                     "adv": ["PRINCESS __________", new Set(["PEACH", "BUBBLEGUM", "AURORA", "JASMINE"])]
                 };
@@ -89,6 +89,10 @@ function getNumSelected() {
 }
 
 function toggleSelection(event) {
+    if (event.currentTarget.classList.contains('category')) {
+        return;
+    }
+
     // The word has already been selected, so unselect it
     if (event.currentTarget.classList.contains('selected')) {
         event.currentTarget.classList.remove('selected');
@@ -370,8 +374,6 @@ function selectCorrectWords(words, cat) {
 function revealAnswers() {
     // Clear whatever words are already selected by the user
     deselectAll();
-
-    
 
     for (let cat in categories) {
         // Reveal answers for the categories in order of increasing difficulty
