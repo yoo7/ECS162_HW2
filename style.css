@@ -1,8 +1,50 @@
+/* Styling for general website appearance and managing pages */
+.hiddenPage {
+    display: none;
+}
+
+h1 {
+    text-align: center;
+}
+
 h2 {
     text-align: center;
     margin: 3vw auto 1vw auto;
 }
 
+nav {
+    width: 100%;
+    padding: 2vw;
+    color: #98c0ecee;
+    background-color: #2a343eee;
+}
+
+nav li {
+    display: inline;  /* Display list items on the same line */
+}
+
+nav li a {
+    text-align: center;
+    color: #98c0ecee;
+    text-decoration: none;
+    padding: 2vw;
+    font-size: 2vw;
+}
+
+a:hover {
+    background-color: #506376ee;
+}
+
+.activeNav {
+    color: #506376ee;
+    background-color: #98c0ecee;
+}
+
+.activeNav:hover {
+    background-color:rgba(104, 129, 153, 0.933)e;
+}
+
+/* Styling for Connections */
 .stage {
     display: grid;
     justify-content: center;
