@@ -11,15 +11,15 @@ const puzzles = [
                 },
 
                 {   // Puzzle 1
-                    "easy": ["SLANG", new Set(["DISS", "SLAY", "CAP", "DIP"])],
-                    "normal": ["CAMPING TRIP", new Set(["HIKE", "FIRE", "FLASHLIGHT", "ROAST"])],
+                    "easy": ["SLANG", new Set(["DISS", "SLAY", "CAP", "DRIP"])],
+                    "normal": ["CAMPING TRIP", new Set(["HIKE", "BONFIRE", "FLASHLIGHT", "ROAST"])],
                     "hard": ["STAR __________", new Set(["STRUCK", "TREK", "DUST", "CROSSED"])],
-                    "adv": ["COMPUTER PROGRAM TERMS", new Set(["RUN", "COMMENT", "INTERRUPT", "REAPER"])]
+                    "adv": ["COMPUTER PROGRAM TERMS", new Set(["RUN", "COMMENT", "INTERRUPT", "TEST"])]
                 },
 
                 {   // Puzzle 2
                     "easy": ["DRIVING GEARS", new Set(["PARK", "REVERSE", "DRIVE", "NEUTRAL"])],
-                    "normal": ["WENT WRONG", new Set(["SOUTH", "DECLINE", "UGLY", "AWRY"])],
+                    "normal": ["GONE WRONG", new Set(["SOUTH", "ASTRAY", "UGLY", "AWRY"])],
                     "hard": ["NOT STANDING OUT", new Set(["PASSIVE", "SAFE", "COMMON", "EVEN"])],
                     "adv": ["WILD __________", new Set(["WEST", "FLOWER", "FIRE", "CARD"])]
                 },
@@ -33,7 +33,7 @@ const puzzles = [
 
                 {   // Puzzle 4
                     "easy": ["DATE IDEAS", new Set(["SUNSET", "BEACH", "DINNER", "MOVIE"])],
-                    "normal": ["HISTORICAL ARTIFACTS", new Set(["VASE", "TOOL", "RECORD", "CLOTHES"])],
+                    "normal": ["HISTORICAL ARTIFACTS", new Set(["VASE", "WEAPON", "DOCUMENT", "TABLET"])],
                     "hard": ["CASH CROPS", new Set(["RUBBER", "COTTON", "TEA", "CACAO"])],
                     "adv": ["RHYMING WITH BIBLICAL NAMES", new Set(["MAUL", "FABLE", "CANE", "FAIRY"])]
                 },
@@ -41,18 +41,14 @@ const puzzles = [
 
 let puzzleIdx = 0;
 
-const easy = puzzles[puzzleIdx]["easy"][1];
-const normal = puzzles[puzzleIdx]["normal"][1];
-const hard = puzzles[puzzleIdx]["hard"][1];
-const adv = puzzles[puzzleIdx]["adv"][1];
+let easy = [];
+let normal = [];
+let hard = [];
+let adv = [];
 
-const categories = {"easy": [easy, false], 
-                    "normal": [normal, false],
-                    "hard": [hard, false], 
-                    "adv": [adv, false],
-                    };
+let categories = {};
 
-const text = document.getElementsByClassName("word");
+let text = document.getElementsByClassName("word");
 
 const fadeIn = [{opacity: 0}, {opacity: 1, offset: 0.7}, {opacity: 1, offset: 1}];
 const fadeOut = [{opacity: 1}, {opacity: 0.7, offset: 0.3}, {opacity: 0, offset: 1},]; 
@@ -76,15 +72,11 @@ const wordCatOptions = {
 }
 
 let numTriesRemaining = 4;
-const guesses = [];
+let guesses = [];
 
 let shuffleBtn = document.getElementById("shuffle");
 let deselectBtn = document.getElementById("deselect");
 let submitBtn = document.getElementById("submit");
-
-shuffleBtn.addEventListener('click', shuffle);
-deselectBtn.classList.add('unavailable');
-submitBtn.classList.add('unavailable');
 
 function deselectAll() {
     const selected = document.getElementsByClassName("selected");
@@ -150,80 +142,20 @@ function toggleSelection(event) {
     deactivateSubmit();
 }
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
-
-function shuffleHelper(unusedWords, set) {
-    if (set.size > 0) {
-        const i = getRandomInt(set.size);
-        const arr = Array.from(set);
-
-        unusedWords.push(arr[i]);
-
-        // Remove 1 item starting at the index (i.e., remove just that elem)
-        set.delete(arr[i]);
-    }
-}
-
-function pickRandCategory(copies) {
-    return copies[getRandomInt(copies.length)];
-}
-
-function getUnusedWords() {
-    const unusedWords = [];
-
-    // Only insert incomplete sets/categories -- those words are unused and should be shuffled
-    for (let cat in categories) {
-        // Category hasn't been completed, so push a copy of the corresponding set
-        if (!categories[cat][1]) {
-            unusedWords.push(new Set(categories[cat][0]));
-        }
-    }
-
-    return unusedWords;
-}
-
-function shuffleUnused() {
-    const shuffledWords = [];
-    const unusedWords = getUnusedWords();
-
-    let count = 0;
-
-    // While there are still unfinished categories
-    while (count < maxCategories - numCategoriesDone) {
-        const cat = pickRandCategory(unusedWords);
-
-        if (cat.size > 0) {
-            shuffleHelper(shuffledWords, cat);
-
-            // Finished taking words from this unfinished category
-            if (cat.size == 0) {
-                count++;
-            }
-        }   
-    }
-
-    return shuffledWords;
-}
-
-function shuffle() {
-    initWords();
-    deselectAll();
-}
-
 function catContainsWord(cat, word) {
     return categories[cat][0].has(word);
 }
 
 function countWordsPerCat(selected) {
     const wordCount = {};
+    let catKeys = Object.keys(categories);
+
 
     for (let i = 0; i < selected.length; i++) {
-        for (const cat of Object.keys(categories)) {
+        for (const cat of catKeys) {
             if (catContainsWord(cat, selected[i].textContent)) {
-                if (!(cat in Object.keys(wordCount))) {
-                    wordCount[cat] = 0;
+                if (!(cat in wordCount)) {
+                    wordCount[cat] = 0;  // Initialize to 0
                 }
 
                 wordCount[cat]++;
@@ -250,7 +182,7 @@ function initGuess(selected) {
     return guess;
 }
 
-function wrongGuess(guess, keys) {
+function wrongGuess(guess, wordCount, keys) {
     guesses.push(guess);  // Add this new guess to the history
 
     if (keys.length == 2 && wordCount[keys[0]] != 2) {
@@ -297,12 +229,10 @@ function checkAnswer() {
     }
 
     const wordCount = countWordsPerCat(selected);
-
-    // Guess is wrong
     const keys = Object.keys(wordCount);
 
-    if (keys.length != 1) {
-        wrongGuess(guess, keys);
+    if (keys.length > 1) {
+        wrongGuess(guess, wordCount, keys);
     } else {
         correctGuess(keys);
     }
@@ -464,7 +394,69 @@ function displayMsg(str) {
                 });
 }
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+function shuffleHelper(unusedWords, set) {
+    if (set.size > 0) {
+        const i = getRandomInt(set.size);
+        const arr = Array.from(set);
+
+        unusedWords.push(arr[i]);
+
+        // Remove 1 item starting at the index (i.e., remove just that elem)
+        set.delete(arr[i]);
+    }
+}
+
+function pickRandCategory(copies) {
+    return copies[getRandomInt(copies.length)];
+}
+
+function getUnusedWords() {
+    const unusedWords = [];
+
+    // Only insert incomplete sets/categories -- those words are unused and should be shuffled
+    for (let cat in categories) {
+        // Category hasn't been completed, so push a copy of the corresponding set
+        if (!categories[cat][1]) {
+            unusedWords.push(new Set(categories[cat][0]));
+        }
+    }
+
+    return unusedWords;
+}
+
+function shuffleUnused() {
+    const shuffledWords = [];
+    const unusedWords = getUnusedWords();
+
+    let count = 0;
+
+    // While there are still unfinished categories
+    while (count < maxCategories - numCategoriesDone) {
+        const cat = pickRandCategory(unusedWords);
+
+        if (cat.size > 0) {
+            shuffleHelper(shuffledWords, cat);
+
+            // Finished taking words from this unfinished category
+            if (cat.size == 0) {
+                count++;
+            }
+        }   
+    }
+
+    return shuffledWords;
+}
+
+function shuffle() {
+    initWords();
+}
+
 function initWords() {
+    deselectAll();
     const unusedWords = shuffleUnused();
 
     for (let i = 0, j = numCategoriesDone * maxSelected; i < unusedWords.length; i++, j++) {
@@ -473,8 +465,49 @@ function initWords() {
     }
 }
 
-// Pick a random puzzle
-function startConnections() {
+function redrawCircles() {
+    const quickAppear = [{opacity: 0}, {opacity: 1, offset: 0.00001}, {opacity: 1, offset: 1}];
+    const quickOptions = {duration: 0.01, fill: "forwards"};
+
+    while (numTriesRemaining < 4) {
+        document.getElementById("circle" + (numTriesRemaining + 1)).animate(quickAppear, quickOptions);
+        numTriesRemaining++;
+    }
+}
+
+function setup() {
+    // Pick a random puzzle
     puzzleIdx = getRandomInt(puzzles.length);
+
+    easy = puzzles[puzzleIdx]["easy"][1];
+    normal = puzzles[puzzleIdx]["normal"][1];
+    hard = puzzles[puzzleIdx]["hard"][1];
+    adv = puzzles[puzzleIdx]["adv"][1];
+
+    categories = {"easy": [easy, false], 
+                    "normal": [normal, false],
+                    "hard": [hard, false], 
+                    "adv": [adv, false],
+                };
+
+    text = document.getElementsByClassName("word");
+
+    // Redraw the circles representing the # of tries if needed
+    redrawCircles();
+
+    guesses = [];
+    numCategoriesDone = 0;
+
+    shuffleBtn = document.getElementById("shuffle");
+    deselectBtn = document.getElementById("deselect");
+    submitBtn = document.getElementById("submit");
+
+    shuffleBtn.addEventListener('click', shuffle);
+    deselectBtn.classList.add('unavailable');
+    submitBtn.classList.add('unavailable');
+}
+
+function startConnections() {
+    setup();
     initWords();
 }

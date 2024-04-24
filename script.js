@@ -33,7 +33,6 @@ function getGameElem(navElem) {
 function hideCurrPage() {
     // We're on the main page
     if (onMainPage) {
-        console.log("hi there");
         let main = document.getElementById("mainPage");
         main.classList.add("hiddenPage");
         onMainPage = false;
@@ -59,10 +58,13 @@ function displayGame(event) {
         hideCurrPage();
     }
 
+    console.log("selectedNav.id " + selectedNav.id);
+
     // Display the selected game
     switch (selectedNav.id) {
         case "navConnections":
             startConnections();
+            break;
         default:
             console.log("uh oh");
     }
