@@ -1,0 +1,77 @@
+/* Styling for general website appearance and managing pages */
+h1 {
+    text-align: center;
+    text-decoration: none;
+}
+
+h2 {
+    text-align: center;
+    margin: 3vw auto 1vw auto;
+}
+
+nav {
+    width: 100%;
+    padding: 2vw;
+    color: #98c0ecee;
+    background-color: #2a343eee;
+}
+
+nav li {
+    display: inline;  /* Display list items on the same line */
+}
+
+nav li a {
+    text-align: center;
+    color: #98c0ecee;
+    text-decoration: none;
+    padding: 2vw;
+    font-size: 2vw;
+}
+
+nav a:hover {
+    background-color: #506376ee;
+}
+
+.activeNav {
+    color: #506376ee;
+    background-color: #98c0ecee;
+}
+
+.activeNav:hover {
+    background-color: rgba(104, 129, 153, 0.933)e;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#gameOptions {
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 1.5vw;
+    padding: 1vw;
+    margin: 2vw 10vw 2vw 10vw;
+    background-color: #dde1f0;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.thumbnail {
+    display: flex;
+    border-radius: 3vw;
+    background-color: #ffffff;
+    width: 15vw;
+    height: 15vw;
+    margin: 2vw;
+    text-align: center;
+    justify-content: center;
+    align-self: center;
+    align-content: center;
+    transition: transform 0.1s ease-in-out;
+}
+
+.thumbnail:hover {
+    transform: scale(1.15);
+}
