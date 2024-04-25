@@ -58,18 +58,31 @@ nav a:hover {
     align-content: center;
 }
 
+img {
+    display: block;
+    text-align: center;
+    align-self: center;
+    margin: 0 auto;  /* Center the image */
+    width: 50%;
+}
+
 .thumbnail {
     display: flex;
     border-radius: 3vw;
     background-color: #ffffff;
-    width: 15vw;
-    height: 15vw;
+    width: 25vw;
+    height: 30vw;
     margin: 2vw;
     text-align: center;
     justify-content: center;
-    align-self: center;
+    align-items: center;
     align-content: center;
     transition: transform 0.1s ease-in-out;
+    flex-direction: column;
+}
+
+.thumbnail p {
+    display: block;
 }
 
 .thumbnail:hover {
