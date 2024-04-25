@@ -478,9 +478,7 @@ function initWords() {
     deselectAll();
     const unusedWords = shuffleUnused();
     const text = document.getElementsByClassName("word");
-
-    console.log(text);
-
+    
     for (let i = 0; i < unusedWords.length; i++) {
         text[i].textContent = unusedWords[i];  // Overwrite the default text for the word
         text[i].addEventListener("click", toggleSelection);
