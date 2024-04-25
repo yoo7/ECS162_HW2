@@ -1,0 +1,150 @@
+/* Styling for Connections */
+.stage {
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+    padding: 0vw 2vw 2vw 2vw;
+    row-gap: 1vw;
+    margin: 0vw auto auto auto;
+    column-gap: 1vw;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto auto auto auto;
+}
+
+.word {
+    display: flex;
+    position: relative;
+    background: #d4d4d4;
+    color: #000000;
+    border-radius: 1.5vw;
+    font-size: 0.8vw;
+    padding: 0.5vw;
+    margin: auto;
+    width: 5.5vw;
+    height: 5.5vw;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    white-space: nowrap;
+}
+
+.word:hover {
+    background: #b5b4b4;
+}
+
+#msg {
+    opacity: 0;  /* Start off hidden */
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-size: 1vw;
+    width: fit-content;
+    margin: 0vw auto 1vw auto;
+    border-radius: 2vw;
+    padding: 1vw;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.box {
+    display: flex;
+    font-size: 1vw;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    padding: 2vw auto 0vw auto;
+    white-space: nowrap;
+    column-gap: 0vw 5vw 2vw 2vw;
+}
+
+.numMistakes {
+    color: #3c3c3c;
+    display: inline-block;
+    margin: 0.25vw;
+}
+
+.circle {
+    background-color: #bababa;
+    width: 1vw;
+    height: 1vw;
+    margin: 0.2vw;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.category {
+    grid-column: 1 / span 4;  /* Make the square take up whole row */
+    display: flex;
+    position: relative;
+    color: #000000;
+    border-radius: 1.5vw;
+    font-size: 0.8vw;
+    padding: 0.5vw;
+    margin: auto;
+    width: 28vw;
+    height: 5.5vw;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-wrap: wrap;
+    flex-wrap: wrap;
+    white-space: pre-line;  /* Text wraps as needed or on line breaks with \n. Keeps whitespace */
+}
+
+.easy {
+    background: #f6db6e;
+}
+
+.normal {
+    background: #65cd68;
+}
+
+.hard {
+    background: #86b2e3;
+}
+
+.adv {
+    background: #b773d7;
+}
+
+.selected {
+    background: #767676;
+    color: #d4d4d4;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    padding: 0.5vw;
+}
+
+.btn {
+    background: #c1e0c3ee;
+    border-radius: 3vw;
+    border: 0.1vw solid black;
+    color: black;
+    font-size: 1vw;
+    text-align: center;
+    padding: 1.5vw;
+    margin: 1vw;
+}
+
+.btn:hover {
+    background: #fff6b4ee
+}
+
+.unavailable {
+    background: #e9ede9ee;
+}
+
+.unavailable:hover {
+    background: #e9ede9ee;
+}

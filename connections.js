@@ -1,8 +1,12 @@
-const maxSelected = 4;
-const maxCategories = 4;
-let numCategoriesDone = 0;
+"use strict";
 
-const puzzles = [
+const MAX_SELECTED = 4;
+const MAX_CATEGORIES = 4;
+const guesses = [];  // The contents of guesses will get modified though
+let numCategoriesDone = 0;
+let numTriesRemaining = 4;
+
+const PUZZLES = [
                 {   // Puzzle 0
                     "easy": ["K-POP GROUPS", new Set(["SEVENTEEN", "TWICE", "RED VELVET", "BTS"])],
                     "normal": ["SHADES OF RED", new Set(["RUBY", "ROSE", "BLOOD", "STRAWBERRY"])],
@@ -32,29 +36,32 @@ const puzzles = [
                 },
 
                 {   // Puzzle 4
-                    "easy": ["DATE IDEAS", new Set(["SUNSET", "BEACH", "DINNER", "MOVIE"])],
-                    "normal": ["HISTORICAL ARTIFACTS", new Set(["VASE", "WEAPON", "DOCUMENT", "TABLET"])],
-                    "hard": ["CASH CROPS", new Set(["RUBBER", "COTTON", "TEA", "CACAO"])],
+                    "easy": ["CASH CROPS", new Set(["RUBBER", "COTTON", "TEA", "CACAO"])],
+                    "normal": ["DATE IDEAS", new Set(["SUNSET", "BEACH", "DINNER", "MOVIE"])],
+                    "hard": ["HISTORICAL ARTIFACTS", new Set(["VASE", "WEAPON", "DOCUMENT", "TABLET"])],
                     "adv": ["RHYMING WITH BIBLICAL NAMES", new Set(["MAUL", "FABLE", "CANE", "FAIRY"])]
                 },
             ];
 
-let puzzleIdx = 0;
+// Pick a random puzzle
+let puzzleIdx = getRandomInt(PUZZLES.length);
 
-let easy = [];
-let normal = [];
-let hard = [];
-let adv = [];
+const easy = PUZZLES[puzzleIdx]["easy"][1];
+const normal = PUZZLES[puzzleIdx]["normal"][1];
+const hard = PUZZLES[puzzleIdx]["hard"][1];
+const adv = PUZZLES[puzzleIdx]["adv"][1];
 
-let categories = {};
+const categories = {"easy": [easy, false], 
+                    "normal": [normal, false],
+                    "hard": [hard, false], 
+                    "adv": [adv, false],
+                    };
 
-let text = document.getElementsByClassName("word");
+const FADE_IN = [{opacity: 0}, {opacity: 1, offset: 0.7}, {opacity: 1, offset: 1}];
+const FADE_OUT = [{opacity: 1}, {opacity: 0.7, offset: 0.3}, {opacity: 0, offset: 1},]; 
+const FADE_IN_OUT = [{opacity: 0}, {opacity: 1, offset: 0.05}, {opacity: 1, offset: 0.9}, {opacity: 0, offset: 1}];
 
-const fadeIn = [{opacity: 0}, {opacity: 1, offset: 0.7}, {opacity: 1, offset: 1}];
-const fadeOut = [{opacity: 1}, {opacity: 0.7, offset: 0.3}, {opacity: 0, offset: 1},]; 
-const fadeInAndOut = [{opacity: 0}, {opacity: 1, offset: 0.05}, {opacity: 1, offset: 0.9}, {opacity: 0, offset: 1}];
-
-const options = {
+const OPTIONS = {
     easing: "ease-in-out",
     duration: 1000,
     delay: 0,
@@ -63,20 +70,13 @@ const options = {
 };
 
 // Options specifically for the words/categories
-const wordCatOptions = {
+const WORD_CAT_OPTIONS = {
     easing: "ease-in-out",
     duration: 2000,
     delay: 0,
     endDelay: 0,
     fill: "forwards",
 }
-
-let numTriesRemaining = 4;
-let guesses = [];
-
-let shuffleBtn = document.getElementById("shuffle");
-let deselectBtn = document.getElementById("deselect");
-let submitBtn = document.getElementById("submit");
 
 function deselectAll() {
     const selected = document.getElementsByClassName("selected");
@@ -87,53 +87,61 @@ function deselectAll() {
 }
 
 function deactivateDeselect() {
-    deselectBtn.removeEventListener('click', deselectAll);
-    deselectBtn.classList.add('unavailable');
+    let deselectBtn = document.getElementById("deselect");
+
+    deselectBtn.removeEventListener("click", deselectAll);
+    deselectBtn.classList.add("unavailable");
 }
 
 function activateDeselect() {
-    deselectBtn.addEventListener('click', deselectAll);
-    deselectBtn.classList.remove('unavailable');
+    let deselectBtn = document.getElementById("deselect");
+
+    deselectBtn.addEventListener("click", deselectAll);
+    deselectBtn.classList.remove("unavailable");
 }
 
 function deactivateSubmit() {
-    submitBtn.removeEventListener('click', checkAnswer);
-    submitBtn.classList.add('unavailable');
+    let submitBtn = document.getElementById("submit");
+
+    submitBtn.removeEventListener("click", checkAnswer);
+    submitBtn.classList.add("unavailable");
 }
 
 function activateSubmit() {
-    submitBtn.addEventListener('click', checkAnswer);
-    submitBtn.classList.remove('unavailable');
+    let submitBtn = document.getElementById("submit");
+
+    submitBtn.addEventListener("click", checkAnswer);
+    submitBtn.classList.remove("unavailable");
 }
 
 function toggleSelection(event) {
-    if (event.currentTarget.classList.contains('category')) {
+    if (event.currentTarget.classList.contains("category")) {
         return;
     }
 
     const selected = document.getElementsByClassName("selected");
 
     // The word is already selected, so unselect it
-    if (event.currentTarget.classList.contains('selected')) {
-        event.currentTarget.classList.remove('selected');
+    if (event.currentTarget.classList.contains("selected")) {
+        event.currentTarget.classList.remove("selected");
 
         if (selected.length === 0) {
             deactivateDeselect();
         }
     } else {
-        // Some unselected word, but we've already selected maxSelected number of words
-        if (selected.length === maxSelected) {
-            // Can't select more, so immediately return
+        // Some unselected word, but we"ve already selected MAX_SELECTED number of words
+        if (selected.length === MAX_SELECTED) {
+            // Can"t select more, so immediately return
             return;
         }
 
         // Word was not already selected, so select it
-        event.currentTarget.classList.add('selected');
+        event.currentTarget.classList.add("selected");
 
         activateDeselect();
 
         // Selected the correct amount to be able to submit the guess, so active the Submit button
-        if (selected.length === maxSelected) {
+        if (selected.length === MAX_SELECTED) {
             activateSubmit();
             return;
         }
@@ -149,7 +157,6 @@ function catContainsWord(cat, word) {
 function countWordsPerCat(selected) {
     const wordCount = {};
     let catKeys = Object.keys(categories);
-
 
     for (let i = 0; i < selected.length; i++) {
         for (const cat of catKeys) {
@@ -191,7 +198,7 @@ function wrongGuess(guess, wordCount, keys) {
         displayMsg("Incorrect");
     }
     
-    document.getElementById("circle" + numTriesRemaining).animate(fadeOut, options);
+    document.getElementById("circle" + numTriesRemaining).animate(FADE_OUT, OPTIONS);
     numTriesRemaining--;
     
     if (numTriesRemaining == 0) {
@@ -212,7 +219,7 @@ function correctGuess(keys) {
 
     numCategoriesDone++;
 
-    if (numCategoriesDone == maxCategories) {
+    if (numCategoriesDone == MAX_CATEGORIES) {
         displayMsg("Congratulations!");
         cleanup();
     }
@@ -220,11 +227,10 @@ function correctGuess(keys) {
 
 function checkAnswer() {
     const selected = document.getElementsByClassName("selected");
-    
     const guess = initGuess(selected);
 
     if (isDupGuess(guess)) {
-        displayMsg("Already guessed that!");
+        displayMsg("Already guessed!");
         return;
     }
 
@@ -239,7 +245,8 @@ function checkAnswer() {
 }
 
 function updateDOM(target, dest, targetIndex, destIndex) {
-    const offset = numCategoriesDone * maxSelected;
+    const offset = numCategoriesDone * MAX_SELECTED;
+    const text = document.getElementsByClassName("word");
 
     // Update the DOM (swap the content)
     [target.textContent, dest.textContent] = [dest.textContent, target.textContent];
@@ -254,11 +261,11 @@ function revealCategory(cat) {
 
     // Swap the selected words with the words in the first unfinished row
     for (let i = 0; i < selected.length; i++) {
-        const targetID = selected[i].id;  // Selected word's ID, something like "word-05"
+        const targetID = selected[i].id;  // Selected word"s ID, something like "word-05"
         const targetIndex = parseInt(targetID.slice(-2));  // Index in text array -- if "word-05", then index is 5
 
         const destIndex = numCategoriesDone * 4 + i;  // Index in text array for dest word
-        const destID = "word-" + ((destIndex < 10) ? "0" + destIndex : destIndex);  // Dest word's ID
+        const destID = "word-" + ((destIndex < 10) ? "0" + destIndex : destIndex);  // Dest word"s ID
 
         let target = document.getElementById(targetID);
         let dest = document.getElementById(destID);
@@ -269,17 +276,33 @@ function revealCategory(cat) {
             continue;
         }
 
-        target.animate(fadeOut, wordCatOptions);
-        dest.animate(fadeOut, wordCatOptions);
+        target.animate(FADE_OUT, WORD_CAT_OPTIONS);
+        dest.animate(FADE_OUT, WORD_CAT_OPTIONS);
 
         updateDOM(target, dest, targetIndex, destIndex);
 
-        target.animate(fadeIn, wordCatOptions);
-        dest.animate(fadeIn, wordCatOptions);
+        target.animate(FADE_IN, WORD_CAT_OPTIONS);
+        dest.animate(FADE_IN, WORD_CAT_OPTIONS);
     }
 
     // Actually set up and display category
     setupCategory(destArr, cat);
+}
+
+function printWords(words) {
+    let count = 0;
+    let catWords = "";
+
+    for (const word of words) {
+        if (0 < count && count < MAX_SELECTED) {
+            catWords += ", ";
+        }
+
+        catWords += word;
+        count++;
+    }
+
+    return catWords;
 }
 
 function setupCategory(destArr, cat) {
@@ -298,23 +321,12 @@ function setupCategory(destArr, cat) {
     block.classList.remove("word");
     block.classList.add(cat);  // Show the category color
 
-    let catText = puzzles[puzzleIdx][cat][0] + "\n\n";
-    const words = puzzles[puzzleIdx][cat][1];  // A set
+    let catName = PUZZLES[puzzleIdx][cat][0] + "\n\n";
+    const words = PUZZLES[puzzleIdx][cat][1];  // A set
 
-    let count = 0;
-
-    for (const word of words) {
-        if (0 < count && count < maxSelected) {
-            catText += ", ";
-        }
-
-        catText += word;
-        count++;
-    }
-
-    block.textContent = catText;
+    block.textContent = catName + printWords(words);
     block.style.visibility = "none";
-    block.animate(fadeIn, wordCatOptions);
+    block.animate(FADE_IN, WORD_CAT_OPTIONS);
 }
 
 function selectCorrectWords(words, cat) {
@@ -328,7 +340,7 @@ function selectCorrectWords(words, cat) {
         }
 
         // Stop early, found the four words we needed
-        if (numSelected == maxSelected) {
+        if (numSelected == MAX_SELECTED) {
             break;
         }
     }
@@ -357,15 +369,22 @@ function revealAnswers() {
 }
 
 function cleanup() {
-    shuffleBtn.removeEventListener('click', () => {initWords(); deselectAll();});
+    let shuffleBtn = document.getElementById("shuffle");
+
+    shuffleBtn.removeEventListener("click", () => {initWords(); deselectAll();});
     shuffleBtn.classList.add("unavailable");
     // Disabling the other buttons and deselecting everything is implicitly done when revealAnswers() calls revealCategory()
 }
 
 function isDupGuess(guess) {
+    // Nothing to compare with
+    if (guesses.length == 0) {
+        return;
+    }
+
     let numWordsMatched = 0;
 
-    for (prevGuess of guesses) {
+    for (const prevGuess of guesses) {
         for (const word of prevGuess) {
             if (!guess.has(word)) {
                 numWordsMatched = 0;  // Reset
@@ -375,7 +394,7 @@ function isDupGuess(guess) {
             numWordsMatched++;
         }
 
-        if (numWordsMatched == maxSelected) {
+        if (numWordsMatched == MAX_SELECTED) {
             return true;
         }
     }
@@ -387,7 +406,7 @@ function displayMsg(str) {
     let msg = document.getElementById("msg");
 
     msg.textContent = str;
-    msg.animate(fadeInAndOut,
+    msg.animate(FADE_IN_OUT,
                 {
                     easing: "ease-in-out",
                     duration: 2500,
@@ -419,7 +438,7 @@ function getUnusedWords() {
 
     // Only insert incomplete sets/categories -- those words are unused and should be shuffled
     for (let cat in categories) {
-        // Category hasn't been completed, so push a copy of the corresponding set
+        // Category hasn"t been completed, so push a copy of the corresponding set
         if (!categories[cat][1]) {
             unusedWords.push(new Set(categories[cat][0]));
         }
@@ -435,7 +454,7 @@ function shuffleUnused() {
     let count = 0;
 
     // While there are still unfinished categories
-    while (count < maxCategories - numCategoriesDone) {
+    while (count < MAX_CATEGORIES - numCategoriesDone) {
         const cat = pickRandCategory(unusedWords);
 
         if (cat.size > 0) {
@@ -458,56 +477,30 @@ function shuffle() {
 function initWords() {
     deselectAll();
     const unusedWords = shuffleUnused();
+    const text = document.getElementsByClassName("word");
 
-    for (let i = 0, j = numCategoriesDone * maxSelected; i < unusedWords.length; i++, j++) {
-        text[j].textContent = unusedWords[i];  // Overwrite the default text for the word
-        text[j].addEventListener('click', toggleSelection);
+    console.log(text);
+
+    for (let i = 0; i < unusedWords.length; i++) {
+        text[i].textContent = unusedWords[i];  // Overwrite the default text for the word
+        text[i].addEventListener("click", toggleSelection);
     }
 }
 
-function redrawCircles() {
-    const quickAppear = [{opacity: 0}, {opacity: 1, offset: 0.00001}, {opacity: 1, offset: 1}];
-    const quickOptions = {duration: 0.01, fill: "forwards"};
+function setupBtns() {
+    const shuffleBtn = document.getElementById("shuffle");
+    const deselectBtn = document.getElementById("deselect");
+    const submitBtn = document.getElementById("submit");
 
-    while (numTriesRemaining < 4) {
-        document.getElementById("circle" + (numTriesRemaining + 1)).animate(quickAppear, quickOptions);
-        numTriesRemaining++;
-    }
-}
-
-function setup() {
-    // Pick a random puzzle
-    puzzleIdx = getRandomInt(puzzles.length);
-
-    easy = puzzles[puzzleIdx]["easy"][1];
-    normal = puzzles[puzzleIdx]["normal"][1];
-    hard = puzzles[puzzleIdx]["hard"][1];
-    adv = puzzles[puzzleIdx]["adv"][1];
-
-    categories = {"easy": [easy, false], 
-                    "normal": [normal, false],
-                    "hard": [hard, false], 
-                    "adv": [adv, false],
-                };
-
-    text = document.getElementsByClassName("word");
-
-    // Redraw the circles representing the # of tries if needed
-    redrawCircles();
-
-    guesses = [];
-    numCategoriesDone = 0;
-
-    shuffleBtn = document.getElementById("shuffle");
-    deselectBtn = document.getElementById("deselect");
-    submitBtn = document.getElementById("submit");
-
-    shuffleBtn.addEventListener('click', shuffle);
-    deselectBtn.classList.add('unavailable');
-    submitBtn.classList.add('unavailable');
+    shuffleBtn.addEventListener("click", shuffle);
+    deselectBtn.classList.add("unavailable");
+    submitBtn.classList.add("unavailable");
 }
 
 function startConnections() {
-    setup();
+    // TODO probably can do the JS looping thing we recently learned to draw the circles and boxes and all that
+    setupBtns();
     initWords();
 }
+
+startConnections();
