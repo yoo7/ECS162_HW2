@@ -44,7 +44,7 @@ const PUZZLES = [
             ];
 
 // Pick a random puzzle
-let puzzleIdx = getRandomInt(PUZZLES.length);
+const puzzleIdx = getRandomInt(PUZZLES.length);
 
 const easy = PUZZLES[puzzleIdx]["easy"][1];
 const normal = PUZZLES[puzzleIdx]["normal"][1];
@@ -478,7 +478,7 @@ function initWords() {
     deselectAll();
     const unusedWords = shuffleUnused();
     const text = document.getElementsByClassName("word");
-    
+
     for (let i = 0; i < unusedWords.length; i++) {
         text[i].textContent = unusedWords[i];  // Overwrite the default text for the word
         text[i].addEventListener("click", toggleSelection);
