@@ -1,7 +1,7 @@
 /* Styling for general website appearance and managing pages */
 h1 {
     text-align: center;
-    font-size: 4.5vw;
+    font-size: 5.5vw;
     margin: 0.8vw auto 0.8vw auto;
 }
 
@@ -21,14 +21,14 @@ h2 {
     display: flex;
     background-color: rgb(247, 229, 129);
     color: #2a343eee;
-    font-size: 1vw;
+    font-size: 1.4vw;
     text-decoration: none;
     text-align: center;
     justify-content: center;
     align-content: center;
     align-items: center;
-    width: 10vw;
-    height: 3vw;
+    width: 12vw;
+    height: 5vw;
     padding: 1.5vw;
     margin: 5vw auto;
     border-radius: 20%;
@@ -72,7 +72,7 @@ nav ul {
 nav li {
     display: inline;  /* Display list items on the same line */
     height: 100%;
-    padding: 1vw 1.2vw;
+    padding: 1.4vw 2vw;
     text-align: center;
     margin: 0;
     background-color: #2a343eee;
@@ -81,7 +81,7 @@ nav li {
 nav li a {
     text-align: center;
     text-decoration: none;
-    font-size: 1.5vw;
+    font-size: 1.7vw;
     color: #85c7c9;
 }
 
@@ -106,7 +106,7 @@ aside nav ul .activeNav a {
     flex-wrap: wrap;
     border-radius: 1.5vw;
     padding: 1vw;
-    margin: 2vw 10vw 2vw 10vw;
+    margin: 4vw 10vw 4vw 10vw;
     background-color: #ddeaec;
     text-align: center;
     justify-content: center;
@@ -160,7 +160,7 @@ aside nav ul .activeNav a {
 
 footer {
     text-align: center;
-	font-size: 1.2vw;
+	font-size: 1.3vw;
     padding: 1vw;
     color: #85c7c9;
     background-color: #2a343eee;
