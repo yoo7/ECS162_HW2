@@ -486,18 +486,67 @@ function initWords() {
 }
 
 function setupBtns() {
-    const shuffleBtn = document.getElementById("shuffle");
-    const deselectBtn = document.getElementById("deselect");
-    const submitBtn = document.getElementById("submit");
+    const options = document.getElementsByClassName("options")[0];
 
+    let shuffleBtn = document.createElement("button");
+    shuffleBtn.type = "button";
+    shuffleBtn.classList.add("button");
+    shuffleBtn.id = "shuffle";
+    shuffleBtn.textContent = "Shuffle";
     shuffleBtn.addEventListener("click", shuffle);
+    options.appendChild(shuffleBtn);
+
+    let deselectBtn = document.createElement("button");
+    deselectBtn.type = "button";
+    deselectBtn.classList.add("button");
+    deselectBtn.id = "deselect";
+    deselectBtn.textContent = "Deselect All";
     deselectBtn.classList.add("unavailable");
+    options.appendChild(deselectBtn);
+
+    let submitBtn = document.createElement("button");
+    submitBtn.type = "button";
+    submitBtn.classList.add("button");
+    submitBtn.id = "submit";
+    submitBtn.textContent = "Submit";
     submitBtn.classList.add("unavailable");
+    options.appendChild(submitBtn);
+}
+
+function drawStage() {
+    const stage = document.getElementsByClassName("stage")[0];
+    const numWords = 16;
+    const box = document.getElementsByClassName("box")[0];
+    
+    // Draw the squares for the words
+    for (let i = 0; i < numWords; i++) {
+        let word = document.createElement("div");
+        word.classList.add("word");
+        word.id = "word-" + ((i < 10) ? "0" + i : i);
+
+        stage.appendChild(word);
+    }
+
+    // Add the text for number of mistakes remaining
+    let numMistakes = document.createElement("div");
+    numMistakes.classList.add("numMistakes");
+    numMistakes.textContent = "Mistakes remaining:";
+    box.appendChild(numMistakes);
+
+    // Draw the circles
+    for (let i = 1; i <= numTriesRemaining; i++) {
+        let circle = document.createElement("span");
+        circle.classList.add("circle");
+        circle.id = "circle-" + i;
+
+        box.appendChild(circle);
+    }
 }
 
 function startConnections() {
     // TODO probably can do the JS looping thing we recently learned to draw the circles and boxes and all that
     setupBtns();
+    drawStage();
     initWords();
 }
 

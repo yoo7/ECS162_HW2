@@ -1,7 +1,7 @@
 /* Styling for general website appearance and managing pages */
 h1 {
     text-align: center;
-    font-size: 5.5vw;
+    font-size: 4vw;
     margin: 0.8vw auto 0.8vw auto;
 }
 
@@ -21,16 +21,16 @@ h2 {
     display: flex;
     background-color: rgb(247, 229, 129);
     color: #2a343eee;
-    font-size: 1.4vw;
+    font-size: 1.1vw;
     text-decoration: none;
     text-align: center;
     justify-content: center;
     align-content: center;
     align-items: center;
     width: 12vw;
-    height: 5vw;
+    height: 3.5vw;
     padding: 1.5vw;
-    margin: 5vw auto;
+    margin: 2vw auto 4vw auto;
     border-radius: 20%;
     transition: transform 0.1s ease-in-out;
 }
@@ -72,7 +72,7 @@ nav ul {
 nav li {
     display: inline;  /* Display list items on the same line */
     height: 100%;
-    padding: 1.4vw 2vw;
+    padding: 1.2vw 1.7vw;
     text-align: center;
     margin: 0;
     background-color: #2a343eee;
@@ -81,7 +81,7 @@ nav li {
 nav li a {
     text-align: center;
     text-decoration: none;
-    font-size: 1.7vw;
+    font-size: 1.3vw;
     color: #85c7c9;
 }
 

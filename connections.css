@@ -22,8 +22,8 @@
     font-size: 1vw;
     padding: 0.5vw;
     margin: auto;
-    width: 6.8vw;
-    height: 6.8vw;
+    width: 8vw;
+    height: 5vw;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -65,6 +65,7 @@
     color: #3c3c3c;
     display: inline-block;
     margin: 0.25vw;
+    font-size: 1vw;
 }
 
 .circle {
@@ -82,10 +83,10 @@
     position: relative;
     color: #000000;
     border-radius: 1.5vw;
-    font-size: 0.8vw;
+    font-size: 1vw;
     padding: 0.5vw;
     margin: auto;
-    width: 28vw;
+    width: 38vw;
     height: 5.5vw;
     text-align: center;
     justify-content: center;
@@ -126,18 +127,18 @@
     padding: 0.5vw;
 }
 
-.btn {
+.button {
     background: #c1e0c3ee;
     border-radius: 3vw;
     border: 0.1vw solid black;
     color: black;
-    font-size: 1vw;
+    font-size: 1.2vw;
     text-align: center;
     padding: 1.5vw;
     margin: 1vw;
 }
 
-.btn:hover {
+.button:hover {
     background: #fff6b4ee
 }
 
