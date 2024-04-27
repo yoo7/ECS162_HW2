@@ -1,0 +1,117 @@
+body, .box, .guess-bar, .key, .row-one, .row-two , .row-three {
+    display: flex;  
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    color:rgb(5, 168, 218);
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+main {
+    height: 100%;       
+}
+
+h1 {
+    margin: 0;
+    font-size: 7rem;
+    color:rgb(142, 184, 184)
+}
+
+#container {
+    height: 73%;
+    width: 100%;
+}
+
+.box {
+    margin: 1rem;
+    width: 7rem;
+    height: 7rem;
+    border: solid black 1px;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    background-color:#f5f5dc;
+}
+
+#grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+}
+
+.guess-bar {
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.guess-bar input {
+    font-size: 1.2rem;
+    width: 10rem;
+    height: 4rem;
+}
+
+.guess-bar button {
+    font-size: 2rem;
+    width: 10rem;
+    height: 4rem;
+    color: rgb(55, 207, 157);
+    background-color: rgb(49, 49, 255);
+}
+
+.row-one, .row-two, .row-three{
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    margin-bottom: 1rem;
+}
+
+.row-one {
+    margin-top:  2rem;
+}
+
+.key {
+    border-radius: 16px;
+    margin-left: 1rem;
+    width: 3rem;
+    height: 3rem;
+    border: solid black 1px;
+    background-color:#f5f5dc;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+@media screen and (max-width: 750px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    /* header {
+        padding: 20px; 
+    }
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    .content {
+        display: block;
+    }
+    .image {
+        display: block;
+        margin: 0, auto;
+        text-align: center;
+    }
+    .text {
+        text-align: center;
+    }
+    body {
+        background: linear-gradient(to bottom, #fced19, #a8ca4ae1); // Adjust colors as needed //
+    }  */
+}
