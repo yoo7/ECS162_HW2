@@ -7,6 +7,10 @@ let currRow = 0;
 let currCol = 0;
 let boxDefClr = "#f5f5dc";
 
+const blueGreen = "#85E0E4";
+const yellow = "#FFDE59";
+const gray = "#abb2b3";
+
 const row1keys = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
 const row2keys = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
 const row3keys = ["Z", "X", "C", "V", "B", "N", "M"];
@@ -123,19 +127,19 @@ function tryGuess(input)
         boxToUpdate.textContent = input[i];
         if(input[i] == keyWord[i])
         {
-            boxToUpdate.style.backgroundColor = "green";
-            keyToUpdate.style.backgroundColor = "green";
+            boxToUpdate.style.backgroundColor = blueGreen;
+            keyToUpdate.style.backgroundColor = blueGreen;
         }else if(keyWord.includes(input[i]))
         {
-            if(keyToUpdate.style.backgroundColor != "green")
+            if(keyToUpdate.style.backgroundColor != blueGreen)
             {
-                boxToUpdate.style.backgroundColor = "yellow";
-                keyToUpdate.style.backgroundColor = "yellow";
+                boxToUpdate.style.backgroundColor = yellow;
+                keyToUpdate.style.backgroundColor = yellow;
             }
         }else
         {
-            boxToUpdate.style.backgroundColor = "grey";
-            keyToUpdate.style.backgroundColor = "grey";
+            boxToUpdate.style.backgroundColor = gray;
+            keyToUpdate.style.backgroundColor = gray;
         }
     }
 

@@ -1,24 +1,17 @@
-body, .box, .guess-bar, .key, .row-one, .row-two , .row-three {
+.box, .guess-bar, .key, .row-one, .row-two , .row-three {
     display: flex;  
 }
 
 body {
     font-family: "Roboto", sans-serif;
-    color:rgb(5, 168, 218);
     flex-direction: column;
     align-items: center;
-    height: 100vh;
 }
 
 main {
-    height: 100%;       
+    height: 80%;       
 }
 
-h1 {
-    margin: 0;
-    font-size: 7rem;
-    color:rgb(142, 184, 184)
-}
 
 #container {
     height: 73%;
@@ -26,20 +19,28 @@ h1 {
 }
 
 .box {
-    margin: 1rem;
-    width: 7rem;
-    height: 7rem;
+    margin: auto auto auto auto;
+    width: 7vw;
+    height: 7vw;
     border: solid black 1px;
     align-items: center;
     justify-content: center;
-    font-size: 5rem;
+    font-size: 5.5vw;
     background-color:#f5f5dc;
 }
 
 #grid-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+    padding: 0vw 2vw 2vw 2vw;
+    row-gap: 1vw;
+    margin: 0vw auto auto auto;
+    column-gap: 1vw;
+    grid-template-columns: auto auto auto auto auto;  /* 5 letter words */
+    grid-template-rows: auto auto auto auto auto auto;  /* 6 tries */
 }
 
 .guess-bar {
@@ -49,17 +50,21 @@ h1 {
 }
 
 .guess-bar input {
-    font-size: 1.2rem;
-    width: 10rem;
-    height: 4rem;
+    font-size: 1.5vw;
+    width: 12vw;
+    height: 4.5vw;
 }
 
 .guess-bar button {
-    font-size: 2rem;
-    width: 10rem;
-    height: 4rem;
-    color: rgb(55, 207, 157);
-    background-color: rgb(49, 49, 255);
+    font-size: 1.5vw;
+    width: 10vw;
+    height: 5vw;
+    color: black;
+    background-color: #c1e0c3ee;
+}
+
+.guess-bar button:hover {
+    background: #fff6b4ee
 }
 
 .row-one, .row-two, .row-three{
