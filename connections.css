@@ -18,7 +18,7 @@
     position: relative;
     background: #d4d4d4;
     color: #000000;
-    border-radius: 1.5vw;
+    border-radius: 1.3vw;
     font-size: 1vw;
     padding: 0.5vw;
     margin: auto;
@@ -78,16 +78,16 @@
 }
 
 .category {
-    grid-column: 1 / span 4;  /* Make the square take up whole row */
+    grid-column: 1 / span 4;  /* Make the rectangle take up whole row/all 4 columns */
     display: flex;
     position: relative;
     color: #000000;
-    border-radius: 1.5vw;
+    border-radius: 1.3vw;
     font-size: 1vw;
     padding: 0.5vw;
     margin: auto;
     width: 38vw;
-    height: 5.5vw;
+    height: 5vw;
     text-align: center;
     justify-content: center;
     align-items: center;

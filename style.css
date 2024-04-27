@@ -19,8 +19,8 @@ h2 {
 
 .redirect {
     display: flex;
+    color: black;
     background-color: rgb(247, 229, 129);
-    color: #2a343eee;
     font-size: 1.1vw;
     text-decoration: none;
     text-align: center;
@@ -42,6 +42,7 @@ h2 {
 /* Remove the extra white edge on the sides */
 body {
     margin: 0;
+    font-family: "DejaVu Serif";
 }
 
 aside {
