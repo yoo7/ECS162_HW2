@@ -1,48 +1,81 @@
 /* Styling for general website appearance and managing pages */
 h1 {
     text-align: center;
+    font-size: 6vw;
+    margin: 0.8vw auto 0.8vw auto;
+}
+
+/* No underline for the link */
+h1 a {
     text-decoration: none;
+    color: #85c7c9;
 }
 
 h2 {
     text-align: center;
-    margin: 3vw auto 1vw auto;
+    margin: 2vw;
+}
+
+/* Remove the extra white edge on the sides */
+body {
+    margin: 0;
+}
+
+aside {
+    background-color: #2a343eee;   
 }
 
 nav {
     width: 100%;
-    padding: 2vw;
-    color: #98c0ecee;
+    padding: 0;
+    color: #85c7c9;
+    margin: 0;
+    overflow: hidden;
     background-color: #2a343eee;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 nav li {
     display: inline;  /* Display list items on the same line */
+    height: 100%;
+    padding: 1vw;
+    text-align: center;
+    margin: 0;
+    background-color: #2a343eee;
 }
 
 nav li a {
     text-align: center;
-    color: #9ce1e4;
     text-decoration: none;
-    padding: 2vw;
-    font-size: 2vw;
+    font-size: 1.5vw;
+    color: #85c7c9;
 }
 
-nav a:hover {
+nav li:hover {
     background-color: #506376ee;
 }
 
-.activeNav {
-    color: #485c6fee;
-    background-color: #9ce1e4;
+aside nav ul .activeNav {
+    background-color: #85c7c9;
 }
 
-.activeNav:hover {
-    background-color: rgba(104, 136, 153, 0.933)e;
+aside nav ul .activeNav:hover {
+    background-color: #85c7c9;
 }
 
-.bold {
-    font-weight: bold;
+aside nav ul .activeNav a {
+    color: #2a343eee;
 }
 
 #gameOptions {
@@ -51,19 +84,11 @@ nav a:hover {
     border-radius: 1.5vw;
     padding: 1vw;
     margin: 2vw 10vw 2vw 10vw;
-    background-color: #dde1f0;
+    background-color: #ddeaec;
     text-align: center;
     justify-content: center;
     align-items: center;
     align-content: center;
-}
-
-img {
-    display: block;
-    text-align: center;
-    align-self: center;
-    margin: 0 auto;  /* Center the image */
-    width: 50%;
 }
 
 .thumbnail {
@@ -81,11 +106,32 @@ img {
     flex-direction: column;
 }
 
-.thumbnail p {
+.thumbnail img {
+    margin: auto;  /* Center the image */
+    padding: 0;
+    width: 50%;
+}
+
+.gameTitle {
     display: block;
-    margin: 0.5vw 0.5vw 0.2vw 0.5vw;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.gameDescription {
+    font-size: 12px;
+    margin: auto;
+    padding: 0;
 }
 
 .thumbnail:hover {
     transform: scale(1.1);
+}
+
+footer {
+    text-align: center;
+	font-size: 12px;
+    padding: 3px;
+    background-color: #85c7c9
 }
