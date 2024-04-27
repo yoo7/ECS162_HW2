@@ -1,7 +1,7 @@
 /* Styling for general website appearance and managing pages */
 h1 {
     text-align: center;
-    font-size: 6vw;
+    font-size: 4.5vw;
     margin: 0.8vw auto 0.8vw auto;
 }
 
@@ -13,7 +13,30 @@ h1 a {
 
 h2 {
     text-align: center;
+    font-size: 1.8vw;
     margin: 2vw;
+}
+
+.redirect {
+    display: flex;
+    background-color: rgb(247, 229, 129);
+    color: #2a343eee;
+    font-size: 1vw;
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 10vw;
+    height: 3vw;
+    padding: 1.5vw;
+    margin: 5vw auto;
+    border-radius: 20%;
+    transition: transform 0.1s ease-in-out;
+}
+
+.redirect:hover {
+    transform: scale(1.35);
 }
 
 /* Remove the extra white edge on the sides */
@@ -49,7 +72,7 @@ nav ul {
 nav li {
     display: inline;  /* Display list items on the same line */
     height: 100%;
-    padding: 1vw;
+    padding: 1vw 1.2vw;
     text-align: center;
     margin: 0;
     background-color: #2a343eee;
@@ -95,7 +118,7 @@ aside nav ul .activeNav a {
     display: flex;
     border-radius: 3vw;
     background-color: #ffffff;
-    width: 15vw;
+    width: 17vw;
     height: 25vw;
     margin: 2vw;
     text-align: center;
@@ -107,22 +130,28 @@ aside nav ul .activeNav a {
 }
 
 .thumbnail img {
-    margin: auto;  /* Center the image */
     padding: 0;
     width: 50%;
+}
+
+.basicParagraph {
+    margin: auto 10vw;
+    text-align: justify;
+    font-size: 1.2vw;
 }
 
 .gameTitle {
     display: block;
     font-weight: bold;
-    margin: 0;
+    font-size: 1.8vw;
+    margin: 1vw auto 0.5vw auto;
     padding: 0;
 }
 
 .gameDescription {
-    font-size: 12px;
-    margin: auto;
-    padding: 0;
+    font-size: 1.2vw;
+    margin: 0.4vw;
+    padding: 0vw 1vw 0vw 1vw;
 }
 
 .thumbnail:hover {
@@ -131,7 +160,8 @@ aside nav ul .activeNav a {
 
 footer {
     text-align: center;
-	font-size: 12px;
-    padding: 3px;
-    background-color: #85c7c9
+	font-size: 1.2vw;
+    padding: 1vw;
+    color: #85c7c9;
+    background-color: #2a343eee;
 }
