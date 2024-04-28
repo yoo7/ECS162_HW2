@@ -19,7 +19,7 @@
     background: #d4d4d4;
     color: #000000;
     border-radius: 1.3vw;
-    font-size: 1vw;
+    font-size: 1.1vw;
     padding: 0.5vw;
     margin: auto;
     width: 8vw;
@@ -65,7 +65,7 @@
     color: #3c3c3c;
     display: inline-block;
     margin: 0.25vw;
-    font-size: 1vw;
+    font-size: 1.3vw;
 }
 
 .circle {
@@ -125,6 +125,7 @@
     justify-items: center;
     align-content: center;
     padding: 0.5vw;
+    margin: 0 auto;
 }
 
 .button {
@@ -132,10 +133,10 @@
     border-radius: 3vw;
     border: 0.1vw solid black;
     color: black;
-    font-size: 1.2vw;
+    font-size: 1.3vw;
     text-align: center;
     padding: 1.5vw;
-    margin: 1vw;
+    margin: 1vw 1vw 0.3vw 1vw;
 }
 
 .button:hover {

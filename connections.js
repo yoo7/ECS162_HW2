@@ -2,9 +2,6 @@
 
 const MAX_SELECTED = 4;
 const MAX_CATEGORIES = 4;
-const guesses = [];  // The contents of guesses will get modified though
-let numCategoriesDone = 0;
-let numTriesRemaining = 4;
 
 const PUZZLES = [
                 {   // Puzzle 0
@@ -43,20 +40,22 @@ const PUZZLES = [
                 },
             ];
 
-// Pick a random puzzle
-const puzzleIdx = getRandomInt(PUZZLES.length);
+// These will get initialized in pickPuzzle()
+let puzzleIdx = 0;
 
-const easy = PUZZLES[puzzleIdx]["easy"][1];
-const normal = PUZZLES[puzzleIdx]["normal"][1];
-const hard = PUZZLES[puzzleIdx]["hard"][1];
-const adv = PUZZLES[puzzleIdx]["adv"][1];
+let easy = null;
+let normal = null;
+let hard = null;
+let adv = null;
 
-const categories = {"easy": [easy, false], 
-                    "normal": [normal, false],
-                    "hard": [hard, false], 
-                    "adv": [adv, false],
-                    };
+let categories = null;
 
+// These get modified throughout the program
+let guesses = [];  // Filled in as user makes incorrect guesses
+let numCategoriesDone = 0;
+let numTriesRemaining = 4;
+
+// Animations
 const FADE_IN = [{opacity: 0}, {opacity: 1, offset: 0.7}, {opacity: 1, offset: 1}];
 const FADE_OUT = [{opacity: 1}, {opacity: 0.7, offset: 0.3}, {opacity: 0, offset: 1},]; 
 const FADE_IN_OUT = [{opacity: 0}, {opacity: 1, offset: 0.05}, {opacity: 1, offset: 0.9}, {opacity: 0, offset: 1}];
@@ -197,8 +196,8 @@ function wrongGuess(guess, wordCount, keys) {
     } else {
         displayMsg("Incorrect");
     }
-    
-    document.getElementById("circle" + numTriesRemaining).animate(FADE_OUT, OPTIONS);
+   
+    document.getElementById("circle-" + numTriesRemaining).animate(FADE_OUT, OPTIONS);
     numTriesRemaining--;
     
     if (numTriesRemaining == 0) {
@@ -371,7 +370,7 @@ function revealAnswers() {
 function cleanup() {
     let shuffleBtn = document.getElementById("shuffle");
 
-    shuffleBtn.removeEventListener("click", () => {initWords(); deselectAll();});
+    shuffleBtn.removeEventListener("click", initWords);
     shuffleBtn.classList.add("unavailable");
     // Disabling the other buttons and deselecting everything is implicitly done when revealAnswers() calls revealCategory()
 }
@@ -470,10 +469,6 @@ function shuffleUnused() {
     return shuffledWords;
 }
 
-function shuffle() {
-    initWords();
-}
-
 function initWords() {
     deselectAll();
     const unusedWords = shuffleUnused();
@@ -485,32 +480,43 @@ function initWords() {
     }
 }
 
+function addBtn(id, content, index) {
+    const options = document.getElementsByClassName("options")[index];
+
+    let btn = document.createElement("button");
+    btn.type = "button";
+    btn.classList.add("button");
+    btn.id = id;
+    btn.textContent = content;
+    btn.style.gridArea = id;
+    options.appendChild(btn);
+
+    return btn;
+}
+
+function restartConnections() {
+    const stage = document.getElementsByClassName("stage")[0];
+    const box = document.getElementsByClassName("box")[0];
+    const options = document.getElementsByClassName("options");
+
+    stage.innerHTML = '';
+    box.innerHTML = '';
+    options[0].innerHTML = '';
+    options[1].innerHTML = '';
+
+    // Set all categories as unfinished again
+    for (let cat in categories) {
+        categories[cat][1] = false;
+    }
+}
+
 function setupBtns() {
-    const options = document.getElementsByClassName("options")[0];
+    addBtn("shuffle", "Shuffle", 0).addEventListener("click", initWords);
+    addBtn("deselect", "Deselect All", 0).classList.add("unavailable");
+    addBtn("submit", "Submit", 0).classList.add("unavailable");
 
-    let shuffleBtn = document.createElement("button");
-    shuffleBtn.type = "button";
-    shuffleBtn.classList.add("button");
-    shuffleBtn.id = "shuffle";
-    shuffleBtn.textContent = "Shuffle";
-    shuffleBtn.addEventListener("click", shuffle);
-    options.appendChild(shuffleBtn);
-
-    let deselectBtn = document.createElement("button");
-    deselectBtn.type = "button";
-    deselectBtn.classList.add("button");
-    deselectBtn.id = "deselect";
-    deselectBtn.textContent = "Deselect All";
-    deselectBtn.classList.add("unavailable");
-    options.appendChild(deselectBtn);
-
-    let submitBtn = document.createElement("button");
-    submitBtn.type = "button";
-    submitBtn.classList.add("button");
-    submitBtn.id = "submit";
-    submitBtn.textContent = "Submit";
-    submitBtn.classList.add("unavailable");
-    options.appendChild(submitBtn);
+    addBtn("startOver", "Start Over", 1).addEventListener("click", () => {restartConnections(); basicSetup();});
+    addBtn("newPuzzle", "New Puzzle", 1).addEventListener("click", () => {restartConnections(); startConnections();});
 }
 
 function drawStage() {
@@ -543,11 +549,39 @@ function drawStage() {
     }
 }
 
-function startConnections() {
-    // TODO probably can do the JS looping thing we recently learned to draw the circles and boxes and all that
+function pickPuzzle() {
+    // Pick a random puzzle
+    puzzleIdx = getRandomInt(PUZZLES.length);
+
+    easy = PUZZLES[puzzleIdx]["easy"][1];
+    normal = PUZZLES[puzzleIdx]["normal"][1];
+    hard = PUZZLES[puzzleIdx]["hard"][1];
+    adv = PUZZLES[puzzleIdx]["adv"][1];
+
+    categories = {
+                    "easy": [easy, false], 
+                    "normal": [normal, false],
+                    "hard": [hard, false], 
+                    "adv": [adv, false],
+                 };
+}
+
+function basicSetup() {
     setupBtns();
+    
+    // Reset user's incorrect guesses
+    guesses = [];
+    numCategoriesDone = 0;
+    numTriesRemaining = 4;
+    
     drawStage();
     initWords();
+}
+
+function startConnections() {
+    pickPuzzle();
+
+    basicSetup();
 }
 
 startConnections();
