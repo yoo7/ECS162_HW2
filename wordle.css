@@ -67,30 +67,32 @@ main {
     background: #fff6b4ee
 }
 
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5vw;
+    padding: 2vw;
+}
+
 .row-one, .row-two, .row-three{
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
     text-align: center;
-
-    margin-bottom: 1rem;
 }
 
-.row-one {
-    margin-top:  2rem;
-}
 
 .key {
-    border-radius: 16px;
-    margin-left: 1rem;
-    width: 3rem;
-    height: 3rem;
-    border: solid black 1px;
+    border-radius: 40%;
+    width: 4vw;
+    height: 4vw;
+    border: solid black 0.1vw;
     background-color:#f5f5dc;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 1.5vw;
+    margin: 0.5vw;
 }
 
 @media screen and (max-width: 750px) {
