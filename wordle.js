@@ -1,3 +1,5 @@
+"use strict";
+
 const containerEl = document.getElementById("container");
 
 let gameOver = false;
@@ -21,19 +23,15 @@ const possibleWords =
 "brave", "cable", "panic", "study", "faith","equal", "grade", "award", 
 "cheer", "pause", "legal", "plate", "bully", "voice", "drive", "title"];
 
-function selectKey()
-{
+function selectKey() {
     keyWord = possibleWords[Math.floor(Math.random() * possibleWords.length)];
     keyWord = keyWord.toUpperCase();
-    console.log(keyWord);
 }
 
-function createGrid(row, col) 
-{
-  const gridContainer = document.getElementById("grid-container");
+function createGrid(row, col) {
+    const gridContainer = document.getElementById("grid-container");
 
-    for (let i = 0; i < row; i++) 
-    {
+    for (let i = 0; i < row; i++) {
         for (let j = 0; j < col; j++) {
             const box = document.createElement("div");
             box.classList.add("box");
@@ -45,8 +43,7 @@ function createGrid(row, col)
     containerEl.appendChild(gridContainer);
 }
 
-function createGuessBar() 
-{
+function createGuessBar() {
     const guessContainer = document.createElement("div");
     guessContainer.classList.add("guess-bar");
 
@@ -60,14 +57,14 @@ function createGuessBar()
     guessInput.tabIndex = 0;
 
     const guessButton = document.createElement("button");
-    guessButton.addEventListener("click", function(){
-        if(guessInput.value.length != 5)
-        {
+    guessButton.addEventListener("click", function() {
+        if (guessInput.value.length != 5) {
             alert("Please enter a 5-letter word");
-        }else{
+        } else {
             tryGuess(guessInput.value)
         }
     });
+
     guessButton.textContent = "Guess";
     guessButton.tabIndex = 0;
 
@@ -75,8 +72,7 @@ function createGuessBar()
     containerEl.append(guessContainer);
 }
 
-function createKeyboard() 
-{
+function createKeyboard() {
     const keyboardContainer = document.createElement("div");
     keyboardContainer.classList.add("keyboard");
   
@@ -85,6 +81,7 @@ function createKeyboard()
     const row3 = document.createElement("div");
 
     row1.classList.add("row-one");
+
     for (let i = 0; i < 10; i++) {
         const key = document.createElement("div");
         key.classList.add("key");
@@ -94,6 +91,7 @@ function createKeyboard()
     }
 
     row2.classList.add("row-two");
+
     for (let i = 0; i < 9; i++) {
         const key = document.createElement("div");
         key.classList.add("key");
@@ -103,6 +101,7 @@ function createKeyboard()
     }
   
     row3.classList.add("row-three");
+
     for (let i = 0; i < 7; i++) {
         const key = document.createElement("div");
         key.classList.add("key");
@@ -117,83 +116,70 @@ function createKeyboard()
     containerEl.append(keyboardContainer);
 }
 
-function tryGuess(input) 
-{
+function tryGuess(input) {
     input = input.toUpperCase();
-    let boxToUpdate;
-    for(let i = 0; i < 5; i++)
-    {
-        boxToUpdate = document.getElementById("" + currRow + i);
-        keyToUpdate = document.getElementById("" + input[i]);
+
+    for(let i = 0; i < 5; i++) {
+        let boxToUpdate = document.getElementById("" + currRow + i);
+        let keyToUpdate = document.getElementById("" + input[i]);
 
         boxToUpdate.textContent = input[i];
-        if(input[i] == keyWord[i])
-        {
+        if (input[i] == keyWord[i]) {
             boxToUpdate.style.backgroundColor = blueGreen;
             keyToUpdate.style.backgroundColor = blueGreen;
-        }else if(keyWord.includes(input[i]))
-        {
+        } else if (keyWord.includes(input[i])) {
             if(keyToUpdate.style.backgroundColor != blueGreen)
             {
                 boxToUpdate.style.backgroundColor = yellow;
                 keyToUpdate.style.backgroundColor = yellow;
             }
-        }else
-        {
+        } else {
             boxToUpdate.style.backgroundColor = gray;
             keyToUpdate.style.backgroundColor = gray;
         }
     }
 
-    
-
     currRow++;
 
-    if(currRow > 5)
-    {
+    if (currRow > 5) {
         gameOver = true;
     }
-    if(input == keyWord)
-    {
+    
+    if (input == keyWord) {
         gameWon = true;
     }
 
     checkWinLoss();
 }
 
-function checkWinLoss() 
-{
-    if(gameWon == true)
-    {
+function checkWinLoss() {
+    if (gameWon) {
         setTimeout(
             function() { 
-                if(confirm("You won! Would you like to play again?"))
-                {
+                if(confirm("You won! Would you like to play again?")) {
                     resetGame();
                 }
-        }, 500)
-    }else if(gameOver == true)
-    {
+            }, 500);
+    } else if (gameOver) {
         setTimeout(
             function() { 
                 if(confirm("The game is over. Would you like to try again?"))
                 {
                     resetGame();
                 }
-        }, 500)
+            }, 500);
     }
 }
 
-function resetGame()
-{
+function resetGame() {
     currRow = 0;
     currCol = 0;
     selectKey();
     gameOver = false;
     gameWon = false;
     let boxToUpdate;
-    for (let i = 0; i < 6; i++) 
-    {
+
+    for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 5; j++) {
             boxToUpdate = document.getElementById("" + i + j);
             boxToUpdate.style.backgroundColor = boxDefClr;
