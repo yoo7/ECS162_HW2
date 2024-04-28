@@ -480,20 +480,6 @@ function initWords() {
     }
 }
 
-function addBtn(id, content, index) {
-    const options = document.getElementsByClassName("options")[index];
-
-    let btn = document.createElement("button");
-    btn.type = "button";
-    btn.classList.add("button");
-    btn.id = id;
-    btn.textContent = content;
-    btn.style.gridArea = id;
-    options.appendChild(btn);
-
-    return btn;
-}
-
 function restartConnections() {
     const stage = document.getElementsByClassName("stage")[0];
     const box = document.getElementsByClassName("box")[0];
@@ -510,12 +496,27 @@ function restartConnections() {
     }
 }
 
+function addBtn(id, content, index) {
+    const options = document.getElementsByClassName("options")[index];
+
+    let btn = document.createElement("button");
+    btn.type = "button";
+    btn.classList.add("button");
+    btn.id = id;
+    btn.textContent = content;
+    btn.style.gridArea = id;
+    btn.tabIndex = 0;
+    options.appendChild(btn);
+
+    return btn;
+}
+
 function setupBtns() {
     addBtn("shuffle", "Shuffle", 0).addEventListener("click", initWords);
     addBtn("deselect", "Deselect All", 0).classList.add("unavailable");
     addBtn("submit", "Submit", 0).classList.add("unavailable");
 
-    addBtn("startOver", "Start Over", 1).addEventListener("click", () => {restartConnections(); basicSetup();});
+    addBtn("restart", "Restart", 1).addEventListener("click", () => {restartConnections(); basicSetup();});
     addBtn("newPuzzle", "New Puzzle", 1).addEventListener("click", () => {restartConnections(); startConnections();});
 }
 
@@ -526,9 +527,11 @@ function drawStage() {
     
     // Draw the squares for the words
     for (let i = 0; i < numWords; i++) {
-        let word = document.createElement("div");
+        let word = document.createElement("button");
+        word.type = "button";
         word.classList.add("word");
         word.id = "word-" + ((i < 10) ? "0" + i : i);
+        word.tabIndex = 0;
 
         stage.appendChild(word);
     }

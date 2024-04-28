@@ -57,6 +57,7 @@ function createGuessBar()
     guessInput.setAttribute("maxlength", "5");
     guessInput.setAttribute("onkeydown", "return /[a-zA-Z]/i.test(event.key)");
     guessInput.style.textTransform = "uppercase";
+    guessInput.tabIndex = 0;
 
     const guessButton = document.createElement("button");
     guessButton.addEventListener("click", function(){
@@ -68,6 +69,7 @@ function createGuessBar()
         }
     });
     guessButton.textContent = "Guess";
+    guessButton.tabIndex = 0;
 
     guessContainer.append(guessInput, guessButton);
     containerEl.append(guessContainer);
