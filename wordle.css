@@ -1,3 +1,7 @@
+.guess-bar, .button, .key {
+    font-family: "DejaVu Serif";
+}
+
 .box, .guess-bar, .key, .row-one, .row-two , .row-three {
     display: flex;  
 }
@@ -50,12 +54,14 @@ main {
 }
 
 .guess-bar input {
+    font-family: "DejaVu Serif";
     font-size: 1.2vw;
-    width: 10vw;
+    width: 12vw;
     height: 3vw;
 }
 
 .guess-bar button {
+    font-family: "DejaVu Serif";
     font-size: 1.2vw;
     width: 5vw;
     height: 3.5vw;

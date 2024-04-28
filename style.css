@@ -1,4 +1,8 @@
 /* Styling for general website appearance and managing pages */
+h1, h2, .redirect, a, .thumbnail, .basicParagraph, .gameTitle, .gameDescription, footer {
+    font-family: "DejaVu Serif";
+}
+
 h1 {
     text-align: center;
     font-size: 4vw;
