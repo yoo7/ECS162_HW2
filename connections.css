@@ -1,8 +1,7 @@
-.word, .category, #msg, .numMistakes, .button {
+.word, .category, #msg, .num-mistakes, .button {
     font-family: "DejaVu Serif";
 }
 
-/* Styling for Connections */
 .stage {
     display: grid;
     justify-content: center;
@@ -39,21 +38,6 @@
     background: #b5b4b4;
 }
 
-#msg {
-    opacity: 0;  /* Start off hidden */
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    font-size: 1vw;
-    width: fit-content;
-    margin: 0vw auto 1vw auto;
-    border-radius: 2vw;
-    padding: 1vw;
-    background-color: #000000;
-    color: #ffffff;
-}
-
 .box {
     display: flex;
     font-size: 1vw;
@@ -65,7 +49,7 @@
     column-gap: 0vw 5vw 2vw 2vw;
 }
 
-.numMistakes {
+.num-mistakes {
     color: #3c3c3c;
     display: inline-block;
     margin: 0.25vw;
@@ -157,4 +141,19 @@
 
 .unavailable:hover {
     background: #e9ede9ee;
+}
+
+#msg {
+    opacity: 0;  /* Start off hidden */
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-size: 1vw;
+    width: fit-content;
+    margin: 0vw auto 1vw auto;
+    border-radius: 2vw;
+    padding: 1vw;
+    background-color: #000000;
+    color: #ffffff;
 }
