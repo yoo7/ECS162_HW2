@@ -81,6 +81,10 @@
     display: inline-block;
 }
 
+.invisible {
+    visibility: none;
+}
+
 .category {
     grid-column: 1 / span 4;  /* Make the rectangle take up whole row/all 4 columns */
     display: flex;

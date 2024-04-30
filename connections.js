@@ -77,6 +77,7 @@ const WORD_CAT_OPTIONS = {
     fill: "forwards",
 }
 
+/** Deselect all words that are currently selected */
 function deselectAll() {
     const selected = document.getElementsByClassName("selected");
 
@@ -85,92 +86,78 @@ function deselectAll() {
     }
 }
 
-function deactivateDeselect() {
-    let deselectBtn = document.getElementById("deselect");
-
-    deselectBtn.removeEventListener("click", deselectAll);
-    deselectBtn.classList.add("unavailable");
+/** Disable the button */
+function deactivateBtn(btn, func) {
+    btn.removeEventListener("click", func);
+    btn.classList.add("unavailable");
 }
 
-function activateDeselect() {
-    let deselectBtn = document.getElementById("deselect");
-
-    deselectBtn.addEventListener("click", deselectAll);
-    deselectBtn.classList.remove("unavailable");
+/** (Re)activate the button */
+function activateBtn(btn, func) {
+    btn.addEventListener("click", func);
+    btn.classList.remove("unavailable");
 }
 
-function deactivateSubmit() {
-    let submitBtn = document.getElementById("submit");
-
-    submitBtn.removeEventListener("click", checkAnswer);
-    submitBtn.classList.add("unavailable");
-}
-
-function activateSubmit() {
-    let submitBtn = document.getElementById("submit");
-
-    submitBtn.addEventListener("click", checkAnswer);
-    submitBtn.classList.remove("unavailable");
-}
-
+/** Toggle the selection status of the word that was selected */
 function toggleSelection(event) {
-    if (event.currentTarget.classList.contains("category")) {
-        return;
+    // Only allow selection if it's a word (and not a category)
+    if (!event.currentTarget.classList.contains("category")) {
+        const selected = document.getElementsByClassName("selected");
+
+        // The word is already selected, so unselect it
+        if (event.currentTarget.classList.contains("selected")) {
+            event.currentTarget.classList.remove("selected");
+
+            // If nothing is selected, then don't allow user to interact with deselect button
+            if (selected.length === 0) {
+                deactivateBtn(document.getElementById("deselect"), deselectAll);
+            }
+        } else {
+            // It's an unselected word and we haven't already selected MAX_SELECTED words (can select more)
+            if (selected.length !== MAX_SELECTED) {
+                 // Word was not already selected, so select it
+                event.currentTarget.classList.add("selected");
+
+                activateBtn(document.getElementById("deselect"), deselectAll);
+
+                // Selected the correct amount to be able to submit the guess, so activate submit button
+                if (selected.length === MAX_SELECTED) {
+                    activateBtn(document.getElementById("submit"), checkAnswer);
+                    return;
+                }
+            } 
+        }
+
+        // Haven't reached 4 selected words yet, so make sure the user can't interact with submit button
+        deactivateBtn(document.getElementById("submit"), checkAnswer);
     }
-
-    const selected = document.getElementsByClassName("selected");
-
-    // The word is already selected, so unselect it
-    if (event.currentTarget.classList.contains("selected")) {
-        event.currentTarget.classList.remove("selected");
-
-        if (selected.length === 0) {
-            deactivateDeselect();
-        }
-    } else {
-        // Some unselected word, but we"ve already selected MAX_SELECTED number of words
-        if (selected.length === MAX_SELECTED) {
-            // Can"t select more, so immediately return
-            return;
-        }
-
-        // Word was not already selected, so select it
-        event.currentTarget.classList.add("selected");
-
-        activateDeselect();
-
-        // Selected the correct amount to be able to submit the guess, so active the Submit button
-        if (selected.length === MAX_SELECTED) {
-            activateSubmit();
-            return;
-        }
-    }
-
-    deactivateSubmit();
 }
 
+/** Check if the given category contains the given word */
 function catContainsWord(cat, word) {
     return categories[cat][0].has(word);
 }
 
+/** Count how many words from each category the user has selected */
 function countWordsPerCat(selected) {
     const wordCount = {};
     let catKeys = Object.keys(categories);
 
     for (let i = 0; i < selected.length; i++) {
+        // No break statements allowed, so we use a boolean
+        let foundCat = false;
+
         for (const cat of catKeys) {
-            if (catContainsWord(cat, selected[i].textContent)) {
+            // If the category contains the word, increment the associated count
+            if (!foundCat && catContainsWord(cat, selected[i].textContent)) {
                 if (!(cat in wordCount)) {
                     wordCount[cat] = 0;  // Initialize to 0
                 }
 
                 wordCount[cat]++;
 
-                /* 
-                 * Figured out which category this word belongs to
-                 * so move on to the next word!
-                 */
-                break;
+                // Figured out which category this word belongs to, so move on to the next word
+                foundCat = true;
             }
         }
     }
@@ -178,6 +165,11 @@ function countWordsPerCat(selected) {
     return wordCount;
 }
 
+/** 
+ * Get the user's current guess in text-form
+ * @param {HTMLCollection} selected - all the DOM elements with the "selected" property
+ * @return {set} guess - the user's guess
+ */
 function initGuess(selected) {
     let guess = new Set();
 
@@ -188,29 +180,41 @@ function initGuess(selected) {
     return guess;
 }
 
+/** 
+ * User guessed incorrectly, so display the correct function, 
+ * modify numTriesRemaining, and end the game if needed 
+ * @param {set} guess - contains the strings corresponding to the words the user guessed
+ * @param {map} wordCount - map where keys are the categories the selected words are from, 
+ *                          and values are the number of words in those categories
+ * @param {array} keys - wordCount's keys
+ */
 function wrongGuess(guess, wordCount, keys) {
     guesses.push(guess);  // Add this new guess to the history
 
-    if (keys.length == 2 && wordCount[keys[0]] != 2) {
+    // Got 3 words in one category and 1 word in a different category
+    if (keys.length === 2 && wordCount[keys[0]] !== 2) {
         displayMsg("One away...");
     } else {
         displayMsg("Incorrect");
     }
    
+    // Remove one of the circles to represent the user made a mistake
     document.getElementById("circle-" + numTriesRemaining).animate(FADE_OUT, OPTIONS);
     numTriesRemaining--;
     
-    if (numTriesRemaining == 0) {
+    if (numTriesRemaining === 0) {
         displayMsg("No more tries...");
         revealAnswers();
         cleanup();
     }
-
-    return;
 }
 
-function correctGuess(keys) {
-    const cat = keys[0];
+/** 
+ * User guessed correctly, so mark that category as complete, display message, 
+ * reveal the category on the screen, and modify numCategoriesDone. Clean up if game is finished
+ * @param {string} cat - the category that the user guessed correctly
+ */
+function correctGuess(cat) {
     categories[cat][1] = true;
     
     displayMsg("Nice!");
@@ -218,31 +222,38 @@ function correctGuess(keys) {
 
     numCategoriesDone++;
 
-    if (numCategoriesDone == MAX_CATEGORIES) {
+    if (numCategoriesDone === MAX_CATEGORIES) {
         displayMsg("Congratulations!");
         cleanup();
     }
 }
 
+/** Check if the user's current guess is correct or not, performing the appropriate actions */
 function checkAnswer() {
     const selected = document.getElementsByClassName("selected");
     const guess = initGuess(selected);
 
-    if (isDupGuess(guess)) {
-        displayMsg("Already guessed!");
-        return;
-    }
+    if (!isDupGuess(guess)) {
+        const wordCount = countWordsPerCat(selected);
+        const keys = Object.keys(wordCount);
 
-    const wordCount = countWordsPerCat(selected);
-    const keys = Object.keys(wordCount);
-
-    if (keys.length > 1) {
-        wrongGuess(guess, wordCount, keys);
+        if (keys.length > 1) {
+            wrongGuess(guess, wordCount, keys);
+        } else {
+            correctGuess(keys[0]);
+        }
     } else {
-        correctGuess(keys);
-    }
+        displayMsg("Already guessed!");
+    } 
 }
 
+/** 
+ * Update the DOM when swapping the words in preparation for revealing the categories 
+ * @param {HTMLElement} target - the selected word that is in the correctly guessed category 
+ * @param {HTMLElement} dest - the word to swap the target word with
+ * @param {number} targetIndex - Target's element ID
+ * @param {number} destIndex - Destination's element ID
+ */
 function updateDOM(target, dest, targetIndex, destIndex) {
     const offset = numCategoriesDone * MAX_SELECTED;
     const text = document.getElementsByClassName("word");
@@ -254,40 +265,64 @@ function updateDOM(target, dest, targetIndex, destIndex) {
     [text[targetIndex - offset].textContent, text[destIndex - offset].textContent] = [target.textContent, dest.textContent];
 }
 
+/** 
+ * Swap the words in preparation for revealing the categories 
+ * @param {HTMLElement} target - the selected word that is in the correctly guessed category 
+ * @param {HTMLElement} dest - the word to swap the target word with
+ * @param {number} targetIndex - Target's element ID
+ * @param {number} destIndex - Destination's element ID
+ */
+function swapWords(target, dest, targetIndex, destIndex) {
+    // Make the involved words swap places
+    target.animate(FADE_OUT, WORD_CAT_OPTIONS);
+    dest.animate(FADE_OUT, WORD_CAT_OPTIONS);
+
+    updateDOM(target, dest, targetIndex, destIndex);
+
+    target.animate(FADE_IN, WORD_CAT_OPTIONS);
+    dest.animate(FADE_IN, WORD_CAT_OPTIONS);
+}
+
+/**
+ * Swap the words in the category to the first unused row in the grid to reveal the category
+ * @param {string} cat - the name of the category to reveal
+ */
 function revealCategory(cat) {
     const selected = document.getElementsByClassName("selected");
     const destArr = [];
 
     // Swap the selected words with the words in the first unfinished row
     for (let i = 0; i < selected.length; i++) {
-        const targetID = selected[i].id;  // Selected word"s ID, something like "word-05"
-        const targetIndex = parseInt(targetID.slice(-2));  // Index in text array -- if "word-05", then index is 5
+        // Selected word"s ID, something like "word-05"
+        const targetID = selected[i].id;
 
-        const destIndex = numCategoriesDone * 4 + i;  // Index in text array for dest word
-        const destID = "word-" + ((destIndex < 10) ? "0" + destIndex : destIndex);  // Dest word"s ID
+        // Index in text array -- if "word-05", then index is 5
+        const targetIndex = parseInt(targetID.slice(-2));  
+
+        // Index in text array for dest word
+        const destIndex = numCategoriesDone * 4 + i;  
+        const destID = "word-" + ((destIndex < 10) ? "0" + destIndex : destIndex);
 
         let target = document.getElementById(targetID);
         let dest = document.getElementById(destID);
 
         destArr.push(dest);
 
-        if (targetID == destID) {
-            continue;
+        // Only swap words if the target is actually different from the destination
+        if (targetID !== destID) {
+            swapWords(target, dest, targetIndex, destIndex);
         }
-
-        target.animate(FADE_OUT, WORD_CAT_OPTIONS);
-        dest.animate(FADE_OUT, WORD_CAT_OPTIONS);
-
-        updateDOM(target, dest, targetIndex, destIndex);
-
-        target.animate(FADE_IN, WORD_CAT_OPTIONS);
-        dest.animate(FADE_IN, WORD_CAT_OPTIONS);
     }
 
-    // Actually set up and display category
+    // Actually set up and display category as a merged rectangle
     setupCategory(destArr, cat);
 }
 
+/** 
+ * Turn the given words for some category into a string
+ * @param {Set} words - contains the words in the category
+ * @return {string} catWords - the elements of words in a string, separated by commas
+ */
 function printWords(words) {
     let count = 0;
     let catWords = "";
@@ -304,10 +339,15 @@ function printWords(words) {
     return catWords;
 }
 
+/**
+ * Turn the four word elements into a single category element
+ * @param {array} destArr - contains the word elements to transform
+ * @param {string} cat - the name of the category to set up for
+ */
 function setupCategory(destArr, cat) {
     deselectAll();
-    deactivateDeselect();
-    deactivateSubmit();
+    deactivateBtn(document.getElementById("deselect"), deselectAll);
+    deactivateBtn(document.getElementById("submit"), checkAnswer);
 
     // Remove the other elements in this category from DOM
     for (let i = destArr.length - 1; i > 0; i--) {
@@ -324,49 +364,54 @@ function setupCategory(destArr, cat) {
     const words = PUZZLES[puzzleIdx][cat][1];  // A set
 
     block.textContent = catName + printWords(words);
-    block.style.visibility = "none";
+    block.classList.add("invisible");
     block.animate(FADE_IN, WORD_CAT_OPTIONS);
 }
 
+/**
+ * When the user has used all their guesses, find the words belonging to the given category
+ * and add the selected property to those word elements
+ * @param {Set} words - contains the words in the category
+ * @param {string} cat - the name of the category to set up for
+ */
 function selectCorrectWords(words, cat) {
     let numSelected = 0;
         
     for (const word of words) {
-        // If the current word is in the category
-        if (categories[cat][0].has(word.textContent)) {
+        // Haven't found the four words we need yet and the current word is in the category
+        if ((numSelected !== MAX_SELECTED) && (categories[cat][0].has(word.textContent))) {
             word.classList.add("selected");
             numSelected++;
-        }
-
-        // Stop early, found the four words we needed
-        if (numSelected == MAX_SELECTED) {
-            break;
-        }
+        }   
     }
 }
 
+/**
+ * Reveal the categories that the user hasn't found yet
+ */
 function revealAnswers() {
     // Clear whatever words are already selected by the user
     deselectAll();
 
     for (let cat in categories) {
-        // Reveal answers for the categories in order of increasing difficulty
-        if (categories[cat][1]) {
-            continue;
-        }
+        // Reveal answers for the categories not found (in order of increasing difficulty)
+        if (!categories[cat][1]) {
+            // Search for the words in this category
+            let words = document.getElementsByClassName("word");
 
-        // Search for the words in this category
-        let words = document.getElementsByClassName("word");
+            selectCorrectWords(words, cat);
 
-        selectCorrectWords(words, cat);
-
-        // Reveal this category
-        revealCategory(cat);
-        categories[cat][1] = true;
-        numCategoriesDone++;
+            // Reveal this category
+            revealCategory(cat);
+            categories[cat][1] = true;
+            numCategoriesDone++;
+        }     
     }
 }
 
+/**
+ * Disable buttons as needed
+ */
 function cleanup() {
     let shuffleBtn = document.getElementById("shuffle");
 
@@ -375,32 +420,43 @@ function cleanup() {
     // Disabling the other buttons and deselecting everything is implicitly done when revealAnswers() calls revealCategory()
 }
 
+/**
+ * Check whether the guess the user submitted was already made before
+ * @param {Set} guess the guess the user submitted
+ * @returns {boolean} whether the given guess was a duplicate of a previously made guess or not
+ */
 function isDupGuess(guess) {
-    // Nothing to compare with
-    if (guesses.length == 0) {
-        return;
-    }
+    // There is a previous guess to compare with
+    if (guesses.length !== 0) {
+        let numWordsMatched = 0;
 
-    let numWordsMatched = 0;
-
-    for (const prevGuess of guesses) {
-        for (const word of prevGuess) {
-            if (!guess.has(word)) {
-                numWordsMatched = 0;  // Reset
-                break;
+        for (const prevGuess of guesses) {
+            // Compare guess with the previous guess we're currently looking at
+            for (const word of prevGuess) {
+                if (!guess.has(word)) {
+                    numWordsMatched = 0;  // Reset
+                } else {
+                    numWordsMatched++;
+                }  
             }
 
-            numWordsMatched++;
+            // User's guess matched the previous guess
+            if (numWordsMatched === MAX_SELECTED) {
+                return true;
+            }
         }
 
-        if (numWordsMatched == MAX_SELECTED) {
-            return true;
-        }
+        return false;
     }
 
+    // No previous guess to compare with, so the given guess is not a duplicate
     return false;
 }
 
+/**
+ * Print a message to the user above the grid
+ * @param {string} str - the string to display
+ */
 function displayMsg(str) {
     let msg = document.getElementById("msg");
 
@@ -412,10 +468,20 @@ function displayMsg(str) {
                 });
 }
 
+/**
+ * Pick a random number between 0 and the max number (exclusive)
+ * @param {number} max 
+ * @returns {number} the random value
+ */
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
+/**
+ * Pick random elements from the set and insert into unusedWords
+ * @param {array} unusedWords 
+ * @param {Set} set 
+ */
 function shuffleHelper(unusedWords, set) {
     if (set.size > 0) {
         const i = getRandomInt(set.size);
@@ -428,10 +494,19 @@ function shuffleHelper(unusedWords, set) {
     }
 }
 
+/**
+ * Pick a random category and its words
+ * @param {array} copies - copies of the categories and the words they include
+ * @returns {string} random category
+ */
 function pickRandCategory(copies) {
     return copies[getRandomInt(copies.length)];
 }
 
+/**
+ * Collect all the unused words (i.e., not in a completed category yet) in a random order
+ * @returns {array} an array of all the unused words
+ */
 function getUnusedWords() {
     const unusedWords = [];
 
@@ -446,6 +521,10 @@ function getUnusedWords() {
     return unusedWords;
 }
 
+/**
+ * Get a shuffled version of the unused words (i.e., not in a completed category yet)
+ * @returns {array} list of the unused words, shuffled
+ */
 function shuffleUnused() {
     const shuffledWords = [];
     const unusedWords = getUnusedWords();
@@ -460,7 +539,7 @@ function shuffleUnused() {
             shuffleHelper(shuffledWords, cat);
 
             // Finished taking words from this unfinished category
-            if (cat.size == 0) {
+            if (cat.size === 0) {
                 count++;
             }
         }   
@@ -469,17 +548,24 @@ function shuffleUnused() {
     return shuffledWords;
 }
 
+/**
+ * Write all the unused words into the grid
+ */
 function initWords() {
     deselectAll();
     const unusedWords = shuffleUnused();
     const text = document.getElementsByClassName("word");
 
     for (let i = 0; i < unusedWords.length; i++) {
-        text[i].textContent = unusedWords[i];  // Overwrite the default text for the word
+        // Overwrite the default text for the word
+        text[i].textContent = unusedWords[i];
         text[i].addEventListener("click", toggleSelection);
     }
 }
 
+/**
+ * Restart the connections game, including deleting the HTML elements that were dynamically added
+ */
 function restartConnections() {
     const stage = document.getElementsByClassName("stage")[0];
     const box = document.getElementsByClassName("box")[0];
@@ -496,6 +582,13 @@ function restartConnections() {
     }
 }
 
+/**
+ * Dynamically add a button to the HTML
+ * @param {string} id - id of the button to add
+ * @param {string} content - text content of the button to add
+ * @param {number} index - corresponds to which "options" element
+ * @returns {HTMLButtonElement} the button that was added
+ */
 function addBtn(id, content, index) {
     const options = document.getElementsByClassName("options")[index];
 
@@ -504,13 +597,15 @@ function addBtn(id, content, index) {
     btn.classList.add("button");
     btn.id = id;
     btn.textContent = content;
-    btn.style.gridArea = id;
     btn.tabIndex = 0;
     options.appendChild(btn);
 
     return btn;
 }
 
+/**
+ * Dynamically add the button options to the HTML
+ */
 function setupBtns() {
     addBtn("shuffle", "Shuffle", 0).addEventListener("click", initWords);
     addBtn("deselect", "Deselect All", 0).classList.add("unavailable");
@@ -520,6 +615,9 @@ function setupBtns() {
     addBtn("newPuzzle", "New Puzzle", 1).addEventListener("click", () => {restartConnections(); startConnections();});
 }
 
+/**
+ * Dynamically add the words and mistakes to the HTML
+ */
 function drawStage() {
     const stage = document.getElementsByClassName("stage")[0];
     const numWords = 16;
@@ -552,6 +650,9 @@ function drawStage() {
     }
 }
 
+/**
+ * Pick which puzzle to play
+ */
 function pickPuzzle() {
     // Pick a random puzzle
     puzzleIdx = getRandomInt(PUZZLES.length);
@@ -569,7 +670,11 @@ function pickPuzzle() {
                  };
 }
 
+/**
+ * Do the general set up of the game
+ */
 function basicSetup() {
+    // Add the buttons
     setupBtns();
     
     // Reset user's incorrect guesses
@@ -581,6 +686,9 @@ function basicSetup() {
     initWords();
 }
 
+/**
+ * Call all necessary functions to actually play and set up Connections
+ */
 function startConnections() {
     pickPuzzle();
 
