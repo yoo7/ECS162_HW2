@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="A simple JavaScript game for browser" />
+    <meta name="author" content="Allan Robert Tan" />
+    <meta name="keywords" content="type, typing game, javascript game" />
+    <meta name="og:title" content="Type Kita" />
+    <meta
+      name="og:description"
+      content="A simple JavaScript game for browser"
+    />
+    <title>eType Mo</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./assets/favicon-16x16.png"
+    />
+    <link rel="manifest" href="./assets/site.webmanifest" />
+    <link href="../style.css" rel="stylesheet">
+    <link href="etypemo.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@700&family=Prompt&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+
+  <header>
+    <h1><a href="../index.html">GAME ARCADE</a></h1>
+  </header>
+
+  <aside>
+      <nav>
+          <ul>
+              <li>
+                  <a href="../about.html">ABOUT</a>
+              </li>
+              <li>
+                  <a href="../rules.html">RULES</a>
+              </li>
+          </ul>   
+      </nav>
+  </aside>
+
+  <main>
+    <h2>
+      eTypeMo
+    </h2>
+
+    <button id="start-game">Start</button>
+
+    <div id="game">
+      <p id="difficulty">Difficulty:</p>
+      <h1 id="word-guess"></h1>
+      <div id="word-input-wrap">
+        <input type="text" id="word-input" placeholder="Type here" />
+      </div>
+      <p id="word-count">Word count: 0</p>
+    </div>
+
+    <h4 id="best-score">Best:</h4>
+  </main>
+    
+
+    <footer>
+      <a
+        class="footer-link"
+        target="_blank"
+        href="https://github.com/eillanrt/etypemo"
+        >GitHub</a
+      >
+    </footer>
+
+    <script src="etypemo.js" type="module"></script>
+  </body>
+</html>
