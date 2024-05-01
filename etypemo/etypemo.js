@@ -20,6 +20,10 @@ const words = {
     'color',
     'food',
     'friend',
+    'music',
+    'nature',
+    'science',
+    'quaint',
   ],
   Moderate: [
     'beautiful',
@@ -37,9 +41,11 @@ const words = {
     'different',
     'friendship',
     'knowledge', // Added more moderate words
-    'music',
-    'nature',
-    'science',
+    'elaborate',
+    'viceroy',
+    'president',
+    'retelling',
+    'ecstatic',
   ],
   Hard: [
     'bureaucracy',
@@ -60,6 +66,13 @@ const words = {
     'constellation',
     'hypothesis',
     'metaphor',
+    'satellite',
+    'perpendicular',
+    'extraterritoriality',
+    'international',
+    'terrarium',
+    'planetarium',
+    'trepidation'
   ],
 }
 
