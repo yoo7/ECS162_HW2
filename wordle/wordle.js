@@ -2,6 +2,44 @@
 
 const containerEl = document.getElementById("container");
 
+const bodylistener = document.querySelector("body");
+
+const FADE_IN_OUT = [{opacity: 0}, {opacity: 1, offset: 0.05}, {opacity: 1, offset: 0.9}, {opacity: 0, offset: 1}];
+
+bodylistener.addEventListener("keydown", function(event) {
+    let boxToUpdate = document.getElementById("" + currRow + currCol);
+    if(event.key === "Backspace")
+    {
+        if(currCol !== 0)
+        {
+            boxToUpdate = document.getElementById("" + currRow + (currCol-1));
+            boxToUpdate.textContent = "";
+            currCol--;
+        } 
+    }else if(event.key === "Enter" && currCol === 5)
+    {
+        for(let i = 0; i < 5; i++)
+        {
+            boxToUpdate = document.getElementById("" + currRow + i);
+            guessString = guessString + boxToUpdate.textContent;
+        }
+        console.log(guessString)
+        tryGuess(guessString);
+        guessString = "";
+        currCol = 0;
+    }else if(event.code === `Key${event.key.toUpperCase()}`)
+    {
+        if(currCol < 5)
+        {
+            boxToUpdate.textContent = event.key.toUpperCase();
+            currCol++;
+        }
+    }
+})
+
+
+let guessString = "";
+
 let gameOver = false;
 let gameWon = false;
 let keyWord = "";
@@ -15,7 +53,7 @@ const gray = "#abb2b3";
 
 const row1keys = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
 const row2keys = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
-const row3keys = ["Z", "X", "C", "V", "B", "N", "M"];
+const row3keys = ["Enter", "Z", "X", "C", "V", "B", "N", "M", "Delete"];
 
 const possibleWords = 
 ["blind", "sheet", "crush", "relax", "drain", "label", "expel", "thump",
@@ -35,7 +73,7 @@ function createGrid(row, col) {
         for (let j = 0; j < col; j++) {
             const box = document.createElement("div");
             box.classList.add("box");
-            box.setAttribute("id", "" + i + j)
+            box.setAttribute("id", "" + i + j);
             gridContainer.appendChild(box);
         }
     }
@@ -43,34 +81,38 @@ function createGrid(row, col) {
     containerEl.appendChild(gridContainer);
 }
 
-function createGuessBar() {
-    const guessContainer = document.createElement("div");
-    guessContainer.classList.add("guess-bar");
+// function updateBoxLetter(letter) {
 
-    const guessInput = document.createElement("input");
-    guessInput.setAttribute("id", "input");
-    guessInput.setAttribute("type", "text");
-    guessInput.setAttribute("placeholder", "Enter a word");
-    guessInput.setAttribute("maxlength", "5");
-    guessInput.setAttribute("onkeydown", "return /[a-zA-Z]/i.test(event.key)");
-    guessInput.style.textTransform = "uppercase";
-    guessInput.tabIndex = 0;
+// }
 
-    const guessButton = document.createElement("button");
-    guessButton.addEventListener("click", function() {
-        if (guessInput.value.length != 5) {
-            alert("Please enter a 5-letter word");
-        } else {
-            tryGuess(guessInput.value)
-        }
-    });
+// function createGuessBar() {
+//     const guessContainer = document.createElement("div");
+//     guessContainer.classList.add("guess-bar");
 
-    guessButton.textContent = "Guess";
-    guessButton.tabIndex = 0;
+//     const guessInput = document.createElement("input");
+//     guessInput.setAttribute("id", "input");
+//     guessInput.setAttribute("type", "text");
+//     guessInput.setAttribute("placeholder", "Enter a word");
+//     guessInput.setAttribute("maxlength", "5");
+//     guessInput.setAttribute("onkeydown", "return /[a-zA-Z]/i.test(event.key)");
+//     guessInput.style.textTransform = "uppercase";
+//     guessInput.tabIndex = 0;
 
-    guessContainer.append(guessInput, guessButton);
-    containerEl.append(guessContainer);
-}
+//     const guessButton = document.createElement("button");
+//     guessButton.addEventListener("click", function() {
+//         if (guessInput.value.length != 5) {
+//             alert("Please enter a 5-letter word");
+//         } else {
+//             tryGuess(guessInput.value)
+//         }
+//     });
+
+//     guessButton.textContent = "Guess";
+//     guessButton.tabIndex = 0;
+
+//     guessContainer.append(guessInput, guessButton);
+//     containerEl.append(guessContainer);
+// }
 
 function createKeyboard() {
     const keyboardContainer = document.createElement("div");
@@ -85,8 +127,11 @@ function createKeyboard() {
     for (let i = 0; i < 10; i++) {
         const key = document.createElement("div");
         key.classList.add("key");
-        key.setAttribute("id", "" + row1keys[i])
         key.textContent = row1keys[i];
+        key.setAttribute("id", "" + key.textContent + "Key");
+        // key.addEventListener("click", function(event){
+        //     updateGuessBox(event);
+        // });
         row1.appendChild(key);
     }
 
@@ -95,18 +140,18 @@ function createKeyboard() {
     for (let i = 0; i < 9; i++) {
         const key = document.createElement("div");
         key.classList.add("key");
-        key.setAttribute("id", "" + row2keys[i])
         key.textContent = row2keys[i];
+        key.setAttribute("id", "" + key.textContent + "Key");
         row2.appendChild(key);
     }
   
     row3.classList.add("row-three");
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 9; i++) {
         const key = document.createElement("div");
         key.classList.add("key");
-        key.setAttribute("id", row3keys[i]);
         key.textContent = row3keys[i];
+        key.setAttribute("id", "" + key.textContent + "Key");
         row3.appendChild(key);
     }
 
@@ -121,7 +166,7 @@ function tryGuess(input) {
 
     for(let i = 0; i < 5; i++) {
         let boxToUpdate = document.getElementById("" + currRow + i);
-        let keyToUpdate = document.getElementById("" + input[i]);
+        let keyToUpdate = document.getElementById("" + input[i] + "Key");
 
         boxToUpdate.textContent = input[i];
         if (input[i] == keyWord[i]) {
@@ -152,23 +197,26 @@ function tryGuess(input) {
     checkWinLoss();
 }
 
-function checkWinLoss() {
-    if (gameWon) {
-        setTimeout(
-            function() { 
-                if(confirm("You won! Would you like to play again?")) {
-                    resetGame();
-                }
-            }, 500);
-    } else if (gameOver) {
-        setTimeout(
-            function() { 
-                if(confirm("The game is over. Would you like to try again?"))
-                {
-                    resetGame();
-                }
-            }, 500);
+function checkWinLoss() 
+{
+    if(gameWon == true)
+    {
+        displayMsg("You won! Would you like to play again?");
+    }else if(gameOver == true)
+    {
+        displayMsg("Game Over. Press \"play again\" to retry.");
     }
+}
+
+function displayMsg(str) {
+    let msg = document.getElementById("msg");
+
+    msg.textContent = str;
+    msg.animate(FADE_IN_OUT,
+                {
+                    easing: "ease-in-out",
+                    duration: 2500,
+                });
 }
 
 function resetGame() {
@@ -208,5 +256,5 @@ function resetGame() {
 
 selectKey();
 createGrid(6, 5);
-createGuessBar();
+// createGuessBar();
 createKeyboard();
