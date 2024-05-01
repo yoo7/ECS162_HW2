@@ -10,4 +10,4 @@ function setup() {
     eTypeMo.addEventListener("click", () => document.location.href = "./etypemo/etypemo.html");
 }
 
-setup();
+window.addEventListener("load", setup);

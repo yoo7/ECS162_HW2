@@ -695,4 +695,4 @@ function startConnections() {
     basicSetup();
 }
 
-startConnections();
+window.addEventListener("load", startConnections);
