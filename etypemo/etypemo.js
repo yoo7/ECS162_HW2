@@ -2,107 +2,107 @@
 
 const words = {
   Easy: [
-    'apple',
-    'banana',
-    'cat',
-    'dog',
-    'elephant',
-    'fish',
-    'house',
-    'tree',
-    'water',
-    'world',
-    'happy',
-    'milk',
-    'sun',
-    'car',
-    'bird', // Added more easy words
-    'color',
-    'food',
-    'friend',
-    'music',
-    'nature',
-    'science',
-    'quaint',
+    "apple",
+    "banana",
+    "cat",
+    "dog",
+    "elephant",
+    "fish",
+    "house",
+    "tree",
+    "water",
+    "world",
+    "happy",
+    "milk",
+    "sun",
+    "car",
+    "bird", // Added more easy words
+    "color",
+    "food",
+    "friend",
+    "music",
+    "nature",
+    "science",
+    "quaint",
   ],
   Moderate: [
-    'beautiful',
-    'comfortable',
-    'difficult',
-    'enormous',
-    'fantastic',
-    'government',
-    'important',
-    'intelligent',
-    'interesting',
-    'language',
-    'adventure',
-    'celebrate',
-    'different',
-    'friendship',
-    'knowledge', // Added more moderate words
-    'elaborate',
-    'viceroy',
-    'president',
-    'retelling',
-    'ecstatic',
+    "beautiful",
+    "comfortable",
+    "difficult",
+    "enormous",
+    "fantastic",
+    "government",
+    "important",
+    "intelligent",
+    "interesting",
+    "language",
+    "adventure",
+    "celebrate",
+    "different",
+    "friendship",
+    "knowledge", // Added more moderate words
+    "elaborate",
+    "viceroy",
+    "president",
+    "retelling",
+    "ecstatic",
+    "metaphor",
   ],
   Hard: [
-    'bureaucracy',
-    'conscientious',
-    'extracurricular',
-    'heterogeneous',
-    'infinitesimal',
-    'juxtaposition',
-    'labyrinth',
-    'meticulous',
-    'photosynthesis',
-    'surreptitious',
-    'archaeology',
-    'equilibrium',
-    'philosophy',
-    'typography',
-    'ambiguity', // Added more hard words
-    'constellation',
-    'hypothesis',
-    'metaphor',
-    'satellite',
-    'perpendicular',
-    'extraterritoriality',
-    'international',
-    'terrarium',
-    'planetarium',
-    'trepidation'
+    "bureaucracy",
+    "conscientious",
+    "extracurricular",
+    "heterogeneous",
+    "infinitesimal",
+    "juxtaposition",
+    "labyrinth",
+    "meticulous",
+    "photosynthesis",
+    "surreptitious",
+    "archaeology",
+    "equilibrium",
+    "philosophy",
+    "typography",
+    "ambiguity", // Added more hard words
+    "constellation",
+    "hypothesis",
+    "satellite",
+    "perpendicular",
+    "extraterritoriality",
+    "international",
+    "terrarium",
+    "planetarium",
+    "trepidation"
   ],
 }
 
 window.addEventListener("load", init);
 
 function init() {
-  const startModal = document.querySelector('#start-game-prompt');
-  startModal.style.display = 'block';
+  const startModal = document.querySelector("#start-game-prompt");
+  startModal.style.display = "block";
 
-  const startButton = document.querySelector('button#start-game');
+  const startButton = document.querySelector("button#start-game");
 
   function continueGame() {
-    startModal.style.display = 'none';
+    startModal.style.display = "none";
     startGame();
   }
 
-  startButton.addEventListener('click', () => {
+  startButton.addEventListener("click", () => {
     continueGame();
 
-    if (startButton.innerText !== 'Play Again') {
-      startButton.innerText = 'Play Again';
+    if (startButton.innerText !== "Play Again") {
+      startButton.innerText = "Play Again";
     }
   });
 
-  window.addEventListener('keypress', (event) => {
-    if (event.key !== 'Enter') {
+  window.addEventListener("keypress", (event) => {
+    if (event.key !== "Enter") {
       return;
     }
 
-    if (startModal.style.display === 'block') {
+    if (startModal.style.display === "block") {
       continueGame();
     }
   });
@@ -113,17 +113,17 @@ function init() {
   }
   
   // get DOM elements
-  const wordEl = document.querySelector('#word-guess');
-  const inputEl = document.querySelector('#word-input');
-  const timeEl = document.querySelector('#time');
-  const difficultyEl = document.querySelector('#difficulty');
-  const bestScoreEl = document.querySelector('#best-score');
-  const wordCountEl = document.querySelector('#word-count');
-  const modal = document.querySelector('#start-game-prompt');
-  const modalP = document.querySelector('#start-game-prompt p');
+  const wordEl = document.querySelector("#word-guess");
+  const inputEl = document.querySelector("#word-input");
+  const timeEl = document.querySelector("#time");
+  const difficultyEl = document.querySelector("#difficulty");
+  const bestScoreEl = document.querySelector("#best-score");
+  const wordCountEl = document.querySelector("#word-count");
+  const modal = document.querySelector("#start-game-prompt");
+  const modalP = document.querySelector("#start-game-prompt p");
   
-  const scores = JSON.parse(localStorage.getItem('scores')) || [0];
-  const difficulties = ['Easy', 'Moderate', 'Hard'];
+  const scores = JSON.parse(localStorage.getItem("scores")) || [0];
+  const difficulties = ["Easy", "Moderate", "Hard"];
   
   let interval = null;
   let timeSeconds = 10;
@@ -140,11 +140,11 @@ function init() {
   }
   
   function updateDifficulty() {
-    difficultyEl.innerText = 'Difficulty: ' + difficulty;
+    difficultyEl.innerText = "Difficulty: " + difficulty;
   }
   
   function updateWordCount() {
-    wordCountEl.innerText = 'Word count: ' + wordCount;
+    wordCountEl.innerText = "Word count: " + wordCount;
   }
   
   function resetInterval() {
@@ -157,17 +157,17 @@ function init() {
   function reset() {
     wordCount = 0;
     timeSeconds = 11;
-    difficulty = 'Easy';
+    difficulty = "Easy";
     updateWordCount();
   }
   
   function lose() {
     resetInterval();
   
-    modal.style.display = 'block';
-    modalP.innerText = 'Your score is ' + wordCount + '\nPress ENTER to continue';
+    modal.style.display = "block";
+    modalP.innerText = "Your score is " + wordCount + "\nPress ENTER to continue";
   
-    inputEl.value = '';
+    inputEl.value = "";
   
     if (!scores.includes(wordCount)) {
       scores.push(wordCount);
@@ -176,7 +176,7 @@ function init() {
     reset();
   
     localStorage.setItem(
-      'scores',
+      "scores",
       JSON.stringify(scores)
     );
   
@@ -200,14 +200,14 @@ function init() {
     updateWordCount();
     resetInterval();
   
-    inputEl.value = '';
+    inputEl.value = "";
   
     difficulty = _getRandomFromArray(difficulties);
   
     timeSeconds =
-      difficulty === 'Easy'
+      difficulty === "Easy"
         ? timeSeconds + 3
-        : difficulty === 'Moderate'
+        : difficulty === "Moderate"
         ? timeSeconds + 2
         : timeSeconds + 1;
   
@@ -224,9 +224,9 @@ function init() {
   function startGame() {
     wordToGuess = _getRandomFromArray(words[difficulty]);
   
-    bestScoreEl.innerText = 'Best: ' + Math.max(...scores);
+    bestScoreEl.innerText = "Best: " + Math.max(...scores);
   
-    inputEl.value = '';
+    inputEl.value = "";
     inputEl.focus();
   
     resetInterval();
@@ -235,7 +235,7 @@ function init() {
     updateDifficulty();
   }
   
-  inputEl.addEventListener('input', (event) => {
+  inputEl.addEventListener("input", (event) => {
     if (event.target.value.toLowerCase().trim() === wordToGuess.toLowerCase()) {
       nextWord()
     }
