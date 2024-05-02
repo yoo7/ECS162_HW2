@@ -1,12 +1,34 @@
 "use strict";
 
 const containerEl = document.getElementById("container");
-
-const bodylistener = document.querySelector("body");
+const bodyListener = document.querySelector("body");
 
 const FADE_IN_OUT = [{opacity: 0}, {opacity: 1, offset: 0.05}, {opacity: 1, offset: 0.9}, {opacity: 0, offset: 1}];
 
-bodylistener.addEventListener("keydown", function(event) {
+let guessString = "";
+
+let gameOver = false;
+let gameWon = false;
+let keyWord = "";
+let currRow = 0;
+let currCol = 0;
+let boxDefClr = "#f5f5dc";
+
+const blueGreen = "#85E0E4";
+const yellow = "#FFDE59";
+const gray = "#abb2b3";
+
+const row1keys = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
+const row2keys = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
+const row3keys = ["Enter", "Z", "X", "C", "V", "B", "N", "M", "Delete"];
+
+const possibleWords = 
+["blind", "sheet", "crush", "relax", "drain", "label", "expel", "thump",
+"dream", "guard", "flood", "adult", "sight", "alarm", "force", "wound",
+"brave", "cable", "panic", "study", "faith","equal", "grade", "award", 
+"cheer", "pause", "legal", "plate", "bully", "voice", "drive", "title"];
+
+bodyListener.addEventListener("keydown", function(event) {
     let boxToUpdate = document.getElementById("" + currRow + currCol);
     if(event.key === "Backspace")
     {
@@ -36,30 +58,6 @@ bodylistener.addEventListener("keydown", function(event) {
         }
     }
 })
-
-
-let guessString = "";
-
-let gameOver = false;
-let gameWon = false;
-let keyWord = "";
-let currRow = 0;
-let currCol = 0;
-let boxDefClr = "#f5f5dc";
-
-const blueGreen = "#85E0E4";
-const yellow = "#FFDE59";
-const gray = "#abb2b3";
-
-const row1keys = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
-const row2keys = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
-const row3keys = ["Enter", "Z", "X", "C", "V", "B", "N", "M", "Delete"];
-
-const possibleWords = 
-["blind", "sheet", "crush", "relax", "drain", "label", "expel", "thump",
-"dream", "guard", "flood", "adult", "sight", "alarm", "force", "wound",
-"brave", "cable", "panic", "study", "faith","equal", "grade", "award", 
-"cheer", "pause", "legal", "plate", "bully", "voice", "drive", "title"];
 
 function selectKey() {
     keyWord = possibleWords[Math.floor(Math.random() * possibleWords.length)];
@@ -96,6 +94,14 @@ function createKeyboard() {
         key.classList.add("key");
         key.textContent = row1keys[i];
         key.setAttribute("id", "" + key.textContent + "Key");
+        key.addEventListener("click", function(event){
+            let boxToUpdate = document.getElementById("" + currRow + currCol);
+            if(currCol < 5)
+                {
+                    boxToUpdate.textContent = this.textContent.toUpperCase();
+                    currCol++;
+                }
+        });
         row1.appendChild(key);
     }
 
@@ -106,6 +112,14 @@ function createKeyboard() {
         key.classList.add("key");
         key.textContent = row2keys[i];
         key.setAttribute("id", "" + key.textContent + "Key");
+        key.addEventListener("click", function(event){
+            let boxToUpdate = document.getElementById("" + currRow + currCol);
+            if(currCol < 5)
+                {
+                    boxToUpdate.textContent = this.textContent.toUpperCase();
+                    currCol++;
+                }
+        });
         row2.appendChild(key);
     }
   
@@ -116,6 +130,36 @@ function createKeyboard() {
         key.classList.add("key");
         key.textContent = row3keys[i];
         key.setAttribute("id", "" + key.textContent + "Key");
+        key.addEventListener("click", function(event){
+            let boxToUpdate = document.getElementById("" + currRow + currCol);
+            if(this.textContent === "Delete")
+            {
+                if(currCol !== 0)
+                {
+                    boxToUpdate = document.getElementById("" + currRow + (currCol-1));
+                    boxToUpdate.textContent = "";
+                    currCol--;
+                } 
+            }else if(this.textContent === "Enter" && currCol === 5)
+            {
+                for(let i = 0; i < 5; i++)
+                {
+                    boxToUpdate = document.getElementById("" + currRow + i);
+                    guessString = guessString + boxToUpdate.textContent;
+                }
+                console.log(guessString)
+                tryGuess(guessString);
+                guessString = "";
+                currCol = 0;
+            }else if(this.textContent !== "Enter")
+            {
+                if(currCol < 5)
+                {
+                    boxToUpdate.textContent = this.textContent.toUpperCase();
+                    currCol++;
+                }
+            }
+        });
         row3.appendChild(key);
     }
 
@@ -161,11 +205,20 @@ function tryGuess(input) {
     checkWinLoss();
 }
 
-function checkWinLoss() {
-    if(gameWon) {
+function checkWinLoss() 
+{
+    if(gameWon == true)
+    {
         displayMsg("You won! Would you like to play again?");
-    }else if(gameOver) {
+    }else if(gameOver == true)
+    {
         displayMsg("Game Over. Press \"play again\" to retry.");
+    }
+    if(gameWon || gameOver)
+    {
+        let retryButton = document.getElementById("retry-button");
+        retryButton.textContent = "Play again!"
+        retryButton.style.opacity = 1;
     }
 }
 
@@ -187,6 +240,8 @@ function resetGame() {
     gameOver = false;
     gameWon = false;
     let boxToUpdate;
+    let keyToUpdate;
+    let retryButton = document.getElementById("retry-button");
 
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 5; j++) {
@@ -197,25 +252,23 @@ function resetGame() {
     }
 
     for (let i = 0; i < 10; i++) {
-        keyToUpdate = document.getElementById(row1keys[i]);
+        keyToUpdate = document.getElementById("" + row1keys[i] + "Key");
         keyToUpdate.style.backgroundColor = boxDefClr
     }
 
     for (let i = 0; i < 9; i++) {
-        keyToUpdate = document.getElementById(row2keys[i]);
+        keyToUpdate = document.getElementById("" + row2keys[i] + "Key");
         keyToUpdate.style.backgroundColor = boxDefClr
     }
 
-    for (let i = 0; i < 7; i++) {
-        keyToUpdate = document.getElementById(row3keys[i]);
+    for (let i = 0; i < 9; i++) {
+        keyToUpdate = document.getElementById("" + row3keys[i] + "Key");
         keyToUpdate.style.backgroundColor = boxDefClr
     }
 
-    let inputText = document.getElementById("input");
-    inputText.textContent = "aaa";
+    retryButton.style.opacity = 0;
 }
 
 selectKey();
 createGrid(6, 5);
-// createGuessBar();
 createKeyboard();

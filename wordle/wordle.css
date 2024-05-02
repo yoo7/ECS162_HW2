@@ -2,7 +2,7 @@
     font-family: "DejaVu Serif";
 }
 
-.box, .guess-bar, .key, .row-one, .row-two , .row-three {
+.box, .guess-bar, .key, .row-one, .row-two , .row-three, #retry, #retry-button {
     display: flex;  
 }
 
@@ -47,32 +47,6 @@ main {
     grid-template-rows: auto auto auto auto auto auto;  /* 6 tries */
 }
 
-/* .guess-bar {
-    margin-top: 1rem;
-    align-items: center;
-    justify-content: center;
-}
-
-.guess-bar input {
-    font-family: "DejaVu Serif";
-    font-size: 1.2vw;
-    width: 12vw;
-    height: 3vw;
-}
-
-.guess-bar button {
-    font-family: "DejaVu Serif";
-    font-size: 1.2vw;
-    width: 5vw;
-    height: 3.5vw;
-    color: black;
-    background-color: #c1e0c3ee;
-}
-
-.guess-bar button:hover {
-    background: #fff6b4ee
-} */
-
 .keyboard {
     display: flex;
     flex-direction: column;
@@ -101,30 +75,39 @@ main {
     margin: 0.5vw;
 }
 
-@media screen and (max-width: 750px) {
-    h1 {
-        font-size: 2rem;
-    }
-    
-    /* header {
-        padding: 20px; 
-    }
-    header h1 {
-        font-size: 1.5em;
-    }
+#msg {
+    opacity: 0;  /* Start off hidden */
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-size: 1vw;
+    width: fit-content;
+    margin: 0vw auto auto auto;
+    border-radius: 2vw;
+    padding: 1vw;
+    background-color: #000000;
+    color: #ffffff;
+}
 
-    .content {
-        display: block;
-    }
-    .image {
-        display: block;
-        margin: 0, auto;
-        text-align: center;
-    }
-    .text {
-        text-align: center;
-    }
-    body {
-        background: linear-gradient(to bottom, #fced19, #a8ca4ae1); // Adjust colors as needed //
-    }  */
+#retry {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.2vw;
+}
+
+#retry-button {
+    opacity: 0;
+    display: flex;
+    color: black;
+    background-color: rgb(247, 229, 129);
+    font-size: 1.1vw;
+    justify-content: center;
+    align-items: center;
+    width: 12vw;
+    height: 1vw;
+    padding: 1.5vw;
+    margin: 0;
+    border-radius: 20%;
+    transition: transform 0.1s ease-in-out;
 }
