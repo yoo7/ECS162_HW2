@@ -171,6 +171,11 @@ footer {
     background-color: #2a343eee;
 }
 
+#etypemo-img {
+    width: 12vw;
+    height: auto;
+}
+
 @media screen and (max-width: 750px) {
     .basicParagraph {
         margin: auto 5vw;

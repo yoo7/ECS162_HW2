@@ -6,7 +6,6 @@ const words = {
     "banana",
     "cat",
     "dog",
-    "elephant",
     "fish",
     "house",
     "tree",
@@ -24,6 +23,11 @@ const words = {
     "nature",
     "science",
     "quaint",
+    "greet",
+    "book",
+    "cook",
+    "flower",
+    "box",
   ],
   Moderate: [
     "beautiful",
@@ -40,13 +44,18 @@ const words = {
     "celebrate",
     "different",
     "friendship",
-    "knowledge", // Added more moderate words
+    "knowledge",  // Added more moderate words
     "elaborate",
     "viceroy",
     "president",
     "retelling",
+    "jeopardize",
     "ecstatic",
     "metaphor",
+    "elephant",  // Moved this one from easy
+    "professor",
+    "acquiesce",
+    "voracious",
   ],
   Hard: [
     "bureaucracy",
@@ -63,16 +72,25 @@ const words = {
     "equilibrium",
     "philosophy",
     "typography",
-    "ambiguity", // Added more hard words
+    "ambiguity",  // Added more hard words
     "constellation",
+    "stewardess",
+    "pepperoni",
     "hypothesis",
     "satellite",
+    "onomatopoeia",
     "perpendicular",
     "extraterritoriality",
     "international",
     "terrarium",
     "planetarium",
-    "trepidation"
+    "trepidation",
+    "apprehension",
+    "territorial",
+    "government",
+    "xylophone",
+    "magnanimous",
+    "phenomenon",
   ],
 }
 
