@@ -20,7 +20,7 @@ const gray = "#abb2b3";
 
 const row1keys = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
 const row2keys = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
-const row3keys = ["Enter", "Z", "X", "C", "V", "B", "N", "M", "Delete"];
+const row3keys = ["Enter", "Z", "X", "C", "V", "B", "N", "M", "Del"];
 
 const possibleWords = 
 ["blind", "sheet", "crush", "relax", "drain", "label", "expel", "thump",
@@ -30,29 +30,25 @@ const possibleWords =
 
 bodyListener.addEventListener("keydown", function(event) {
     let boxToUpdate = document.getElementById("" + currRow + currCol);
-    if(event.key === "Backspace")
-    {
-        if(currCol !== 0)
+
+    if (event.key === "Backspace") {
+        if (currCol !== 0)
         {
             boxToUpdate = document.getElementById("" + currRow + (currCol-1));
             boxToUpdate.textContent = "";
             currCol--;
         } 
-    }else if(event.key === "Enter" && currCol === 5)
-    {
-        for(let i = 0; i < 5; i++)
-        {
+    } else if (event.key === "Enter" && currCol === 5) {
+        for (let i = 0; i < 5; i++) {
             boxToUpdate = document.getElementById("" + currRow + i);
             guessString = guessString + boxToUpdate.textContent;
         }
-        console.log(guessString)
+
         tryGuess(guessString);
         guessString = "";
         currCol = 0;
-    }else if(event.code === `Key${event.key.toUpperCase()}`)
-    {
-        if(currCol < 5)
-        {
+    } else if (event.code === `Key${event.key.toUpperCase()}`) {
+        if (currCol < 5) {
             boxToUpdate.textContent = event.key.toUpperCase();
             currCol++;
         }
@@ -94,14 +90,14 @@ function createKeyboard() {
         key.classList.add("key");
         key.textContent = row1keys[i];
         key.setAttribute("id", "" + key.textContent + "Key");
-        key.addEventListener("click", function(event){
+        key.addEventListener("click", function(event) {
             let boxToUpdate = document.getElementById("" + currRow + currCol);
-            if(currCol < 5)
-                {
+            if (currCol < 5) {
                     boxToUpdate.textContent = this.textContent.toUpperCase();
                     currCol++;
                 }
         });
+
         row1.appendChild(key);
     }
 
@@ -112,14 +108,16 @@ function createKeyboard() {
         key.classList.add("key");
         key.textContent = row2keys[i];
         key.setAttribute("id", "" + key.textContent + "Key");
-        key.addEventListener("click", function(event){
+        key.addEventListener("click", function(event) {
             let boxToUpdate = document.getElementById("" + currRow + currCol);
-            if(currCol < 5)
+
+            if (currCol < 5)
                 {
                     boxToUpdate.textContent = this.textContent.toUpperCase();
                     currCol++;
                 }
         });
+
         row2.appendChild(key);
     }
   
@@ -132,18 +130,14 @@ function createKeyboard() {
         key.setAttribute("id", "" + key.textContent + "Key");
         key.addEventListener("click", function(event){
             let boxToUpdate = document.getElementById("" + currRow + currCol);
-            if(this.textContent === "Delete")
-            {
-                if(currCol !== 0)
-                {
+            if (this.textContent === "Del") {
+                if (currCol !== 0) {
                     boxToUpdate = document.getElementById("" + currRow + (currCol-1));
                     boxToUpdate.textContent = "";
                     currCol--;
                 } 
-            }else if(this.textContent === "Enter" && currCol === 5)
-            {
-                for(let i = 0; i < 5; i++)
-                {
+            } else if (this.textContent === "Enter" && currCol === 5) {
+                for (let i = 0; i < 5; i++) {
                     boxToUpdate = document.getElementById("" + currRow + i);
                     guessString = guessString + boxToUpdate.textContent;
                 }
@@ -151,15 +145,14 @@ function createKeyboard() {
                 tryGuess(guessString);
                 guessString = "";
                 currCol = 0;
-            }else if(this.textContent !== "Enter")
-            {
-                if(currCol < 5)
-                {
+            } else if (this.textContent !== "Enter") {
+                if (currCol < 5) {
                     boxToUpdate.textContent = this.textContent.toUpperCase();
                     currCol++;
                 }
             }
         });
+
         row3.appendChild(key);
     }
 

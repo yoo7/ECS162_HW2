@@ -92,7 +92,7 @@ main p {
   justify-content: center;
   width: 40vw;
   height: 40vh;
-  font-size:vw;
+  font-size: 2vw;
   margin: 2% auto;
   /* 15% from the top and centered */
   padding: 24px 20px;
@@ -110,8 +110,7 @@ main p {
 
 #best-score {
   color: #85c7c9;
-  font-size: 1.5rem;
-  /* padding: 2% 8%; */
+  font-size: 3vw;
   text-align: center;
   margin: 2vw;
 }
@@ -121,18 +120,14 @@ main p {
   display: block;
   border-radius: 16px;
   margin: 16px auto;
-  background-color: #85c7c9;
+  background-color: #80c1c4;
   width: 20vw;
   font-family: "DejaVu Serif";
-  font-size: 1.2rem;
+  font-size: 3vw;
   border: none;
   cursor: pointer;
   color: white;
   box-shadow: 1px 2px 8px 506376ee;
-}
-
-#start-game:hover {
-  background-color: #85c7c9;
 }
 
 #game {
@@ -195,8 +190,52 @@ footer {
   font-size: 1.5rem;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 750px) {
   #game {
-    width: 90%;
+    height: 60vw;
+    width: 70vw;
+  }
+
+  #word-count, #time-left {
+    font-size: 5vw;
+    margin: 0;
+  }
+  
+  #difficulty, #word-count {
+    color: white;
+    margin: 0vw;
+    font-size: 3vw;
+  }
+  
+  #time {
+    font-size: 6vw;
+    margin: 1vw;
+  }
+
+  .modal-content {
+    width: 60%;
+    height: 20%;
+    font-size: 3vw;
+    margin: 2% auto;
+    /* 15% from the top and centered */
+    padding: 24px 20px;
+    text-align: center;
+    border: 1px solid #888;
+    /* Could be more or less, depending on screen size */
+  }
+
+  #start-game {
+    width: 30vw;
+  }
+
+  #word-guess {
+    font-size: 5vw;
+    margin: 2vw auto;
+  }
+  
+  #word-input {
+    width: 50vw;
+    font-size: 4vw;
+    margin: 2vw;
   }
 }

@@ -1,4 +1,4 @@
-.word, .category, #msg, .num-mistakes, .button {
+.word, .category, .num-mistakes, .button {
     font-family: "DejaVu Serif";
 }
 
@@ -143,17 +143,88 @@
     background: #e9ede9ee;
 }
 
-#msg {
-    opacity: 0;  /* Start off hidden */
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    font-size: 1vw;
-    width: fit-content;
-    margin: 0vw auto 1vw auto;
-    border-radius: 2vw;
-    padding: 1vw;
-    background-color: #000000;
-    color: #ffffff;
+@media screen and (max-width: 750px) {
+    .stage {
+        margin: 2vw 5vw;
+    }
+
+    .word {
+        border-radius: 3vw;
+        font-size: 2vw;
+        padding: 0.5vw;
+        width: 18vw;
+        height: 12vw;
+    }
+    
+    .box {
+        display: flex;
+        font-size: 3vw;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        padding: 2vw auto 0vw auto;
+        white-space: nowrap;
+        column-gap: 0vw 5vw 2vw 2vw;
+    }
+    
+    .num-mistakes {
+        color: #3c3c3c;
+        display: inline-block;
+        margin: 1vw;
+        font-size: 2.5vw;
+    }
+    
+    .circle {
+        background-color: #bababa;
+        width: 2vw;
+        height: 2vw;
+        margin: 0.5vw;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    
+    .invisible {
+        visibility: none;
+    }
+    
+    .category {
+        grid-column: 1 / span 4;  /* Make the rectangle take up whole row/all 4 columns */
+        display: flex;
+        position: relative;
+        color: #000000;
+        border-radius: 3vw;
+        font-size: 2vw;
+        padding: 2vw;
+        margin: auto;
+        width: 75vw;
+        height: 15vw;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        text-wrap: wrap;
+        flex-wrap: wrap;
+        white-space: pre-line;  /* Text wraps as needed or on line breaks with \n. Keeps whitespace */
+    }
+
+    .options {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        justify-items: center;
+        align-content: center;
+        padding: 0.5vw;
+        margin: 0 auto;
+    }
+    
+    .button {
+        background: #c1e0c3ee;
+        border-radius: 5vw;
+        border: 0.2vw solid black;
+        color: black;
+        font-size: 2.5vw;
+        text-align: center;
+        padding: 2vw;
+        margin: 2vw 2vw 0.8vw 2vw;
+    }
 }

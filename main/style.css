@@ -76,10 +76,15 @@ nav ul {
     align-items: center;
     margin: 0;
     padding: 0;
+    height: 5vw;
 }
 
 nav li {
-    display: inline;  /* Display list items on the same line */
+    display: flex;  /* Display list items on the same line */
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
     height: 100%;
     padding: 1.2vw 1.7vw;
     text-align: center;
@@ -90,7 +95,7 @@ nav li {
 nav li a {
     text-align: center;
     text-decoration: none;
-    font-size: 1.3vw;
+    font-size: 1.5vw;
     color: #85c7c9;
 }
 
@@ -197,6 +202,7 @@ footer {
 
 #msg {
     opacity: 0;  /* Start off hidden */
+    font-family: "DejaVu Serif";
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -211,7 +217,149 @@ footer {
 }
 
 @media screen and (max-width: 750px) {
+    h1 {
+        text-align: center;
+        font-size: 10vw;
+        margin: 0.8vw auto 0.8vw auto;
+    }
+    
+    h2 {
+        text-align: center;
+        font-size: 5vw;
+        margin: 2vw;
+    }
+    
+    h3, h4 {
+        text-align: center;
+        font-size: 4vw;
+    }
+
+    .redirect {
+        display: flex;
+        color: black;
+        background-color: rgb(247, 229, 129);
+        font-size: 3vw;
+        text-decoration: none;
+        text-align: center;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        width: 20vw;
+        height: 10vw;
+        padding: 5vw;
+        margin: 4vw auto 6vw auto;
+        border-radius: 20%;
+        transition: transform 0.1s ease-in-out;
+    }
+    
+    nav ul {
+        display: flex;
+        list-style: none;
+        text-align: center;
+        justify-content: center;
+        align-content: center;
+        justify-items: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        height: 10vw;
+    }
+    
+    nav li {
+        display: flex;  /* Display list items on the same line */
+        justify-content: center;
+        align-content: center;
+        justify-items: center;
+        align-items: center;
+        height: 100%;
+        padding: 1.2vw 3vw;
+        text-align: center;
+        margin: 0;
+        background-color: #2a343eee;
+    }
+    
+    nav li a {
+        font-size: 3vw;
+    }
+
+    #gameOptions {
+        display: flex;
+        border-radius: 1.5vw;
+        padding: 3vw;
+        margin: 4vw 8vw;
+        background-color: #ddeaec;
+        text-align: center;
+        justify-content: space-evenly;
+        align-items: center;
+        align-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .thumbnail {
+        display: flex;
+        border-radius: 3vw;
+        background-color: #ffffff;
+        width: 34vw;
+        height: 50vw;
+        margin: 2vw 1vw;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        transition: transform 0.1s ease-in-out;
+        flex-direction: column;
+    }
+    
+    .thumbnail img {
+        padding: 0;
+        width: 70%;
+    }
+    
     .basicParagraph {
-        margin: auto 5vw;
+        margin: 3vw 10vw;
+        text-align: justify;
+        font-size: 2.5vw;
+    }
+    
+    .gameTitle {
+        display: block;
+        font-weight: bold;
+        font-size: 3.3vw;
+        margin: 1vw auto 0.5vw auto;
+        padding: 0;
+    }
+    
+    .gameDescription {
+        font-size: 2.5vw;
+        margin: 0.4vw;
+        padding: 0vw 1vw 0vw 1vw;
+    }
+
+    footer {
+        text-align: center;
+        font-size: 2.5vw;
+        padding: 2vw;
+        color: #85c7c9;
+        background-color: #2a343eee;
+    }
+
+    footer p {
+        margin: 2vw 4vw;
+    }
+
+    .small-text {
+        font-size: 2vw;
+    }
+    
+
+    #msg {
+        font-size: 3.5vw;
+        border-radius: 3vw;
+        padding: 2vw;
+    }
+
+    #etypemo-img {
+        width: 25vw;
+        height: auto;
     }
 }

@@ -635,7 +635,7 @@ function drawStage() {
     }
 
     // Add the text for number of mistakes remaining
-    let numMistakes = document.createElement("div");
+    let numMistakes = document.createElement("p");
     numMistakes.classList.add("num-mistakes");
     numMistakes.textContent = "Mistakes remaining:";
     box.appendChild(numMistakes);
