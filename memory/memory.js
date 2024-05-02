@@ -73,16 +73,24 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     function create_board() {
         for (let i = 0; i < cards.length; i++) {
-            const card = document.createElement("img");
-            card.setAttribute("src", "assets/tiles/blank.png");
+            const card = document.createElement("button");
+            card.type = "button";
+            card.classList.add("button");
             card.setAttribute("data-id", i);
+            card.tabIndex = 0;  // Keyboard accessibility
             card.addEventListener("click", flipcard);
+
+            const img = document.createElement("img");
+            img.setAttribute("src", "assets/tiles/blank.png");
+
+            card.appendChild(img);
+            
             grid.appendChild(card);
         }
     }
 
     function check_for_match() {
-        let allCards = document.querySelectorAll("img");
+        let allCards = document.querySelectorAll("button");
         const card1 = chosenCardsID[0];
         const card2 = chosenCardsID[1];
 
@@ -94,12 +102,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
             allCards[card2].animate(FADE_OUT, OPTIONS);
             wonCards.push(chosenCards);
         } else {  // Set them back to blank because they don't match
+            displayMsg("Not a match");
+
             // If the current score is positive, then increment the number of mistakes (no negative scores)
             if (parseInt(result.textContent) > 0) {
                 numMistakes++;
             }
-            allCards[card1].setAttribute("src", "assets/tiles/blank.png");
-            allCards[card2].setAttribute("src", "assets/tiles/blank.png");
+            allCards[card1].children.item(0).setAttribute("src", "assets/tiles/blank.png");
+            allCards[card2].children.item(0).setAttribute("src", "assets/tiles/blank.png");
         }
 
         chosenCards = [];
@@ -119,7 +129,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
             chosenCards.push(cards[cardID].name);
             chosenCardsID.push(cardID);
 
-            this.setAttribute("src", cards[cardID].image);
+            this.children.item(0).setAttribute("src", cards[cardID].image);
 
             if (chosenCards.length === 2) {
                 setTimeout(check_for_match, 600);

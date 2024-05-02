@@ -597,7 +597,7 @@ function addBtn(id, content, index) {
     btn.classList.add("button");
     btn.id = id;
     btn.textContent = content;
-    btn.tabIndex = 0;
+    btn.tabIndex = 0;  // Keyboard accessibility
     options.appendChild(btn);
 
     return btn;
