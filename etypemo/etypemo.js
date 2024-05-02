@@ -165,7 +165,7 @@ function init() {
     resetInterval();
   
     modal.style.display = "block";
-    modalP.innerText = "Your score is " + wordCount + "\nPress ENTER to continue";
+    modalP.innerText = "Your score is " + wordCount;
   
     inputEl.value = "";
   
