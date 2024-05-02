@@ -110,6 +110,22 @@ aside nav ul .activeNav a {
     color: #2a343eee;
 }
 
+footer a {
+    color: white;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.yellow-text {
+    color: rgb(247, 229, 129);
+}
+
+.small-text {
+    font-size: 1vw;
+}
+
 #gameOptions {
     display: flex;
     border-radius: 1.5vw;

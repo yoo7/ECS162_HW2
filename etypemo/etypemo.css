@@ -1,4 +1,33 @@
-p {
+/*
+    MIT License
+
+    Copyright (c) 2024 Yoobin Jin and Sam Xie
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+    This project contains MIT licensed code from Memory and eTypeMo. 
+    To see the details of the licensing, view the `LICENSE` files in `./memory` and `./etypemo`.
+
+    The code in this file is a modified version from the eTypeMo project.
+*/
+
+main p {
   margin: 1vw;
   padding: 1vw;
 }
@@ -10,11 +39,21 @@ p {
 
 #difficulty, #word-count {
   color: white;
+  margin: 0vw;
+  font-size: 1.2vw;
 }
 
-#time, #difficulty {
-  font-size: 1vw;
-  margin: 0;
+#time, #time-left {
+  color: rgb(247, 229, 129);
+}
+
+#time {
+  font-size: 2vw;
+  margin: 0.5vw;
+}
+
+#time-left {
+  font-size: 1.5vw;
 }
 
 #start-game-prompt {
@@ -96,10 +135,6 @@ p {
   background-color: #85c7c9;
 }
 
-#time {
-  margin: 0.5vw;
-}
-
 #game {
   display: flex;
   border-radius: 20px;
@@ -111,17 +146,20 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  justify-items: center;
+  align-content: center;
   align-items: center;
-  padding: 0vw 2vw 2vw 2vw;
+  padding: 2vw;
   margin: 2vw auto auto auto;
 }
 
 #word-guess {
   text-transform: uppercase;
-  font-family: "DejaVu Serif";
+  font-family: 'Lexend', sans-serif;  /* Easier to read for the game */
   text-align: center;
   font-size: 3vw;
-  margin: 0 auto 1.5vw auto;
+  margin: 1vw auto;
+  color: #98eaec;
 }
 
 #word-input-wrap {
@@ -135,11 +173,12 @@ p {
   width: 30vw;
   background-color: #62788fee;
   color: #dcedffee;
-  font-family: "DejaVu Serif";
+  font-family: 'Lexend', sans-serif;
   font-size: 2vw;
   text-transform: uppercase;
   border: 0;
   border-radius: 16px;
+  margin: 1vw;
 }
 
 #word-input:focus {

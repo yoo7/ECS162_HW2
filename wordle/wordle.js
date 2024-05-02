@@ -81,39 +81,6 @@ function createGrid(row, col) {
     containerEl.appendChild(gridContainer);
 }
 
-// function updateBoxLetter(letter) {
-
-// }
-
-// function createGuessBar() {
-//     const guessContainer = document.createElement("div");
-//     guessContainer.classList.add("guess-bar");
-
-//     const guessInput = document.createElement("input");
-//     guessInput.setAttribute("id", "input");
-//     guessInput.setAttribute("type", "text");
-//     guessInput.setAttribute("placeholder", "Enter a word");
-//     guessInput.setAttribute("maxlength", "5");
-//     guessInput.setAttribute("onkeydown", "return /[a-zA-Z]/i.test(event.key)");
-//     guessInput.style.textTransform = "uppercase";
-//     guessInput.tabIndex = 0;
-
-//     const guessButton = document.createElement("button");
-//     guessButton.addEventListener("click", function() {
-//         if (guessInput.value.length != 5) {
-//             alert("Please enter a 5-letter word");
-//         } else {
-//             tryGuess(guessInput.value)
-//         }
-//     });
-
-//     guessButton.textContent = "Guess";
-//     guessButton.tabIndex = 0;
-
-//     guessContainer.append(guessInput, guessButton);
-//     containerEl.append(guessContainer);
-// }
-
 function createKeyboard() {
     const keyboardContainer = document.createElement("div");
     keyboardContainer.classList.add("keyboard");
@@ -129,9 +96,6 @@ function createKeyboard() {
         key.classList.add("key");
         key.textContent = row1keys[i];
         key.setAttribute("id", "" + key.textContent + "Key");
-        // key.addEventListener("click", function(event){
-        //     updateGuessBox(event);
-        // });
         row1.appendChild(key);
     }
 
