@@ -96,6 +96,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
             // Button appears as an image (blank tile)
             const img = document.createElement("img");
             img.setAttribute("src", "assets/tiles/blank.png");
+            img.setAttribute("title", "memory tile");
+            img.setAttribute("alt", "unmatched tile");
             card.appendChild(img);
             
             // Actually add the card/tile to the DOM
