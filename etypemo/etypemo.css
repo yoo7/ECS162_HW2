@@ -1,15 +1,24 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 h3, h4 {
   text-align: center;
 }
 
-#difficulty {
-  margin: 2vw auto 0vw auto;
+p {
+  margin: 1vw;
+  padding: 1vw;
+}
+
+#word-count, #time-left {
+  font-size: 1.5vw;
+  margin: 0;
+}
+
+#difficulty, #word-count {
+  color: white;
+}
+
+#time, #difficulty {
+  font-size: 1vw;
+  margin: 0;
 }
 
 #start-game-prompt {
@@ -45,15 +54,15 @@ h3, h4 {
   border-radius: 24px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  height: 60vh;
-  font-size: 3.5vw;
+  justify-content: center;
+  width: 40vw;
+  height: 40vh;
+  font-size:vw;
   margin: 2% auto;
   /* 15% from the top and centered */
   padding: 24px 20px;
   text-align: center;
   border: 1px solid #888;
-  width: 80%;
   /* Could be more or less, depending on screen size */
 }
 
@@ -65,10 +74,11 @@ h3, h4 {
 }
 
 #best-score {
+  color: #85c7c9;
   font-size: 1.5rem;
   /* padding: 2% 8%; */
   text-align: center;
-  margin: 1vw;
+  margin: 2vw;
 }
 
 #start-game {
@@ -77,7 +87,7 @@ h3, h4 {
   border-radius: 16px;
   margin: 16px auto;
   background-color: #85c7c9;
-  width: 70%;
+  width: 20vw;
   font-family: "DejaVu Serif";
   font-size: 1.2rem;
   border: none;
@@ -90,18 +100,22 @@ h3, h4 {
   background-color: #85c7c9;
 }
 
+#time {
+  margin: 0.5vw;
+}
+
 #game {
+  display: flex;
   border-radius: 20px;
   background: #2a343eee;
   color: #85c7c9;
   text-align: center;
-  width: 65vw;
-  height: 35vw;
+  width: 50vw;
+  height: 30vw;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  padding: 12px;
   padding: 0vw 2vw 2vw 2vw;
   margin: 2vw auto auto auto;
 }
@@ -110,6 +124,8 @@ h3, h4 {
   text-transform: uppercase;
   font-family: "DejaVu Serif";
   text-align: center;
+  font-size: 3vw;
+  margin: 0 auto 1.5vw auto;
 }
 
 #word-input-wrap {
@@ -118,12 +134,13 @@ h3, h4 {
 
 #word-input {
   text-align: center;
+  margin: auto;
   padding: 16px;
-  width: 90%;
+  width: 30vw;
   background-color: #62788fee;
   color: #dcedffee;
   font-family: "DejaVu Serif";
-  font-size: 1.7rem;
+  font-size: 2vw;
   text-transform: uppercase;
   border: 0;
   border-radius: 16px;
