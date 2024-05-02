@@ -32,7 +32,6 @@ const words = {
   Moderate: [
     "beautiful",
     "comfortable",
-    "difficult",
     "enormous",
     "fantastic",
     "government",
@@ -50,24 +49,19 @@ const words = {
     "president",
     "retelling",
     "jeopardize",
-    "ecstatic",
     "metaphor",
     "elephant",  // Moved this one from easy
     "professor",
-    "acquiesce",
     "voracious",
+    "typewriter",
+    "incoherent",
   ],
   Hard: [
     "bureaucracy",
-    "conscientious",
-    "extracurricular",
-    "heterogeneous",
-    "infinitesimal",
     "juxtaposition",
     "labyrinth",
     "meticulous",
     "photosynthesis",
-    "surreptitious",
     "archaeology",
     "equilibrium",
     "philosophy",
@@ -75,22 +69,38 @@ const words = {
     "ambiguity",  // Added more hard words
     "constellation",
     "stewardess",
+    "acquiesce",
     "pepperoni",
+    "ecstatic",
     "hypothesis",
     "satellite",
-    "onomatopoeia",
     "perpendicular",
-    "extraterritoriality",
     "international",
     "terrarium",
     "planetarium",
-    "trepidation",
     "apprehension",
     "territorial",
     "government",
-    "xylophone",
-    "magnanimous",
     "phenomenon",
+    "pseudonym",
+    "radioactive",
+  ],
+  Insane: [  // New difficulty
+    "extraterritoriality",
+    "conscientious",
+    "extracurricular",
+    "heterogeneous",
+    "infinitesimal",
+    "surreptitious",
+    "xylophone",
+    "trepidation",
+    "onomatopoeia",
+    "blasphemous",
+    "incomprehensible",
+    "revolutionary",
+    "interdisciplinary",
+    "inconsequential",
+    "magnanimous",
   ],
 }
 
@@ -141,7 +151,7 @@ function init() {
   const modalP = document.querySelector("#start-game-prompt p");
   
   const scores = JSON.parse(localStorage.getItem("scores")) || [0];
-  const difficulties = ["Easy", "Moderate", "Hard"];
+  const difficulties = ["Easy", "Moderate", "Hard", "Insane"];
   
   let interval = null;
   let timeSeconds = 10;
@@ -224,8 +234,10 @@ function init() {
   
     timeSeconds =
       difficulty === "Easy"
-        ? timeSeconds + 3
+        ? timeSeconds + 4
         : difficulty === "Moderate"
+        ? timeSeconds + 3
+        : difficulty === "Hard"
         ? timeSeconds + 2
         : timeSeconds + 1;
   

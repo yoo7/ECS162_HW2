@@ -10,9 +10,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
                         fill: "forwards",
                     };
     const FADE_IN_OUT = [{opacity: 0}, {opacity: 1, offset: 0.05}, {opacity: 1, offset: 0.9}, {opacity: 0, offset: 1}];
-    let chosen_cards = [];
-    let chosen_cards_id = [];
-    let won_cards = [];
+    let chosenCards = [];
+    let chosenCardsID = [];
+    let wonCards = [];
+    let numMistakes = 0;
 
     const cards  = [
         {
@@ -81,41 +82,50 @@ document.addEventListener("DOMContentLoaded", ()=>{
     }
 
     function check_for_match() {
-        let all_cards = document.querySelectorAll("img");
-        const card1 = chosen_cards_id[0];
-        const card2 = chosen_cards_id[1];
+        let allCards = document.querySelectorAll("img");
+        const card1 = chosenCardsID[0];
+        const card2 = chosenCardsID[1];
 
         if (cards[card1].name === cards[card2].name) {
             displayMsg("That\'s a match!");
             
-            // Fade out
-            all_cards[card1].animate(FADE_OUT, OPTIONS);
-            all_cards[card2].animate(FADE_OUT, OPTIONS);
-            won_cards.push(chosen_cards);
-        } else {
-            // Set them back to blank because they don't match
-            all_cards[card1].setAttribute("src", "assets/tiles/blank.png");
-            all_cards[card2].setAttribute("src", "assets/tiles/blank.png");
+            // Fade out the two cards
+            allCards[card1].animate(FADE_OUT, OPTIONS);
+            allCards[card2].animate(FADE_OUT, OPTIONS);
+            wonCards.push(chosenCards);
+        } else {  // Set them back to blank because they don't match
+            // If the current score is positive, then increment the number of mistakes (no negative scores)
+            if (parseInt(result.textContent) > 0) {
+                numMistakes++;
+            }
+            allCards[card1].setAttribute("src", "assets/tiles/blank.png");
+            allCards[card2].setAttribute("src", "assets/tiles/blank.png");
         }
 
-        chosen_cards = [];
-        chosen_cards_id = [];
-        result.textContent = won_cards.length;
+        chosenCards = [];
+        chosenCardsID = [];
+        result.textContent = wonCards.length - numMistakes;
 
-        if (won_cards.length === cards.length / 2) {
-            displayMsg("CONGRATULATIONS! YOU GOT THEM ALL!");
+        if (wonCards.length === cards.length / 2) {
+            displayMsg("Congraulations!");
         }
     }
 
     function flipcard() {
-        let card_id = this.getAttribute("data-id");
-        chosen_cards.push(cards[card_id].name);
-        chosen_cards_id.push(card_id);
+        let cardID = this.getAttribute("data-id");
 
-        this.setAttribute("src", cards[card_id].image);
+        // Can't select the same title twice
+        if (!chosenCardsID.includes(cardID)) {
+            chosenCards.push(cards[cardID].name);
+            chosenCardsID.push(cardID);
 
-        if (chosen_cards.length === 2) {
-            setTimeout(check_for_match, 600);
+            this.setAttribute("src", cards[cardID].image);
+
+            if (chosenCards.length === 2) {
+                setTimeout(check_for_match, 600);
+            }
+        } else {
+            displayMsg("Already selected!");
         }
     }
 

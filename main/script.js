@@ -1,13 +1,16 @@
 "use strict";
 
 function setup() {
-    const connections = document.getElementById("connections");
-    const wordle = document.getElementById("wordle");
-    const eTypeMo = document.getElementById("eTypeMo");
+    const games = ["connections", "wordle", "etypemo", "memory"];
 
-    connections.addEventListener("click", () => document.location.href = "../connections/connections.html");
-    wordle.addEventListener("click", () => document.location.href = "../wordle/wordle.html");
-    eTypeMo.addEventListener("click", () => document.location.href = "../etypemo/etypemo.html");
+    for (const game of games) {
+        setupListener(game);
+    }
+}
+
+function setupListener(name) {
+    const btn = document.getElementById(name);
+    btn.addEventListener("click", () => document.location.href = "../" + name + "/" + name + ".html");
 }
 
 window.addEventListener("load", setup);
