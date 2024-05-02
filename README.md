@@ -11,4 +11,4 @@ The second open-source game is Memory. We added some visual changes like a messa
 
 See the "How to Play" page (`./main/how-to-play.html`) to learn how each game works.
 
-Thish project is under the MIT license. To see the license is more detail, see the `LICENSE` file.
+This project is under the MIT license. To see the license is more detail, see the `LICENSE` file.
