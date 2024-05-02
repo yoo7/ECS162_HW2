@@ -1,6 +1,6 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", () => {
     // NEW: Aniation constants for convenience
     const FADE_OUT = [{opacity: 1}, {opacity: 0.7, offset: 0.3}, {opacity: 0, offset: 1},];
     const OPTIONS = {
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
             card.type = "button";
             card.classList.add("button");
             card.setAttribute("data-id", i);
-            card.tabIndex = 0;  // Keyboard accessibility
+            card.tabIndex = 0;
             card.addEventListener("click", flipcard);
 
             // Button appears as an image (blank tile)
@@ -114,14 +114,17 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
         const card1 = chosenCardsID[0];
         const card2 = chosenCardsID[1];
+        const img1 = allCards[card1].children.item(0);
+        const img2 = allCards[card2].children.item(0);
 
         // Two cards actually match, so display message, make them disappear, and add to wonCards
         if (cards[card1].name === cards[card2].name) {
             displayMsg("That\'s a match!");
             
             // Fade out the two cards
-            allCards[card1].animate(FADE_OUT, OPTIONS);
-            allCards[card2].animate(FADE_OUT, OPTIONS);
+            removeCard(allCards[card1], img1);
+            removeCard(allCards[card2], img2);
+
             wonCards.push(chosenCards);
         } else {  // Set the two cards back to blank because they don't match
             displayMsg("Not a match");
@@ -132,8 +135,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
             }
 
             // Make them blank cards/tiles again
-            allCards[card1].children.item(0).setAttribute("src", "assets/tiles/blank.png");
-            allCards[card2].children.item(0).setAttribute("src", "assets/tiles/blank.png");
+            img1.setAttribute("src", "assets/tiles/blank.png");
+            img2.setAttribute("src", "assets/tiles/blank.png");
         }
 
         // Deselect the cards/tiles chosen
@@ -147,6 +150,18 @@ document.addEventListener("DOMContentLoaded", ()=>{
         if (wonCards.length === cards.length / 2) {
             displayMsg("Congraulations!");
         }
+    }
+
+    /**
+     * NEW added function
+     * Make the card/button disappear from the screen
+     * @param {HTMLButtonElement} card 
+     * @param {HTMLImageElement} img 
+     */
+    function removeCard(card, img) {
+        card.animate(FADE_OUT, OPTIONS);
+        img.setAttribute("title", "");
+        img.setAttribute("alt", "");
     }
 
     /**

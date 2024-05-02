@@ -168,7 +168,7 @@ function countWordsPerCat(selected) {
 /** 
  * Get the user's current guess in text-form
  * @param {HTMLCollection} selected - all the DOM elements with the "selected" property
- * @return {set} guess - the user's guess
+ * @return {Set} guess - the user's guess
  */
 function initGuess(selected) {
     let guess = new Set();
