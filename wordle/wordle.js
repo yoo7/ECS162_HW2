@@ -197,13 +197,10 @@ function tryGuess(input) {
     checkWinLoss();
 }
 
-function checkWinLoss() 
-{
-    if(gameWon == true)
-    {
+function checkWinLoss() {
+    if(gameWon) {
         displayMsg("You won! Would you like to play again?");
-    }else if(gameOver == true)
-    {
+    }else if(gameOver) {
         displayMsg("Game Over. Press \"play again\" to retry.");
     }
 }

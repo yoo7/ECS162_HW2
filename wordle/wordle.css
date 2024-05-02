@@ -101,21 +101,6 @@ main {
     margin: 0.5vw;
 }
 
-#msg {
-    opacity: 0;  /* Start off hidden */
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    font-size: 1vw;
-    width: fit-content;
-    margin: 0vw auto 1vw auto;
-    border-radius: 2vw;
-    padding: 1vw;
-    background-color: #000000;
-    color: #ffffff;
-}
-
 @media screen and (max-width: 750px) {
     h1 {
         font-size: 2rem;

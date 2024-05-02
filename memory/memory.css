@@ -1,0 +1,20 @@
+.stage {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.grid {
+    margin: 2vw auto 4vw auto;
+    display: flex;
+    flex-wrap: wrap;
+    width: 240px;    
+    height: 162px;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}

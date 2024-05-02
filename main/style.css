@@ -21,6 +21,10 @@ h2 {
     margin: 2vw;
 }
 
+h3, h4 {
+    text-align: center;
+}
+
 .redirect {
     display: flex;
     color: black;
@@ -174,6 +178,21 @@ footer {
 #etypemo-img {
     width: 12vw;
     height: auto;
+}
+
+#msg {
+    opacity: 0;  /* Start off hidden */
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-size: 1vw;
+    width: fit-content;
+    margin: 0vw auto 1vw auto;
+    border-radius: 2vw;
+    padding: 1vw;
+    background-color: #000000;
+    color: #ffffff;
 }
 
 @media screen and (max-width: 750px) {
