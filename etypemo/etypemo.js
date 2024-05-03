@@ -342,7 +342,7 @@ function init() {
   // Check if the user's input matches the word to type
   inputEl.addEventListener("input", (event) => {
     if (event.target.value.toLowerCase().trim() === wordToGuess.toLowerCase()) {
-      nextWord()
+      nextWord();
     }
   });
 }
