@@ -1,13 +1,4 @@
-.guess-bar, .button, .key {
-    font-family: "DejaVu Serif";
-}
-
-.box, .guess-bar, .key, .row-one, .row-two , .row-three, #retry, #retry-button {
-    display: flex;  
-}
-
 body {
-    /* font-family: "Roboto", sans-serif; */
     flex-direction: column;
     align-items: center;
 }
@@ -16,10 +7,12 @@ main {
     height: 80%;       
 }
 
+.button, .key {
+    font-family: "DejaVu Serif";
+}
 
-#container {
-    height: 73%;
-    width: 100%;
+.box, .key, .row-one, .row-two , .row-three {
+    display: flex;  
 }
 
 .box {
@@ -31,20 +24,6 @@ main {
     justify-content: center;
     font-size: 3vw;
     background-color:#f5f5dc;
-}
-
-#grid-container {
-    display: grid;
-    justify-content: center;
-    justify-items: center;
-    align-content: center;
-    align-items: center;
-    padding: 0vw 2vw 2vw 2vw;
-    row-gap: 1vw;
-    margin: 0vw auto auto auto;
-    column-gap: 1vw;
-    grid-template-columns: auto auto auto auto auto;  /* 5 letter words */
-    grid-template-rows: auto auto auto auto auto auto;  /* 6 tries */
 }
 
 .keyboard {
@@ -74,64 +53,44 @@ main {
     margin: 0.5vw;
 }
 
-#retry {
+#container {
+    height: 73%;
+    width: 100%;
+}
+
+#grid-container {
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+    padding: 0vw 2vw 2vw 2vw;
+    row-gap: 1vw;
+    margin: 0vw auto auto auto;
+    column-gap: 1vw;
+    grid-template-columns: auto auto auto auto auto;  /* 5 letter words */
+    grid-template-rows: auto auto auto auto auto auto;  /* 6 tries */
+}
+
+#retry, #retry-button {
     display: flex;
     justify-content: center;
+}   
+
+#retry {
     margin-bottom: 0.2vw;
 }
 
 #retry-button {
     opacity: 0;
     font-family: "DejaVu Serif";
-    display: flex;
     color: black;
     background-color: rgb(247, 229, 129);
     font-size: 1.1vw;
-    justify-content: center;
     align-items: center;
     width: 12vw;
     height: 1vw;
     padding: 1.5vw;
     margin: 0;
     border-radius: 20%;
-    transition: transform 0.1s ease-in-out;
-}
-
-@media screen and (max-width: 750px) {
-    #container {
-        height: 73%;
-        width: 100%;
-    }
-    
-    .box {
-        margin: 0.7vw;
-        width: 13vw;
-        height: 13vw;
-        border: solid black 1px;
-        align-items: center;
-        justify-content: center;
-        font-size: 9vw;
-        background-color:#f5f5dc;
-    }
-
-    .key {
-        border-radius: 40%;
-        width: 8vw;
-        height: 8vw;
-        border: solid black 0.2vw;
-        background-color:#f5f5dc;
-        align-items: center;
-        justify-content: center;
-        font-size: 3vw;
-        margin: 0.57vw;
-    }
-
-    #retry-button {
-        font-size: 3vw;
-        width: 24vw;
-        height: 10vw;
-        padding: 1.5vw;
-        margin: 2vw;
-        border-radius: 20%;
-    }
 }

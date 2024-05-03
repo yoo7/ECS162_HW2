@@ -32,32 +32,13 @@ main p {
   padding: 1vw;
 }
 
-#word-count, #time-left {
-  font-size: 1.5vw;
-  margin: 0;
-}
-
-#difficulty, #word-count {
+a {
   color: white;
-  margin: 0vw;
-  font-size: 1.2vw;
 }
 
-#time, #time-left {
-  color: rgb(247, 229, 129);
-}
-
-#time {
-  font-size: 2vw;
-  margin: 0.5vw;
-}
-
-#time-left {
-  font-size: 1.5vw;
-}
-
-#start-game-prompt {
-  display: none;
+footer {
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 /* The Modal (background) */
@@ -106,6 +87,34 @@ main p {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+#word-count, #time-left {
+  font-size: 1.5vw;
+  margin: 0;
+}
+
+#difficulty, #word-count {
+  color: white;
+  margin: 0vw;
+  font-size: 1.2vw;
+}
+
+#time, #time-left {
+  color: rgb(247, 229, 129);
+}
+
+#time {
+  font-size: 2vw;
+  margin: 0.5vw;
+}
+
+#time-left {
+  font-size: 1.5vw;
+}
+
+#start-game-prompt {
+  display: none;
 }
 
 #best-score {
@@ -179,15 +188,6 @@ main p {
 #word-input:focus {
   border: none;
   outline: none;
-}
-
-a {
-  color: white;
-}
-
-footer {
-  text-align: center;
-  font-size: 1.5rem;
 }
 
 @media screen and (max-width: 750px) {
