@@ -16,7 +16,8 @@ There are 16 words and 4 categories. Each category contains 4 words that relate 
 Click on the words to select them. After selecting 4 words, press "Submit" to check your answer. If your answer is correct, the category will appear. Otherwise, a message will be appear at the top. If only one word is incorrect, the message will say so. If more than one word does not belong, the message will simply say "incorrect". If you make 4 mistakes, the 4 categories will automatically be revealed. You can also shuffle the remaining words, since that might help you see some patterns in the words. Don't worry about accidentally repeating an incorrect guess -- if you've already made that guess, it won't count as a mistake! There are currently 5 puzzles available. A puzzle will be randomly chosen everytime you play the game. Try to play them all!
 
 ### Wordle
-You have 6 tries to guess what the mystery 5-letter word is. Type in your 5-letter guess in the empty box at the bottom. When you're ready, press "Guess". Letters that are in the word and in the correct position of the word will be highlighted in blue-green.
+You have 6 tries to guess what the mystery 5-letter word is. Type your 5-letter guess with the keyboard, or click on the buttons. When you're ready, press "Guess". Letters that are in the word and in the correct position of the word will be highlighted in blue-green.
+
 Letters that are in the word but NOT in the correct position will be highlighted in yellow. Letters that are NOT in the word will be highlighted with gray.
 
 A record of the letter highlighting will be shown at the bottom of the page to help keep track of which letters worked and didn't work. There are currently 32 possible words that will be randomly chosen from when starting the game.

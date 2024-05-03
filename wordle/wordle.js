@@ -110,16 +110,20 @@ function createRowOne(keyboard){
 
     // Sets key elements to appropriate letters and added event listeners for clicking replicate key presses.
     for (let i = 0; i < 10; i++) {
-        const key = document.createElement("div");
+        const key = document.createElement("button");
         key.classList.add("key");
+        key.classList.add("button");
+        key.type = "button";
+        key.tabIndex = 0;
         key.textContent = ROW_1_KEYS[i];
         key.setAttribute("id", "" + key.textContent + "Key");
         key.addEventListener("click", function(event) {
             let boxToUpdate = document.getElementById("" + currRow + currCol);
+
             if (currCol < 5) {
-                    boxToUpdate.textContent = this.textContent.toUpperCase();
-                    currCol++;
-                }
+                boxToUpdate.textContent = this.textContent.toUpperCase();
+                currCol++;
+            }
         });
 
         row1.appendChild(key);
@@ -136,8 +140,10 @@ function createRowTwo(keyboard){
 
     // Sets key elements to appropriate letters and added event listeners for clicking replicate key presses.
     for (let i = 0; i < 9; i++) {
-        const key = document.createElement("div");
+        const key = document.createElement("button");
         key.classList.add("key");
+        key.type = "button";
+        key.tabIndex = 0;
         key.textContent = ROW_2_KEYS[i];
         key.setAttribute("id", "" + key.textContent + "Key");
         key.addEventListener("click", function(event) {
@@ -164,8 +170,11 @@ function createRowThree(keyboard){
     
     // Sets key elements to appropriate letters and added event listeners for clicking replicate key presses.
     for (let i = 0; i < 9; i++) {
-        const key = document.createElement("div");
+        const key = document.createElement("button");
         key.classList.add("key");
+        key.classList.add("button");
+        key.type = "button";
+        key.tabIndex = 0;
         key.textContent = ROW_3_KEYS[i];
         key.setAttribute("id", "" + key.textContent + "Key");
         // Additional functionality for Enter and Delete buttons to replicate "Enter" and "Backspace".
