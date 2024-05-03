@@ -32,7 +32,7 @@ you'll get extra seconds added to your time remaining (depending on the word's d
 ### Memory
 There are 12 tiles and 6 different kinds of tiles. Click on a tile to reveal what pattern it has. After you click two tiles, you can see if you matched the tiles. If you matched them correctly, your score will increase. If you make a mistake, the tiles will become blank again, and your score will decrease (your score can never be negative). See how high a score you can get!
 
-## Features
+## FEATURES
 We used a clean, aesthetic theme with a limited color palette for a unified, coherent appearance. Minimalistic icons were created in Canva for each game to contribute to this look.
 
 Each page with a game has a "Return to Game Selection" button on each page to redirect you to the home page. You can also click the title "Game Arcade" at the top.
@@ -41,10 +41,10 @@ Every page has keyboard accessibility in mind by switching certain interactable 
 
 The audience of this arcade is young adults interested in puzzle-like games and challenges.
 
-## Design Process
+## DESIGN PROCESS
 For the most part, we worked on separate games to streamline the process.
 
-## Challenges
+## CHALLENGES
 We faced difficulty dealing with displays (especially with grid and flex boxes) and responsiveness. We utilized `vw` as a measurement and looked into/experimented with the different properties of these elements to get the desired results.
 
 There was also difficulty making animations work as intended. We ended up doing some simpler animations to priortize functionality over visuals.
