@@ -10,7 +10,7 @@ function setup() {
 
 function setupListener(name) {
     const btn = document.getElementById(name);
-    btn.addEventListener("click", () => document.location.href = "../" + name + "/" + name + ".html");
+    btn.addEventListener("click", () => document.location.href = "./" + name + "/" + name + ".html");
 }
 
 window.addEventListener("load", setup);
